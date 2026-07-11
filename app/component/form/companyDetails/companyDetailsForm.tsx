@@ -7,7 +7,7 @@ export const CompanyDetailsForm = () => (
     <p className="text-2xl font-semibold pb-3">Company Details (To)</p>
     <CustomTextInput
       label="Email"
-      placeholder="e.g. hello@company.com"
+      placeholder="e.g. info@company.pk"
       variableName="email"
     />
     <p className="pb-10 pt-3 text-xs font-medium text-neutral-500">
@@ -16,38 +16,38 @@ export const CompanyDetailsForm = () => (
     <p className="pb-2 text-sm font-medium text-neutral-500">Billing details</p>
     <CustomTextInput
       label="Company name"
-      placeholder="Acme Corp"
+      placeholder="TechSol Pakistan"
       variableName="companyName"
     />
     <ImageInput label="Logo" variableName="companyLogo" />
     <CustomTextInput
       label="Address"
-      placeholder="Whitefield Circle,12"
+      placeholder="Plot 12, Main Boulevard"
       variableName="companyAddress"
     />
     <CustomTextInput
       label="City"
-      placeholder="Bangalore"
+      placeholder="Karachi"
       variableName="companyCity"
     />
     <CustomTextInput
       label="State"
-      placeholder="Karnataka"
+      placeholder="Sindh"
       variableName="companyState"
     />
     <CustomNumberInput
       label="Zip"
-      placeholder="560066"
+      placeholder="54000"
       variableName="companyZip"
     />
     <CustomTextInput
       label="Country"
-      placeholder="India"
+      placeholder="Pakistan"
       variableName="companyCountry"
     />
     <CustomTextInput
       label="Tax ID"
-      placeholder="GSTIN 1234"
+      placeholder="NTN 1234567"
       variableName="companyTaxId"
     />
   </div>

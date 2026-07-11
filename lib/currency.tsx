@@ -13,6 +13,7 @@ import {
   KZ,
   TW,
   GB,
+  PK,
   FlagComponent,
   ID,
 } from "country-flag-icons/react/1x1";
@@ -207,6 +208,18 @@ export const currencyList: {
       currencyShortForm: "IDR",
       icon: ID,
       iconName: "ID",
+    },
+  },
+  {
+    value: "PKR",
+    label: "PKR",
+    details: {
+      country: "Pakistan",
+      currencySymbol: "₨",
+      currencyName: "Pakistani Rupee",
+      currencyShortForm: "PKR",
+      icon: PK,
+      iconName: "PK",
     },
   },
 ];
