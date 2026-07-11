@@ -34,11 +34,10 @@ export const metadata: Metadata = {
       "Free Invoice Generator: Create & Send Professional Invoices in Minutes",
     description:
       "Get paid on time with our free invoice maker. Create professional invoices & get them to clients instantly.",
-    url: process.env.NEXT_PUBLIC_URL || "http://localhost:3000",
+    url: "https://invoice-generator.mabdullah.top",
     type: "website",
     images: "/og-image.jpeg",
     siteName: "Invoice Generator",
-    url: "https://invoice-generator.mabdullah.top",
   },
 };
 
