@@ -15,7 +15,7 @@ const STORAGE_KEYS = [
   "companyCountry", "companyLogo", "companyTaxId", "companyZip",
   "note", "discount", "tax",
   "bankName", "accountNumber", "accountName", "routingCode", "swiftCode", "ifscCode",
-  "invoiceNo", "issueDate", "dueDate", "currency", "step", "items",
+  "invoiceNo", "issueDate", "dueDate", "currency", "step", "items", "showPayableIn",
 ];
 
 export const NewInvoiceForm = () => {

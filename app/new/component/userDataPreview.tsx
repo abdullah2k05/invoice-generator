@@ -10,6 +10,7 @@ export const UserDataPreview = () => {
     invoiceTerms,
     paymentDetails,
     yourDetails,
+    showPayableIn,
   } = useData();
   const { setValue } = useFormContext();
 
@@ -26,6 +27,7 @@ export const UserDataPreview = () => {
       invoiceTerms={invoiceTerms}
       paymentDetails={paymentDetails}
       yourDetails={yourDetails}
+      showPayableIn={showPayableIn}
     />
   );
 };

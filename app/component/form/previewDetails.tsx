@@ -12,6 +12,7 @@ export const PreviewDetails = ({
   paymentDetails,
   invoiceTerms,
   onClick,
+  showPayableIn = true,
 }: {
   yourDetails: YourDetails;
   companyDetails: CompanyDetails;
@@ -19,6 +20,7 @@ export const PreviewDetails = ({
   paymentDetails: PaymentDetails;
   invoiceTerms: InvoiceTerms;
   onClick?: (step: string) => void;
+  showPayableIn?: boolean;
 }) => (
   <div className="overflow-x-auto">
     <div className="w-[595px] h-[842px] bg-white rounded-2xl border border-dashed justify-center items-center">
@@ -58,7 +60,7 @@ export const PreviewDetails = ({
           <InvoiceDetailsPreview {...invoiceDetails} onClick={onClick} />
         </div>
         <div className="">
-          <PaymentDetailsPreview {...paymentDetails} onClick={onClick} />
+          <PaymentDetailsPreview {...paymentDetails} onClick={onClick} showPayableIn={showPayableIn} />
         </div>
       </div>
     </div>

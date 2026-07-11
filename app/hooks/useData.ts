@@ -38,6 +38,7 @@ export const useData = () => {
   const dueDate = useGetValue("dueDate");
 
   const currency = useGetValue("currency") || "USD";
+  const showPayableIn = useGetValue("showPayableIn") !== "false";
 
   const invoiceTerms = {
     invoiceNumber,
@@ -93,5 +94,6 @@ export const useData = () => {
     paymentDetails,
     invoiceTerms,
     invoiceDetails,
+    showPayableIn,
   };
 };

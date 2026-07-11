@@ -21,18 +21,22 @@ export const InvoiceTermsPdf: React.FC<InvoiceTerms> = ({
         flex: 1,
       }}
     >
-      <View>
-        <Text style={pdfTypography.title}>Issued</Text>
-        <Text style={pdfTypography.subTitle}>
-          {issueDate ? format(issueDate, "do MMM yyyy") : ""}
-        </Text>
-      </View>
-      <View>
-        <Text style={pdfTypography.title}>Due Date</Text>
-        <Text style={pdfTypography.subTitle}>
-          {dueDate ? format(dueDate, "do MMM yyyy") : ""}
-        </Text>
-      </View>
+      {issueDate && (
+        <View>
+          <Text style={pdfTypography.title}>Issued</Text>
+          <Text style={pdfTypography.subTitle}>
+            {format(issueDate, "do MMM yyyy")}
+          </Text>
+        </View>
+      )}
+      {dueDate && (
+        <View>
+          <Text style={pdfTypography.title}>Due Date</Text>
+          <Text style={pdfTypography.subTitle}>
+            {format(dueDate, "do MMM yyyy")}
+          </Text>
+        </View>
+      )}
     </View>
   </View>
 );

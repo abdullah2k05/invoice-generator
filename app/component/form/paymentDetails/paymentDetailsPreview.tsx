@@ -2,7 +2,7 @@ import { currencyList } from "@/lib/currency";
 import { ChevronDown } from "lucide-react";
 
 export const PaymentDetailsPreview: React.FC<
-  PaymentDetails & { onClick?: (step: string) => void }
+  PaymentDetails & { onClick?: (step: string) => void; showPayableIn?: boolean }
 > = ({
   bankName,
   accountNumber,
@@ -12,6 +12,7 @@ export const PaymentDetailsPreview: React.FC<
   ifscCode,
   currency = "USD",
   onClick,
+  showPayableIn = true,
 }) => {
   const currencyDetails = currencyList.find(
     (currencyDetails) =>
@@ -78,27 +79,29 @@ export const PaymentDetailsPreview: React.FC<
           </div>
         </div>
       )}
-      <div className="py-4 px-10">
-        <p className="text-[11px] text-neutral-400 font-medium uppercase mb-3">
-          Payable in
-        </p>
-        {currencyDetails && (
-          <div className="flex gap-2 justify-between items-center w-full">
-            <div className="flex gap-3 items-center">
-              <currencyDetails.icon className="w-8 h-8 rounded-full" />
-              <div>
-                <p className="font-medium text-sm">
-                  {currencyDetails.currencyName}
-                </p>
-                <p className="text-xxs text-neutral-400">
-                  {currencyDetails.currencySymbol}{" "}
-                  {currencyDetails.currencyShortForm}
-                </p>
+      {showPayableIn && (
+        <div className="py-4 px-10">
+          <p className="text-[11px] text-neutral-400 font-medium uppercase mb-3">
+            Payable in
+          </p>
+          {currencyDetails && (
+            <div className="flex gap-2 justify-between items-center w-full">
+              <div className="flex gap-3 items-center">
+                <currencyDetails.icon className="w-8 h-8 rounded-full" />
+                <div>
+                  <p className="font-medium text-sm">
+                    {currencyDetails.currencyName}
+                  </p>
+                  <p className="text-xxs text-neutral-400">
+                    {currencyDetails.currencySymbol}{" "}
+                    {currencyDetails.currencyShortForm}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

@@ -13,6 +13,7 @@ export const PdfDetails = ({
   paymentDetails,
   invoiceTerms,
   countryImageUrl,
+  showPayableIn = true,
 }: {
   yourDetails: YourDetails;
   companyDetails: CompanyDetails;
@@ -20,6 +21,7 @@ export const PdfDetails = ({
   paymentDetails: PaymentDetails;
   invoiceTerms: InvoiceTerms;
   countryImageUrl: string;
+  showPayableIn?: boolean;
 }) => (
   <View>
     <InvoiceTermsPdf {...invoiceTerms} />
@@ -42,6 +44,7 @@ export const PdfDetails = ({
         <PaymentDetailsPdf
           {...paymentDetails}
           countryImageUrl={countryImageUrl}
+          showPayableIn={showPayableIn}
         />
       </View>
     </View>

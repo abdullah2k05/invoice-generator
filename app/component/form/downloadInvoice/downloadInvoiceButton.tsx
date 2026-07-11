@@ -21,6 +21,7 @@ export const DownloadInvoiceButton = () => {
     invoiceTerms,
     paymentDetails,
     yourDetails,
+    showPayableIn,
   } = useData();
 
   useEffect(() => {
@@ -72,6 +73,7 @@ export const DownloadInvoiceButton = () => {
                         paymentDetails={paymentDetails}
                         yourDetails={yourDetails}
                         countryImageUrl={countryImageUrl}
+                        showPayableIn={showPayableIn}
                       />
                     </Page>
                   </Document>
