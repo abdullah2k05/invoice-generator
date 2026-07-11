@@ -40,6 +40,7 @@ export const metadata: Metadata = {
 };
 
 const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID || "ca-pub-0000000000000000";
+const gaId = process.env.NEXT_PUBLIC_GA_ID || "G-2KHJ1FLV47";
 
 const footerColumns = [
   {
@@ -158,6 +159,19 @@ export default function RootLayout({
           crossOrigin="anonymous"
           strategy="afterInteractive"
         />
+        <Script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${gaId}');
+          `}
+        </Script>
       </head>
       <body className={`${GeistSans.className} flex flex-col min-h-screen`}>
         {/* Navbar */}
