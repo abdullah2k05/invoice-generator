@@ -36,9 +36,9 @@ const Home = () => {
           </div>
           <div className="relative group">
             <h1 className="font-semibold text-3xl md:text-7xl text-center w-full border-t border-b py-6 border-dashed text-balance px-4 text-black border-gray-300">
-              <span className="">Get Paid Faster with Free </span>
+              <span className="">Free Invoice Generator – </span>
               <span className="text-transparent bg-clip-text bg-gradient-to-br from-orange-500 to-pink-400">
-                Invoice Generator
+                No Signup Required
               </span>
             </h1>
           </div>
@@ -120,9 +120,9 @@ const Home = () => {
             <p className="border flex justify-center items-center w-11 h-11 border-dashed rounded-lg text-2xl mb-5 border-gray-300 bg-gradient-to-br from-orange-100 to-pink-100">
               <Infinity />
             </p>
-            <p className="font-bold text-xl">Free & Unlimited</p>
+            <p className="font-bold text-xl">Free for Lifetime</p>
             <p className="text-neutral-500 mt-1 text-center">
-              Create as many invoices as you need, forever, at no cost.
+              No credit card required, no signup needed. Create unlimited invoices free for lifetime.
             </p>
           </div>
           <div className="border-r border-b border-dashed flex justify-center flex-col items-center p-7 border-gray-300">
@@ -158,18 +158,17 @@ const Home = () => {
             <p className="border flex justify-center items-center w-11 h-11 border-dashed rounded-lg text-2xl mb-5 border-gray-300 bg-gradient-to-br from-orange-100 to-pink-100">
               <CodeXml />
             </p>
-            <p className="font-bold text-xl">Free & Open Source</p>
+            <p className="font-bold text-xl">Free for Lifetime</p>
             <p className="text-neutral-500 mt-1 text-center">
-              Absolutely no cost, with the freedom to customize and adapt to
-              your needs.
+              Free for lifetime, open source, and no hidden charges. Use it forever at zero cost.
             </p>
           </div>
         </div>
         <div className="px-5 py-11 flex justify-center items-center border-b border-dashed border-gray-300">
           <div className="flex justify-center rounded-2xl max-w-3xl border-dashed items-center px-4 py-10 w-full flex-col gap-4  bg-gradient-to-br from-orange-100 to-pink-100">
             <p className="md:max-w-2xl text-center font-semibold text-xl text-black p-4 md:text-3xl text-balance">
-              Stop wasting time and start getting paid what you deserve. Try our
-              Free Invoice
+              Free invoice generator – no signup required, no credit card needed.
+              Start creating invoices now.
             </p>
             <Link
               href="/new"

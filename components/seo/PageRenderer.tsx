@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import type { PageData } from "@/lib/seo-pages";
+import { getRelatedPages } from "@/lib/seo-pages";
 
 function ListSection({ items }: { items: string[] }) {
   return (
@@ -45,7 +47,51 @@ function TableSection({ headers, rows }: { headers: string[]; rows: string[][] }
   );
 }
 
-export default function PageRenderer({ pageData }: { pageData: PageData }) {
+function injectJsonLd(page: PageData, siteUrl: string) {
+  const url = `${siteUrl}${page.path}`;
+  const isBlog = page.path.startsWith("/blog");
+  const isFAQ = page.path === "/faq";
+  const breadcrumb = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+      { "@type": "ListItem", position: 2, name: page.title.split(" |")[0].replace(/ – .*$/, ""), item: url },
+    ],
+  };
+
+  const webPage: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": isBlog ? "Article" : isFAQ ? "FAQPage" : "WebPage",
+    name: page.title,
+    description: page.description,
+    url,
+    breadcrumb,
+  };
+
+  if (isBlog) {
+    webPage.headline = page.title;
+    webPage.author = { "@type": "Person", name: "Muhammad Abdullah" };
+  }
+
+  let script = document.getElementById("ld-json");
+  if (!script) {
+    const s = document.createElement("script");
+    s.id = "ld-json";
+    s.type = "application/ld+json";
+    document.head.appendChild(s);
+    script = s;
+  }
+  script.textContent = JSON.stringify(webPage);
+}
+
+export default function PageRenderer({ pageData, siteUrl }: { pageData: PageData; siteUrl: string }) {
+  const relatedPages = getRelatedPages(pageData.category, pageData.path);
+
+  useEffect(() => {
+    injectJsonLd(pageData, siteUrl);
+  }, [pageData, siteUrl]);
+
   return (
     <div className="bg-[#f7f7f7] min-h-screen">
       <div className="max-w-3xl mx-auto px-4 py-12 border-l border-r border-dashed border-gray-300 min-h-screen">
@@ -53,15 +99,9 @@ export default function PageRenderer({ pageData }: { pageData: PageData }) {
           <Link href="/" className="hover:text-orange-500 transition-colors underline underline-offset-2">
             Home
           </Link>
-          {pageData.path !== "/faq" && (
-            <span className="text-neutral-300">/</span>
-          )}
-          <span className={pageData.path !== "/faq" ? "text-neutral-800 font-medium" : ""}>
-            {pageData.path === "/faq" ? (
-              <span className="text-neutral-800 font-medium">FAQ</span>
-            ) : (
-              pageData.title.split(" –")[0].split(" |")[0]
-            )}
+          <span className="text-neutral-300">/</span>
+          <span className="text-neutral-800 font-medium">
+            {pageData.title.split(" |")[0].replace(/ – .*$/, "")}
           </span>
         </nav>
 
@@ -138,12 +178,32 @@ export default function PageRenderer({ pageData }: { pageData: PageData }) {
           }
         })}
 
-        <div className="mt-12 pt-8 border-t border-dashed border-gray-300">
+        {relatedPages.length > 0 && (
+          <div className="mt-12 pt-8 border-t border-dashed border-gray-300">
+            <h2 className="text-xl font-semibold text-neutral-800 mb-4">
+              Related Pages
+            </h2>
+            <div className="grid sm:grid-cols-2 gap-3">
+              {relatedPages.map((link) => (
+                <Link
+                  key={link.path}
+                  href={link.path}
+                  className="p-4 rounded-lg border border-dashed border-gray-300 hover:border-orange-300 hover:bg-orange-50 transition-colors text-neutral-700 hover:text-orange-600"
+                >
+                  <span className="font-medium text-sm">{link.label}</span>
+                  <span className="block text-xs text-neutral-400 mt-1">Learn more →</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        )}
+
+        <div className="mt-8 pt-8 border-t border-dashed border-gray-300">
           <Link
             href="/new"
             className="inline-flex items-center justify-center rounded-lg font-medium transition-colors bg-gradient-to-br from-orange-500 to-pink-400 text-white hover:opacity-90 px-6 py-3 text-lg"
           >
-            Create Your Invoice Now
+            Create Your Free Invoice Now →
           </Link>
         </div>
       </div>

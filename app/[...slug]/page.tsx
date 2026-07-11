@@ -7,6 +7,8 @@ interface Props {
   params: { slug: string[] };
 }
 
+const siteUrl = "https://invoice-generator.mabdullah.top";
+
 export function generateStaticParams() {
   return seoPages.map((page) => ({
     slug: page.path.split("/").filter(Boolean),
@@ -20,11 +22,20 @@ export function generateMetadata({ params }: Props): Metadata {
   return {
     title: page.title,
     description: page.description,
-    alternates: { canonical: `https://invoice-generator.mabdullah.top${page.path}` },
+    alternates: { canonical: `${siteUrl}${page.path}` },
     openGraph: {
       title: page.title,
       description: page.description,
-      url: `https://invoice-generator.mabdullah.top${page.path}`,
+      url: `${siteUrl}${page.path}`,
+      siteName: "Free Invoice Generator",
+      type: page.path.startsWith("/blog") ? "article" : "website",
+      images: [{ url: `${siteUrl}/og-image.jpeg`, width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: page.title,
+      description: page.description,
+      images: `${siteUrl}/og-image.jpeg`,
     },
   };
 }
@@ -33,5 +44,5 @@ export default function SEOPage({ params }: Props) {
   const page = getPageBySlug(params.slug);
   if (!page) notFound();
 
-  return <PageRenderer pageData={page} />;
+  return <PageRenderer pageData={page} siteUrl={siteUrl} />;
 }
