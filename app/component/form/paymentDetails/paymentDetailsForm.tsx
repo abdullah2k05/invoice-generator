@@ -47,11 +47,11 @@ export const PaymentDetailsForm = () => {
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
-                checked={value !== false}
+                checked={value === "true"}
                 onChange={(e) => {
-                  const checked = e.target.checked;
-                  localStorage.setItem("showPayableIn", JSON.stringify(checked));
-                  onChange(checked);
+                  const val = e.target.checked ? "true" : "false";
+                  localStorage.setItem("showPayableIn", val);
+                  onChange(val);
                 }}
                 className="w-4 h-4 rounded border-gray-300 text-orange-500 focus:ring-orange-500"
               />
@@ -59,7 +59,7 @@ export const PaymentDetailsForm = () => {
             </label>
           )}
           name="showPayableIn"
-          defaultValue={getInitialValue("showPayableIn") !== "false"}
+          defaultValue={getInitialValue("showPayableIn", "true")}
         />
       </div>
     </div>
