@@ -38,8 +38,8 @@ export const NewInvoiceForm = () => {
   const handleReset = useCallback(() => {
     STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
     localStorage.setItem("step", "1");
-    methods.reset({});
-  }, [methods]);
+    window.location.reload();
+  }, []);
 
   return (
     <>
