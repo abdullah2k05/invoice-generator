@@ -79,7 +79,19 @@ export default function RootLayout({
           strategy="afterInteractive"
         />
       </head>
-      <body className={`${GeistSans.className}`}>{children}</body>
+      <body className={`${GeistSans.className}`}>
+        {children}
+        <footer className="w-full border-t border-dashed border-gray-300 py-4 text-center text-sm text-neutral-500">
+          Developed by{" "}
+          <a
+            href="https://mabdullah.top"
+            target="_blank"
+            className="font-medium text-orange-500 hover:text-orange-600 underline underline-offset-2"
+          >
+            Muhammad Abdullah
+          </a>
+        </footer>
+      </body>
     </html>
   );
 }

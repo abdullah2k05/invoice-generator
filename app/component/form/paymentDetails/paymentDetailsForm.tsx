@@ -3,7 +3,8 @@ import CustomNumberInput from "@/app/component/ui/customNumberInput";
 
 export const PaymentDetailsForm = () => (
   <div className="pt-24">
-    <p className="text-2xl font-semibold pb-3">Payment Details</p>
+    <p className="text-2xl font-semibold pb-1">Payment Details</p>
+    <p className="text-sm text-neutral-400 pb-5">Optional — skip if not needed</p>
     <CustomTextInput
       label="Bank name"
       placeholder="HSBC"
@@ -16,7 +17,7 @@ export const PaymentDetailsForm = () => (
     />
     <CustomTextInput
       label="Account Name"
-      placeholder="Pranav"
+      placeholder="John Doe"
       variableName="accountName"
     />
     <CustomTextInput

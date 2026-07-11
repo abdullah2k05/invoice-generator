@@ -10,7 +10,7 @@ import { Controller } from "react-hook-form";
 import { getItemValue } from "@/lib/getInitialValue";
 
 export const InvoiceDetailsForm = () => {
-  const value = useGetValue("currency", "INR");
+  const value = useGetValue("currency", "USD");
   const currencyDetails = currencyList.find(
     (currency) => currency.value.toLowerCase() === value.toLowerCase()
   )?.details;
