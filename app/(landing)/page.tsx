@@ -68,7 +68,7 @@ const Home = () => {
             </Link>
             <a
               target="_blank"
-              href="https://github.com/InvoiceShelf/InvoiceShelf"
+              href="https://github.com/abdullah2k05/invoice-generator"
               className="inline-flex items-center justify-center whitespace-nowrap rounded-lg font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border bg-transparent hover:bg-neutral-100 hover:text-accent-foreground px-6 py-1.5 text-lg gap-2 border-dashed border-gray-400"
             >
               <svg
