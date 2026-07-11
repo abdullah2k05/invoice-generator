@@ -2,7 +2,7 @@
 "use client";
 
 import { getInitialValue } from "@/lib/getInitialValue";
-import { Plus } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { useRef } from "react";
 import { Controller } from "react-hook-form";
 
@@ -40,11 +40,25 @@ export const ImageInput = ({ label, variableName }: CustomNumberProps) => {
             </label>
           )}
           {value ? (
-            <img
-              src={value}
-              className="h-8 mr-3 rounded-md p-1 hover:bg-neutral-200"
-              alt="company logo"
-            />
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onChange("");
+                  localStorage.setItem(variableName, "");
+                }}
+                className="text-red-400 hover:text-red-600 p-0.5 rounded-full hover:bg-red-50"
+                title="Remove logo"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+              <img
+                src={value}
+                className="h-8 mr-3 rounded-md p-1 hover:bg-neutral-200"
+                alt="company logo"
+              />
+            </div>
           ) : (
             <button className="text-neutral-500/70 border rounded-full p-1.5 border-dashed">
               <Plus className="w-4 h-4" />
