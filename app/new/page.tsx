@@ -6,7 +6,7 @@ const NewInvoiceForm = dynamic(
 );
 
 const Page = () => (
-  <div className="min-h-screen overflow-y-auto h-full flex items-center md:flex-row flex-col-reverse">
+  <div className="min-h-dvh flex flex-col md:flex-row md:items-center">
     <NewInvoiceForm />
   </div>
 );

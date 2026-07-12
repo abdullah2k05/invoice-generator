@@ -45,7 +45,7 @@ export const NewInvoiceForm = () => {
     <>
       {isClient ? (
         <FormProvider {...methods}>
-          <div className="max-w-lg min-h-screen w-full h-full p-4 md:p-12 border-r border-dashed flex flex-col justify-between">
+          <div className="md:max-w-lg w-full md:min-h-dvh p-4 md:p-12 md:border-r border-dashed flex flex-col md:justify-between order-2 md:order-none">
             <div>
               <div className="flex gap-2 items-center justify-between">
                 <div className="flex gap-2 items-center">
@@ -57,7 +57,7 @@ export const NewInvoiceForm = () => {
                     alt="logo"
                   />
                   <div>
-                    <p className="font-semibold">Invoice Generator</p>
+                    <p className="font-semibold text-sm md:text-base">Invoice Generator</p>
                   </div>
                 </div>
                 <button
@@ -74,7 +74,7 @@ export const NewInvoiceForm = () => {
             </div>
             <FormSteps />
           </div>
-          <div className="relative min-h-screen h-full w-full flex justify-center items-center p-4 md:p-0">
+          <div className="relative md:min-h-dvh w-full flex justify-center items-start md:items-center p-2 md:p-0 order-1 md:order-none">
             <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]"></div>
             <UserDataPreview />
           </div>
