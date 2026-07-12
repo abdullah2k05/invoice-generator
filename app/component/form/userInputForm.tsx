@@ -1,6 +1,6 @@
 "use client";
 
-import { DownloadInvoiceButton } from "@/app/component/form/downloadInvoice/downloadInvoiceButton";
+import dynamic from "next/dynamic";
 import { InvoiceDetailsForm } from "@/app/component/form/invoiceDetails/invoiceDetailsForm";
 import { InvoiceTermsForm } from "@/app/component/form/invoiceTerms/invoiceTermsForm";
 import { PaymentDetailsForm } from "@/app/component/form/paymentDetails/paymentDetailsForm";
@@ -8,6 +8,11 @@ import { CompanyDetailsForm } from "@/app/component/form/companyDetails/companyD
 import { YourDetailsForm } from "@/app/component/form/yourDetails/yourDetailsForm";
 import { useGetValue } from "@/app/hooks/useGetValue";
 import { getInitialValue } from "@/lib/getInitialValue";
+
+const DownloadInvoiceButton = dynamic(
+  () => import("@/app/component/form/downloadInvoice/downloadInvoiceButton").then((mod) => mod.DownloadInvoiceButton),
+  { ssr: false }
+);
 
 export const UserInputForm = () => {
   const step = useGetValue("step", getInitialValue("step", "1"));

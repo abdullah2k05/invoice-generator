@@ -14,6 +14,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { currencyList } from "@/lib/currency";
+import { CurrencyFlag } from "@/app/component/ui/currencyFlag";
 import { CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
@@ -39,7 +40,7 @@ const CurrencyInput = () => {
                   </label>
                   <div className="flex gap-1.5 bg-gray-100 text-sm pl-2 pr-2.5 rounded-full py-0.5 items-center">
                     {currencyDetails && (
-                      <currencyDetails.icon className="w-4 h-4 rounded-full" />
+                      <CurrencyFlag iconName={currencyDetails.iconName} className="w-4 h-4 rounded-full" />
                     )}
                     <p className="font-medium text-sm text-gray-800">
                       {currencyDetails?.currencyShortForm}

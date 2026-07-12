@@ -20,7 +20,7 @@ export const CompanyDetailsPreview: React.FC<CompanyDetails> = ({
     </p>
     <div className="h-8 md:h-10 mb-2 md:mb-3">
       {companyLogo ? (
-        <img src={companyLogo} alt="Company Logo" className="h-8 md:h-10 rounded-md" />
+        <img src={companyLogo} alt="Company Logo" width={40} height={40} className="h-8 md:h-10 w-auto rounded-md" loading="lazy" />
       ) : (
         <div className="rounded-full bg-neutral-100 h-8 md:h-10 w-8 md:w-10" />
       )}

@@ -28,13 +28,13 @@ export const ImageInput = ({ label, variableName }: CustomNumberProps) => {
     <Controller
       render={({ field: { onChange, value } }) => (
         <div
-          className="flex items-center relative justify-between h-[52px] cursor-pointer"
+          className="flex items-center relative justify-between h-[52px] cursor-pointer border border-gray-200 rounded-lg px-3 hover:border-gray-400 transition-all"
           onClick={handleButtonClick}
         >
           {label && (
             <label
               htmlFor={label}
-              className="block text-sm font-medium leading-6 text-gray-900 whitespace-nowrap"
+              className="block text-sm font-medium leading-6 text-gray-700 whitespace-nowrap"
             >
               {label}
             </label>
@@ -55,12 +55,14 @@ export const ImageInput = ({ label, variableName }: CustomNumberProps) => {
               </button>
               <img
                 src={value}
-                className="h-8 mr-3 rounded-md p-1 hover:bg-neutral-200"
+                width={32}
+                height={32}
+                className="h-8 w-auto mr-3 rounded-md p-1 hover:bg-neutral-200"
                 alt="company logo"
               />
             </div>
           ) : (
-            <button className="text-neutral-500/70 border rounded-full p-1.5 border-dashed">
+            <button className="text-neutral-400 border border-gray-300 rounded-full p-1.5">
               <Plus className="w-4 h-4" />
             </button>
           )}
@@ -80,13 +82,7 @@ export const ImageInput = ({ label, variableName }: CustomNumberProps) => {
                 reader.readAsDataURL(file);
               }
             }}
-            className={`peer w-full border-0 py-1.5 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6 hidden ${
-              label ? "text-right" : "p-0"
-            }  placeholder:text-neutral-700/40 placeholder:font-medium caret-orange-500`}
-          />
-          <div
-            className="absolute inset-x-0 bottom-0 border-t border-gray-300 peer-hover:border-neutral-400 peer-focus:border-t peer-focus:border-orange-500 border-dashed"
-            aria-hidden="true"
+            className="hidden"
           />
         </div>
       )}

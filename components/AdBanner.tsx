@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 declare global {
   interface Window {
@@ -14,23 +14,45 @@ interface AdBannerProps {
 }
 
 export const AdBanner = ({ adSlot, format = "auto", className = "" }: AdBannerProps) => {
-  const adRef = useRef<HTMLDivElement>(null);
-  const isAdReady = useRef(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const adPushed = useRef(false);
 
   useEffect(() => {
-    if (adRef.current && !isAdReady.current) {
-      try {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-        isAdReady.current = true;
-      } catch (e) {
-        console.error("AdSense error:", e);
-      }
-    }
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (isVisible && !adPushed.current) {
+      const timer = setTimeout(() => {
+        try {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+          adPushed.current = true;
+        } catch (e) {
+          console.error("AdSense error:", e);
+        }
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible]);
+
   return (
-    <div className={`flex justify-center items-center ${className}`}>
-      <div ref={adRef}>
+    <div ref={containerRef} className={`flex justify-center items-center min-h-[90px] ${className}`}>
+      {isVisible ? (
         <ins
           className="adsbygoogle"
           style={{ display: "block" }}
@@ -39,7 +61,9 @@ export const AdBanner = ({ adSlot, format = "auto", className = "" }: AdBannerPr
           data-ad-format={format}
           data-full-width-responsive="true"
         />
-      </div>
+      ) : (
+        <div className="w-full h-[90px] bg-gray-50 rounded-lg animate-pulse" />
+      )}
     </div>
   );
 };

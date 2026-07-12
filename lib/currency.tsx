@@ -1,35 +1,26 @@
-import {
-  US,
-  IN,
-  EU,
-  JP,
-  KR,
-  IL,
-  VN,
-  BD,
-  RU,
-  BR,
-  UA,
-  KZ,
-  TW,
-  GB,
-  PK,
-  FlagComponent,
-  ID,
-} from "country-flag-icons/react/1x1";
+import type { FC } from "react";
+import { CurrencyFlag } from "@/app/component/ui/currencyFlag";
 
-export const currencyList: {
+type CurrencyDetails = {
+  country: string;
+  currencySymbol: string;
+  currencyName: string;
+  currencyShortForm: string;
+  icon: FC<{ className?: string }>;
+  iconName: string;
+};
+
+type CurrencyItem = {
   value: string;
   label: string;
-  details: {
-    country: string;
-    currencySymbol: string;
-    currencyName: string;
-    currencyShortForm: string;
-    icon: FlagComponent;
-    iconName: string;
-  };
-}[] = [
+  details: CurrencyDetails;
+};
+
+type RawItem = Omit<CurrencyItem, "details"> & {
+  details: Omit<CurrencyDetails, "icon">;
+};
+
+const rawList: RawItem[] = [
   {
     value: "INR",
     label: "INR",
@@ -38,7 +29,6 @@ export const currencyList: {
       currencySymbol: "₹",
       currencyName: "Indian Rupee",
       currencyShortForm: "INR",
-      icon: IN,
       iconName: "IN",
     },
   },
@@ -50,7 +40,6 @@ export const currencyList: {
       currencySymbol: "$",
       currencyName: "United States Dollar",
       currencyShortForm: "USD",
-      icon: US,
       iconName: "US",
     },
   },
@@ -62,7 +51,6 @@ export const currencyList: {
       currencySymbol: "€",
       currencyName: "Euro",
       currencyShortForm: "EUR",
-      icon: EU,
       iconName: "EU",
     },
   },
@@ -74,7 +62,6 @@ export const currencyList: {
       currencySymbol: "£",
       currencyName: "British Pound Sterling",
       currencyShortForm: "GBP",
-      icon: GB,
       iconName: "GB",
     },
   },
@@ -86,7 +73,6 @@ export const currencyList: {
       currencySymbol: "¥",
       currencyName: "Japanese Yen",
       currencyShortForm: "JPY",
-      icon: JP,
       iconName: "JP",
     },
   },
@@ -98,7 +84,6 @@ export const currencyList: {
       currencySymbol: "₩",
       currencyName: "South Korean Won",
       currencyShortForm: "KRW",
-      icon: KR,
       iconName: "KR",
     },
   },
@@ -110,7 +95,6 @@ export const currencyList: {
       currencySymbol: "₪",
       currencyName: "Israeli Shekel",
       currencyShortForm: "ILS",
-      icon: IL,
       iconName: "IL",
     },
   },
@@ -122,7 +106,6 @@ export const currencyList: {
       currencySymbol: "₫",
       currencyName: "Vietnamese Dong",
       currencyShortForm: "VND",
-      icon: VN,
       iconName: "VN",
     },
   },
@@ -134,7 +117,6 @@ export const currencyList: {
       currencySymbol: "৳",
       currencyName: "Bangladeshi Taka",
       currencyShortForm: "BDT",
-      icon: BD,
       iconName: "BD",
     },
   },
@@ -146,7 +128,6 @@ export const currencyList: {
       currencySymbol: "₽",
       currencyName: "Russian Ruble",
       currencyShortForm: "RUB",
-      icon: RU,
       iconName: "RU",
     },
   },
@@ -158,7 +139,6 @@ export const currencyList: {
       currencySymbol: "R$",
       currencyName: "Brazilian Real",
       currencyShortForm: "BRL",
-      icon: BR,
       iconName: "BR",
     },
   },
@@ -170,7 +150,6 @@ export const currencyList: {
       currencySymbol: "₴",
       currencyName: "Ukrainian Hryvnia",
       currencyShortForm: "UAH",
-      icon: UA,
       iconName: "UA",
     },
   },
@@ -182,7 +161,6 @@ export const currencyList: {
       currencySymbol: "₸",
       currencyName: "Kazakhstani Tenge",
       currencyShortForm: "KZT",
-      icon: KZ,
       iconName: "KZ",
     },
   },
@@ -194,7 +172,6 @@ export const currencyList: {
       currencySymbol: "NT$",
       currencyName: "New Taiwan Dollar",
       currencyShortForm: "TWD",
-      icon: TW,
       iconName: "TW",
     },
   },
@@ -206,7 +183,6 @@ export const currencyList: {
       currencySymbol: "Rp",
       currencyName: "Indonesian Rupiah",
       currencyShortForm: "IDR",
-      icon: ID,
       iconName: "ID",
     },
   },
@@ -218,8 +194,21 @@ export const currencyList: {
       currencySymbol: "₨",
       currencyName: "Pakistani Rupee",
       currencyShortForm: "PKR",
-      icon: PK,
       iconName: "PK",
     },
   },
 ];
+
+const attachIcon = (
+  item: (typeof rawList)[number]
+): CurrencyItem => ({
+  ...item,
+  details: {
+    ...item.details,
+    icon: ({ className }: { className?: string }) => (
+      <CurrencyFlag iconName={item.details.iconName} className={className} />
+    ),
+  },
+});
+
+export const currencyList: CurrencyItem[] = rawList.map(attachIcon);
