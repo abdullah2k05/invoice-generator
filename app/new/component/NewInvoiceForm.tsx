@@ -41,6 +41,49 @@ const stepNav: Record<string, { prev: string | null; next: string | null }> = {
   "6": { prev: "5", next: null },
 };
 
+const clearAllData = () => {
+  STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
+  localStorage.setItem("step", "1");
+  window.location.reload();
+};
+
+const STORAGE_ACTIVITY_KEY = "_lastActive";
+const AUTO_CLEAR_MS = 5 * 60 * 1000;
+
+const useAutoClear = () => {
+  useEffect(() => {
+    const now = Date.now();
+    const lastActive = localStorage.getItem(STORAGE_ACTIVITY_KEY);
+    if (lastActive && now - Number(lastActive) > AUTO_CLEAR_MS) {
+      clearAllData();
+      return;
+    }
+
+    const onActivity = () => {
+      localStorage.setItem(STORAGE_ACTIVITY_KEY, String(Date.now()));
+    };
+    window.addEventListener("keydown", onActivity, { passive: true });
+    window.addEventListener("touchstart", onActivity, { passive: true });
+    window.addEventListener("click", onActivity, { passive: true });
+
+    onActivity();
+
+    const interval = setInterval(() => {
+      const active = localStorage.getItem(STORAGE_ACTIVITY_KEY);
+      if (active && Date.now() - Number(active) > AUTO_CLEAR_MS) {
+        clearAllData();
+      }
+    }, 30_000);
+
+    return () => {
+      window.removeEventListener("keydown", onActivity);
+      window.removeEventListener("touchstart", onActivity);
+      window.removeEventListener("click", onActivity);
+      clearInterval(interval);
+    };
+  }, []);
+};
+
 const MobileLayout = ({ onPreviewOpen }: { onPreviewOpen: () => void }) => {
   const { setValue } = useFormContext();
   const step = useGetValue("step", getInitialValue("step", "1")) || "1";
@@ -75,13 +118,13 @@ const MobileLayout = ({ onPreviewOpen }: { onPreviewOpen: () => void }) => {
           <span className="text-[11px] font-medium text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full whitespace-nowrap">
             Step {step} of 6
           </span>
-            <button
-              onClick={clearAllData}
-              className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-orange-500 transition-colors bg-gray-100 hover:bg-gray-200 px-2.5 py-1.5 rounded-lg"
-            >
-              <RotateCcw className="w-3 h-3" />
-              <span>Reset</span>
-            </button>
+          <button
+            onClick={clearAllData}
+            className="flex items-center gap-1.5 text-xs font-medium text-gray-600 hover:text-orange-500 transition-colors bg-gray-100 hover:bg-orange-50 px-3 py-1.5 rounded-lg border border-gray-200"
+          >
+            <RotateCcw className="w-3 h-3" />
+            <span>Reset</span>
+          </button>
         </div>
       </header>
 
@@ -138,49 +181,6 @@ const MobileLayout = ({ onPreviewOpen }: { onPreviewOpen: () => void }) => {
   );
 };
 
-const clearAllData = () => {
-  STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
-  localStorage.setItem("step", "1");
-  window.location.reload();
-};
-
-const STORAGE_ACTIVITY_KEY = "_lastActive";
-const AUTO_CLEAR_MS = 5 * 60 * 1000;
-
-const useAutoClear = () => {
-  useEffect(() => {
-    const now = Date.now();
-    const lastActive = localStorage.getItem(STORAGE_ACTIVITY_KEY);
-    if (lastActive && now - Number(lastActive) > AUTO_CLEAR_MS) {
-      clearAllData();
-      return;
-    }
-
-    const onActivity = () => {
-      localStorage.setItem(STORAGE_ACTIVITY_KEY, String(Date.now()));
-    };
-    window.addEventListener("keydown", onActivity, { passive: true });
-    window.addEventListener("touchstart", onActivity, { passive: true });
-    window.addEventListener("click", onActivity, { passive: true });
-
-    onActivity();
-
-    const interval = setInterval(() => {
-      const active = localStorage.getItem(STORAGE_ACTIVITY_KEY);
-      if (active && Date.now() - Number(active) > AUTO_CLEAR_MS) {
-        clearAllData();
-      }
-    }, 30_000);
-
-    return () => {
-      window.removeEventListener("keydown", onActivity);
-      window.removeEventListener("touchstart", onActivity);
-      window.removeEventListener("click", onActivity);
-      clearInterval(interval);
-    };
-  }, []);
-};
-
 export const NewInvoiceForm = () => {
   const methods = useForm();
   const [isClient, setIsClient] = useState(false);
@@ -214,41 +214,40 @@ export const NewInvoiceForm = () => {
         <UserDataPreview />
       </MobilePreviewSheet>
 
-      {/* Desktop */}
-      <div className="max-md:hidden w-full">
-        <div className="md:max-w-lg w-full md:min-h-dvh p-4 md:p-12 md:border-r border-gray-200 flex flex-col md:justify-between order-2 md:order-none mx-auto">
-          <div>
-            <div className="flex gap-2 items-center justify-between">
-              <div className="flex gap-2 items-center">
-                <Image
-                  src="/android-chrome-512x512.png"
-                  width={40}
-                  height={40}
-                  className="rounded-lg"
-                  alt="logo"
-                />
-                <div>
-                  <p className="font-semibold text-sm md:text-base">Invoice Generator</p>
-                </div>
+      {/* Desktop — siblings so page.tsx flex-row lays them side by side */}
+      <div className="max-md:hidden md:max-w-lg w-full md:min-h-dvh p-4 md:p-12 md:border-r border-gray-200 flex flex-col md:justify-between">
+        <div>
+          <div className="flex gap-2 items-center justify-between">
+            <div className="flex gap-2 items-center">
+              <Image
+                src="/android-chrome-512x512.png"
+                width={40}
+                height={40}
+                className="rounded-lg"
+                alt="logo"
+              />
+              <div>
+                <p className="font-semibold text-sm md:text-base">Invoice Generator</p>
               </div>
-              <button
-                onClick={handleReset}
-                title="Reset all fields"
-                className="flex items-center gap-1.5 text-xs text-neutral-400 hover:text-orange-500 transition-colors"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                Reset
-              </button>
             </div>
-            <UserInputForm />
-            <AdBanner adSlot="0000000000" format="horizontal" className="mt-6" />
+            <button
+              onClick={handleReset}
+              title="Reset all fields"
+              className="flex items-center gap-1.5 text-xs text-neutral-400 hover:text-orange-500 transition-colors"
+            >
+              <RotateCcw className="w-3.5 h-3.5" />
+              Reset
+            </button>
           </div>
-          <FormSteps />
+          <UserInputForm />
+          <AdBanner adSlot="0000000000" format="horizontal" className="mt-6" />
         </div>
-        <div className="relative md:min-h-dvh w-full flex justify-center items-start md:items-center p-2 md:p-0 order-1 md:order-none">
-          <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]" />
-          <UserDataPreview />
-        </div>
+        <FormSteps />
+      </div>
+
+      <div className="max-md:hidden relative md:min-h-dvh w-full flex justify-center items-start md:items-center p-2 md:p-0">
+        <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]" />
+        <UserDataPreview />
       </div>
     </FormProvider>
   );
