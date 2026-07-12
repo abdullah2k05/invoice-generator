@@ -43,6 +43,7 @@ const stepNav: Record<string, { prev: string | null; next: string | null }> = {
 
 const clearAllData = () => {
   STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
+  localStorage.removeItem(STORAGE_ACTIVITY_KEY);
   localStorage.setItem("step", "1");
   window.location.reload();
 };
