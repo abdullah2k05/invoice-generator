@@ -131,7 +131,7 @@ export const InvoiceDetailsForm = () => {
                   </div>
                 )
               )}
-              <div className="py-3 border-dashed border-b border-gray-300">
+              <div className="py-3 border-b border-gray-200">
                 <button
                   onClick={() => {
                     localStorage.setItem(

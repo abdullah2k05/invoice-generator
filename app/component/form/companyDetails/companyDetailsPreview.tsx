@@ -15,45 +15,41 @@ export const CompanyDetailsPreview: React.FC<CompanyDetails> = ({
   companyZip,
 }) => (
   <div>
-    <p className="text-[11px] text-neutral-400 font-semibold uppercase pb-3.5">
+    <p className="text-xs md:text-[11px] text-neutral-400 font-semibold uppercase pb-2 md:pb-3.5">
       To
     </p>
-    <div className="h-10 mb-3">
+    <div className="h-8 md:h-10 mb-2 md:mb-3">
       {companyLogo ? (
-        <img src={companyLogo} alt="Company Logo" className="h-10 rounded-md" />
+        <img src={companyLogo} alt="Company Logo" className="h-8 md:h-10 rounded-md" />
       ) : (
-        <div className="rounded-full bg-neutral-100 h-10 w-10 animate-pulse" />
+        <div className="rounded-full bg-neutral-100 h-8 md:h-10 w-8 md:w-10" />
       )}
     </div>
     {companyName ? (
-      <p className="text-2xl font-medium">{companyName}</p>
+      <p className="text-xl md:text-2xl font-medium truncate">{companyName}</p>
     ) : (
-      <div className="rounded-md bg-neutral-100 h-5 w-5/6  animate-pulse mb-4" />
+      <p className="text-neutral-300 text-sm italic mb-4">&mdash;</p>
     )}
     {email ? (
-      <p className="text-neutral-500/90 text-sm mb-3">{email}</p>
+      <p className="text-neutral-500/90 text-sm mb-2 md:mb-3 break-all">{email}</p>
     ) : (
-      <div className="rounded-md bg-neutral-100 h-4 w-4/6 animate-pulse my-2" />
+      <p className="text-neutral-300 text-xs italic mb-2">&mdash;</p>
     )}
-    <div className="text-xs text-neutral-500/80">
+    <div className="text-xs md:text-xs text-neutral-500/80 leading-relaxed">
       {companyAddress ? (
         <p>{companyAddress}</p>
       ) : (
-        <div className="rounded-md bg-neutral-100 h-4 w-3/6 animate-pulse my-2" />
+        <p className="text-neutral-300 text-xs italic">&mdash;</p>
       )}
       {companyAddress || companyState || companyZip ? (
         <p className="mb-0.5">
           {companyCity}, {companyState} {companyZip}
         </p>
-      ) : (
-        <div className="rounded-md bg-neutral-100 h-4 w-4/6 animate-pulse my-3" />
-      )}
+      ) : null}
       {companyCountry ? (
         <p className="mb-1">{companyCountry}</p>
-      ) : (
-        <div className="rounded-md bg-neutral-100 h-4 w-3/6 animate-pulse my-2" />
-      )}
-      {companyTaxId && <p>Tax ID:{companyTaxId}</p>}
+      ) : null}
+      {companyTaxId && <p>Tax ID: {companyTaxId}</p>}
     </div>
   </div>
 );

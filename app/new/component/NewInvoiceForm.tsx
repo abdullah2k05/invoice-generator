@@ -45,7 +45,7 @@ export const NewInvoiceForm = () => {
     <>
       {isClient ? (
         <FormProvider {...methods}>
-          <div className="md:max-w-lg w-full md:min-h-dvh p-4 md:p-12 md:border-r border-dashed flex flex-col md:justify-between order-2 md:order-none">
+          <div className="md:max-w-lg w-full md:min-h-dvh p-4 md:p-12 md:border-r border-gray-200 flex flex-col md:justify-between order-2 md:order-none">
             <div>
               <div className="flex gap-2 items-center justify-between">
                 <div className="flex gap-2 items-center">

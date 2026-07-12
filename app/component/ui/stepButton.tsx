@@ -14,17 +14,17 @@ const StepButton = ({ isPrevious, title, step }: StepButtonProps) => (
       <div className="mt-3 w-full flex">
         {isPrevious ? (
           <button
-            className="flex-1  hover:bg-neutral-100 rounded-md p-3"
+            className="flex-1 border border-gray-200 hover:border-gray-300 hover:bg-gray-50 rounded-lg p-3 transition-all"
             onClick={() => {
               localStorage.setItem("step", step);
               onChange(step);
             }}
           >
-            <div className="flex gap-2  items-center">
+            <div className="flex gap-2 items-center">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
-                className="w-3 h-3 text-neutral-500"
+                className="w-3.5 h-3.5 text-gray-500"
                 fill="currentColor"
               >
                 <path
@@ -33,9 +33,9 @@ const StepButton = ({ isPrevious, title, step }: StepButtonProps) => (
                   clipRule="evenodd"
                 />
               </svg>
-              <p className="text-sm font-medium text-neutral-500 ">Back </p>
+              <p className="text-sm font-medium text-gray-500">Back</p>
             </div>
-            <p className="font-medium text-left">{title}</p>
+            <p className="font-semibold text-sm text-gray-700 text-left">{title}</p>
           </button>
         ) : (
           <button
@@ -43,15 +43,15 @@ const StepButton = ({ isPrevious, title, step }: StepButtonProps) => (
               localStorage.setItem("step", step);
               onChange(step);
             }}
-            className="flex-1  hover:bg-neutral-100 rounded-md p-3"
+            className="flex-1 bg-orange-500 hover:bg-orange-600 text-white rounded-lg p-3 transition-all shadow-sm"
           >
             <div className="flex gap-2 justify-end items-center">
-              <p className="text-sm font-medium text-neutral-500 ">Next </p>
+              <p className="text-sm font-medium text-white/90">Next</p>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 16 16"
                 fill="currentColor"
-                className="w-3 h-3 text-neutral-500"
+                className="w-3.5 h-3.5 text-white"
               >
                 <path
                   fillRule="evenodd"
@@ -60,7 +60,7 @@ const StepButton = ({ isPrevious, title, step }: StepButtonProps) => (
                 />
               </svg>
             </div>
-            <p className="font-medium text-right">{title}</p>
+            <p className="font-semibold text-sm text-white text-right">{title}</p>
           </button>
         )}
       </div>

@@ -13,45 +13,41 @@ export const YourDetailsPreview: React.FC<YourDetails> = ({
   yourZip,
 }) => (
   <div>
-    <p className="text-[11px] text-neutral-400 font-semibold uppercase pb-3.5">
+    <p className="text-xs md:text-[11px] text-neutral-400 font-semibold uppercase pb-2 md:pb-3.5">
       From
     </p>
-    <div className="h-10 mb-3">
+    <div className="h-8 md:h-10 mb-2 md:mb-3">
       {yourLogo ? (
-        <img src={yourLogo} alt="Company Logo" className="h-10 rounded-md" />
+        <img src={yourLogo} alt="Company Logo" className="h-8 md:h-10 rounded-md" />
       ) : (
-        <div className="rounded-full bg-neutral-100 h-10 w-10 animate-pulse" />
+        <div className="rounded-full bg-neutral-100 h-8 md:h-10 w-8 md:w-10" />
       )}
     </div>
     {yourName ? (
-      <p className="text-2xl font-medium">{yourName}</p>
+      <p className="text-xl md:text-2xl font-medium truncate">{yourName}</p>
     ) : (
-      <div className="rounded-md bg-neutral-100 h-5 w-5/6  animate-pulse mb-4" />
+      <p className="text-neutral-300 text-sm italic mb-4">&mdash;</p>
     )}
     {yourEmail ? (
-      <p className="text-neutral-500/90 text-sm mb-3">{yourEmail}</p>
+      <p className="text-neutral-500/90 text-sm mb-2 md:mb-3 break-all">{yourEmail}</p>
     ) : (
-      <div className="rounded-md bg-neutral-100 h-4 w-4/6 animate-pulse my-2" />
+      <p className="text-neutral-300 text-xs italic mb-2">&mdash;</p>
     )}
-    <div className="text-xs text-neutral-500/80">
+    <div className="text-xs md:text-xs text-neutral-500/80 leading-relaxed">
       {yourAddress ? (
         <p>{yourAddress}</p>
       ) : (
-        <div className="rounded-md bg-neutral-100 h-4 w-3/6 animate-pulse my-2" />
+        <p className="text-neutral-300 text-xs italic">&mdash;</p>
       )}
       {yourAddress || yourState || yourZip ? (
         <p className="mb-0.5">
           {yourCity}, {yourState} {yourZip}
         </p>
-      ) : (
-        <div className="rounded-md bg-neutral-100 h-4 w-4/6 animate-pulse my-3" />
-      )}
+      ) : null}
       {yourCountry ? (
         <p className="mb-1">{yourCountry}</p>
-      ) : (
-        <div className="rounded-md bg-neutral-100 h-4 w-3/6 animate-pulse my-2" />
-      )}
-      {yourTaxId && <p>Tax ID:{yourTaxId}</p>}
+      ) : null}
+      {yourTaxId && <p>Tax ID: {yourTaxId}</p>}
     </div>
   </div>
 );

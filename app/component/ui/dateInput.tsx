@@ -23,19 +23,19 @@ const DateInput = ({ label, variableName }: CustomNumberProps) => {
   return (
     <Controller
       render={({ field: { onChange, value } }) => (
-        <div className="flex group items-center  relative h-[52px]">
+        <div className="flex group items-center relative h-[52px] border border-gray-200 rounded-lg px-3 hover:border-gray-400 focus-within:border-orange-500 focus-within:ring-1 focus-within:ring-orange-500 transition-all">
           <Popover onOpenChange={setOpen} open={open}>
             <PopoverTrigger asChild className="w-full">
               <button className="flex gap-2 items-center justify-between w-full">
                 <label
                   htmlFor={label}
-                  className="block text-sm font-medium leading-6 text-gray-900 whitespace-nowrap"
+                  className="block text-sm font-medium leading-6 text-gray-700 whitespace-nowrap"
                 >
                   {label}
                 </label>
-                <div className="flex gap-2 items-center text-sm">
-                  {value ? format(value, "PPP") : <span>Pick a date</span>}
-                  <CalendarIcon className="h-4 w-4" />
+                <div className="flex gap-2 items-center text-sm text-gray-700">
+                  {value ? format(value, "PPP") : <span className="text-neutral-400">Pick a date</span>}
+                  <CalendarIcon className="h-4 w-4 text-gray-400" />
                 </div>
               </button>
             </PopoverTrigger>
@@ -54,12 +54,6 @@ const DateInput = ({ label, variableName }: CustomNumberProps) => {
               />
             </PopoverContent>
           </Popover>
-          <div
-            className={`absolute border-dashed inset-x-0 bottom-0 border-t border-gray-300  group-focus:border-t ${
-              open ? "border-orange-500" : "group-hover:border-neutral-400"
-            }`}
-            aria-hidden="true"
-          />
         </div>
       )}
       name={variableName}

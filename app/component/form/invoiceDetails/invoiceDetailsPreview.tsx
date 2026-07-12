@@ -22,31 +22,31 @@ export const InvoiceDetailsPreview: React.FC<
     >
       {!!onClick && (
         <>
-          <ChevronDown className="animate-pulse w-5 h-5 text-orange-500 rotate-[135deg] group-hover:block hidden absolute top-0 left-0" />
-          <ChevronDown className="animate-pulse w-5 h-5 text-orange-500 -rotate-[135deg] group-hover:block hidden absolute top-0 right-0" />
-          <ChevronDown className="animate-pulse w-5 h-5 text-orange-500 rotate-45 group-hover:block hidden absolute bottom-0 left-0" />
-          <ChevronDown className="animate-pulse w-5 h-5 text-orange-500 -rotate-45 group-hover:block hidden absolute bottom-0 right-0 " />
+          <ChevronDown className="animate-pulse w-4 h-4 text-orange-500 rotate-[135deg] group-hover:block hidden absolute top-0 left-0" />
+          <ChevronDown className="animate-pulse w-4 h-4 text-orange-500 -rotate-[135deg] group-hover:block hidden absolute top-0 right-0" />
+          <ChevronDown className="animate-pulse w-4 h-4 text-orange-500 rotate-45 group-hover:block hidden absolute bottom-0 left-0" />
+          <ChevronDown className="animate-pulse w-4 h-4 text-orange-500 -rotate-45 group-hover:block hidden absolute bottom-0 right-0 " />
         </>
       )}
-      <div className="grid grid-cols-2 items-center">
-        <div className="py-4 px-10">
-          <p className="text-[11px] text-neutral-400 font-medium uppercase">
+      <div className="grid grid-cols-2 items-center border-b border-gray-200">
+        <div className="py-2 md:py-4 px-4 md:px-10">
+          <p className="text-xs md:text-[11px] text-neutral-400 font-semibold uppercase tracking-wider">
             Description
           </p>
         </div>
-        <div className="py-4 px-10 grid grid-cols-3 items-center">
+        <div className="py-2 md:py-4 px-4 md:px-10 grid grid-cols-3 items-center">
           <div>
-            <p className="text-[11px] text-neutral-400 font-medium uppercase">
+            <p className="text-xs md:text-[11px] text-neutral-400 font-semibold uppercase tracking-wider">
               QTY
             </p>
           </div>
           <div>
-            <p className="text-[11px] text-neutral-400 font-medium uppercase">
+            <p className="text-xs md:text-[11px] text-neutral-400 font-semibold uppercase tracking-wider">
               Price
             </p>
           </div>
           <div>
-            <p className="text-[11px] text-neutral-400 font-medium uppercase text-right">
+            <p className="text-xs md:text-[11px] text-neutral-400 font-semibold uppercase tracking-wider text-right">
               Amount
             </p>
           </div>
@@ -54,22 +54,22 @@ export const InvoiceDetailsPreview: React.FC<
       </div>
       {items.map(({ itemDescription, amount, qty }, index) => (
         <div
-          className={`grid grid-cols-2 items-center border-b ${
-            index === 0 ? "border-t" : ""
-          } border-dashed mx-10 py-3`}
+          className={`grid grid-cols-2 items-center border-b border-gray-200 ${
+            index === 0 ? "border-t border-gray-200" : ""
+          } mx-4 md:mx-10 py-2 md:py-3`}
           key={index}
         >
-          <p className="flex truncate text-xs font-medium text-gray-600">
+          <p className="flex truncate text-xs md:text-xs font-medium text-gray-700 pr-2">
             {itemDescription}
           </p>
-          <div className="pl-10 grid grid-cols-3 items-center">
-            <p className="flex truncate text-xs font-medium text-gray-600">
+          <div className="pl-4 md:pl-10 grid grid-cols-3 items-center">
+            <p className="flex truncate text-xs md:text-xs font-medium text-gray-700">
               {qty || "-"}
             </p>
-            <p className="flex truncate text-xs font-medium text-gray-600">
+            <p className="flex truncate text-xs md:text-xs font-medium text-gray-700">
               {amount ? addCommasToNumber(amount) : ""}
             </p>
-            <p className="flex items-end w-full text-xs font-medium text-gray-600 text-right justify-end">
+            <p className="flex items-end w-full text-xs md:text-xs font-medium text-gray-700 text-right justify-end">
               {currencyDetails?.currencySymbol}
               {amount ? addCommasToNumber((qty ? qty : 1) * amount) : ""}
             </p>
@@ -78,56 +78,56 @@ export const InvoiceDetailsPreview: React.FC<
       ))}
       <div className="grid grid-cols-2">
         {note ? (
-          <div className="pt-6 pb-4">
-            <p className="flex truncate text-xs font-medium text-neutral-400 pb-1 px-10">
+          <div className="pt-4 md:pt-6 pb-2 md:pb-4">
+            <p className="flex truncate text-xs font-semibold text-neutral-400 pb-1 px-4 md:px-10 uppercase tracking-wider">
               Note
             </p>
-            <p className="text-xs font-medium text-neutral-400 px-10 break-words">
+            <p className="text-xs font-medium text-neutral-500 px-4 md:px-10 break-words">
               {note}
             </p>
           </div>
         ) : (
           <div />
         )}
-        <div>
-          <div className="flex justify-between items-center mx-10 border-b border-dashed py-3">
+        <div className="border-t border-gray-200">
+          <div className="flex justify-between items-center mx-4 md:mx-10 border-b border-gray-200 py-2 md:py-3">
             <p className="flex truncate text-xs font-medium text-gray-600">
               Subtotal
             </p>
-            <p className="flex truncate text-xs font-medium text-gray-600">
+            <p className="flex truncate text-xs font-medium text-gray-700">
               {currencyDetails?.currencySymbol}
               {addCommasToNumber(subtotal)}
             </p>
           </div>
           {discount && (
-            <div className="flex justify-between items-center mx-10 border-b border-dashed py-3">
+            <div className="flex justify-between items-center mx-4 md:mx-10 border-b border-gray-200 py-2 md:py-3">
               <p className="flex truncate text-xs font-medium text-gray-600">
                 Discount
               </p>
-              <p className="flex truncate text-xs font-medium text-gray-600">
+              <p className="flex truncate text-xs font-medium text-gray-700">
                 {currencyDetails?.currencySymbol}
                 {discount ? addCommasToNumber(+discount) : ""}
               </p>
             </div>
           )}
           {taxRate && (
-            <div className="flex justify-between items-center mx-10 border-b border-dashed py-3">
+            <div className="flex justify-between items-center mx-4 md:mx-10 border-b border-gray-200 py-2 md:py-3">
               <p className="flex truncate text-xs font-medium text-gray-600">
                 Tax ({taxRate})%
               </p>
-              <p className="flex truncate text-xs font-medium text-gray-600">
+              <p className="flex truncate text-xs font-medium text-gray-700">
                 {currencyDetails?.currencySymbol}
                 {addCommasToNumber(+taxAmount.toFixed(2))}
               </p>
             </div>
           )}
-          <div className="flex justify-between items-center px-10 py-3">
+          <div className="flex justify-between items-center px-4 md:px-10 py-2 md:py-3 bg-gray-50 rounded-b-2xl">
             <div>
-              <p className="flex truncate text-xs font-medium text-gray-600">
-                Amount
+              <p className="flex truncate text-xs md:text-sm font-semibold text-gray-800">
+                Amount Due
               </p>
             </div>
-            <p className="flex truncate text-md font-medium">
+            <p className="flex truncate text-sm md:text-base font-bold text-gray-900">
               {currencyDetails?.currencySymbol}
               {addCommasToNumber(totalAmount)}
             </p>
