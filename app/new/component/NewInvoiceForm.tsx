@@ -3,7 +3,7 @@ import Image from "next/image";
 import { UserInputForm } from "@/app/component/form/userInputForm";
 import { FormSteps } from "@/app/component/form/step/fromSteps";
 import { UserDataPreview } from "@/app/new/component/userDataPreview";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, useFormContext, FormProvider } from "react-hook-form";
 import { useEffect, useState, useCallback } from "react";
 import { AdBanner } from "@/components/AdBanner";
 import { MobilePreviewSheet } from "@/app/component/ui/mobilePreviewSheet";
@@ -41,17 +41,12 @@ const stepNav: Record<string, { prev: string | null; next: string | null }> = {
   "6": { prev: "5", next: null },
 };
 
-const calculateSubtotal = (items: Item[]) =>
-  items.reduce((t, item) => t + (item.qty || 1) * (item.amount || 0), 0);
-
-export const NewInvoiceForm = () => {
-  const methods = useForm();
-  const [isClient, setIsClient] = useState(false);
-  const [previewOpen, setPreviewOpen] = useState(false);
+const MobileLayout = ({ onPreviewOpen }: { onPreviewOpen: () => void }) => {
+  const { setValue } = useFormContext();
   const step = useGetValue("step", getInitialValue("step", "1")) || "1";
-
   const { invoiceDetails } = useData();
-  const subtotal = calculateSubtotal(invoiceDetails.items);
+
+  const subtotal = invoiceDetails.items.reduce((t, item) => t + (item.qty || 1) * (item.amount || 0), 0);
   const discountAmt = invoiceDetails.discount ? +invoiceDetails.discount : 0;
   const discountBase = subtotal - discountAmt;
   const taxAmt = discountBase * ((invoiceDetails.taxRate ? +invoiceDetails.taxRate : 0) / 100);
@@ -60,6 +55,97 @@ export const NewInvoiceForm = () => {
   const curDetails = currencyList.find(
     (c) => c.value.toLowerCase() === (invoiceDetails.currency || "USD").toLowerCase()
   )?.details;
+
+  const nav = stepNav[step] || { prev: null, next: null };
+  const isLastStep = step === "6";
+
+  const goToStep = (s: string) => {
+    localStorage.setItem("step", s);
+    setValue("step", s);
+  };
+
+  return (
+    <div className="fixed inset-0 flex flex-col overflow-hidden bg-gray-50 md:hidden">
+      <header className="h-14 flex items-center justify-between px-4 bg-white border-b border-gray-100 shrink-0">
+        <div className="flex items-center gap-2">
+          <Image src="/android-chrome-512x512.png" width={28} height={28} className="rounded-lg" alt="" />
+          <span className="text-sm font-semibold text-gray-900">Invoice Generator</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] font-medium text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full whitespace-nowrap">
+            Step {step} of 6
+          </span>
+          <button
+            onClick={() => {
+              STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
+              localStorage.setItem("step", "1");
+              window.location.reload();
+            }}
+            className="flex items-center gap-1 text-xs text-gray-400 hover:text-orange-500 transition-colors"
+          >
+            <RotateCcw className="w-3 h-3" />
+            <span className="max-sm:hidden">Reset</span>
+          </button>
+        </div>
+      </header>
+
+      <main className="flex-1 overflow-y-auto px-4 py-5">
+        <UserInputForm />
+        <div className="pt-4 pb-4">
+          <AdBanner adSlot="0000000000" format="horizontal" />
+        </div>
+      </main>
+
+      {!isLastStep && (
+        <button
+          onClick={onPreviewOpen}
+          className="fixed bottom-20 left-1/2 -translate-x-1/2 z-40
+            bg-gray-900 text-white font-medium text-sm
+            px-5 py-3 rounded-full flex items-center gap-2
+            shadow-lg active:scale-95 transition-transform"
+        >
+          <Eye className="w-4 h-4 text-orange-400" />
+          <span>
+            Preview Invoice{" "}
+            {curDetails ? `${curDetails.currencySymbol}${totalAmount.toLocaleString()}` : ""}
+          </span>
+        </button>
+      )}
+
+      <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white/90 backdrop-blur-md border-t border-gray-100 px-4 py-3">
+        <div className="grid grid-cols-12 gap-3">
+          {nav.prev ? (
+            <button
+              onClick={() => goToStep(nav.prev!)}
+              className="col-span-3 flex items-center justify-center gap-1 h-12 border border-gray-200 rounded-xl active:bg-gray-50 transition-colors"
+            >
+              <ChevronLeft className="w-5 h-5 text-gray-600" />
+            </button>
+          ) : (
+            <div className="col-span-3" />
+          )}
+          <button
+            onClick={() => nav.next && goToStep(nav.next)}
+            className={`col-span-9 h-12 rounded-xl font-bold text-sm flex items-center justify-center gap-1.5 transition-all active:scale-[0.98]
+              ${isLastStep
+                ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                : "bg-orange-500 text-white shadow-sm active:bg-orange-600"
+              }`}
+            disabled={isLastStep}
+          >
+            {isLastStep ? "All Done" : `Next: ${stepTitles[nav.next || ""] || ""}`}
+            {!isLastStep && <ChevronRight className="w-4 h-4" />}
+          </button>
+        </div>
+      </nav>
+    </div>
+  );
+};
+
+export const NewInvoiceForm = () => {
+  const methods = useForm();
+  const [isClient, setIsClient] = useState(false);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -79,109 +165,17 @@ export const NewInvoiceForm = () => {
     window.location.reload();
   }, []);
 
-  const goToStep = useCallback(
-    (s: string) => {
-      localStorage.setItem("step", s);
-      methods.setValue("step", s);
-    },
-    [methods]
-  );
-
-  const nav = stepNav[step] || { prev: null, next: null };
-  const isLastStep = step === "6";
-
   if (!isClient) return <div />;
 
   return (
     <FormProvider {...methods}>
-      {/* ====== MOBILE LAYOUT ====== */}
-      <div className="fixed inset-0 flex flex-col overflow-hidden bg-gray-50 md:hidden">
-        {/* Sticky Header */}
-        <header className="h-14 flex items-center justify-between px-4 bg-white border-b border-gray-100 shrink-0">
-          <div className="flex items-center gap-2">
-            <Image
-              src="/android-chrome-512x512.png"
-              width={28}
-              height={28}
-              className="rounded-lg"
-              alt=""
-            />
-            <span className="text-sm font-semibold text-gray-900">Invoice Generator</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <span className="text-[11px] font-medium text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full whitespace-nowrap">
-              Step {step} of 6
-            </span>
-            <button
-              onClick={handleReset}
-              className="flex items-center gap-1 text-xs text-gray-400 hover:text-orange-500 transition-colors"
-            >
-              <RotateCcw className="w-3 h-3" />
-              <span className="max-sm:hidden">Reset</span>
-            </button>
-          </div>
-        </header>
+      {/* Mobile */}
+      <MobileLayout onPreviewOpen={() => setPreviewOpen(true)} />
+      <MobilePreviewSheet open={previewOpen} onClose={() => setPreviewOpen(false)}>
+        <UserDataPreview />
+      </MobilePreviewSheet>
 
-        {/* Form Canvas */}
-        <main className="flex-1 overflow-y-auto px-4 py-5">
-          <UserInputForm />
-          <div className="pt-4 pb-4">
-            <AdBanner adSlot="0000000000" format="horizontal" />
-          </div>
-        </main>
-
-        {/* Floating Preview HUD */}
-        {!isLastStep && (
-          <button
-            onClick={() => setPreviewOpen(true)}
-            className="fixed bottom-20 left-1/2 -translate-x-1/2 z-40
-              bg-gray-900 text-white font-medium text-sm
-              px-5 py-3 rounded-full flex items-center gap-2
-              shadow-lg active:scale-95 transition-transform"
-          >
-            <Eye className="w-4 h-4 text-orange-400" />
-            <span>
-              Preview Invoice{" "}
-              {curDetails ? `${curDetails.currencySymbol}${totalAmount.toLocaleString()}` : ""}
-            </span>
-          </button>
-        )}
-
-        {/* Preview Sheet */}
-        <MobilePreviewSheet open={previewOpen} onClose={() => setPreviewOpen(false)}>
-          <UserDataPreview />
-        </MobilePreviewSheet>
-
-        {/* Sticky Navigation Dock */}
-        <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white/90 backdrop-blur-md border-t border-gray-100 px-4 py-3">
-          <div className="grid grid-cols-12 gap-3">
-            {nav.prev ? (
-              <button
-                onClick={() => goToStep(nav.prev!)}
-                className="col-span-3 flex items-center justify-center gap-1 h-12 border border-gray-200 rounded-xl active:bg-gray-50 transition-colors"
-              >
-                <ChevronLeft className="w-5 h-5 text-gray-600" />
-              </button>
-            ) : (
-              <div className="col-span-3" />
-            )}
-            <button
-              onClick={() => nav.next && goToStep(nav.next)}
-              className={`col-span-9 h-12 rounded-xl font-bold text-sm flex items-center justify-center gap-1.5 transition-all active:scale-[0.98]
-                ${isLastStep
-                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                  : "bg-orange-500 text-white shadow-sm active:bg-orange-600"
-                }`}
-              disabled={isLastStep}
-            >
-              {isLastStep ? "All Done" : `Next: ${stepTitles[nav.next || ""] || ""}`}
-              {!isLastStep && <ChevronRight className="w-4 h-4" />}
-            </button>
-          </div>
-        </nav>
-      </div>
-
-      {/* ====== DESKTOP LAYOUT ====== */}
+      {/* Desktop */}
       <div className="max-md:hidden w-full">
         <div className="md:max-w-lg w-full md:min-h-dvh p-4 md:p-12 md:border-r border-gray-200 flex flex-col md:justify-between order-2 md:order-none mx-auto">
           <div>
