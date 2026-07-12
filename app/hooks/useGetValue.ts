@@ -4,13 +4,17 @@ export const useGetValue = (
   variableName: string,
   defaultValue?: string
 ): string => {
-  const { watch } = useFormContext();
+  const ctx = useFormContext();
+  if (!ctx) return defaultValue || "";
+  const { watch } = ctx;
   const value = watch(variableName, defaultValue);
-  return value;
+  return value ?? defaultValue ?? "";
 };
 
 export const useItemParams = (): Item[] => {
-  const { watch } = useFormContext();
+  const ctx = useFormContext();
+  if (!ctx) return [];
+  const { watch } = ctx;
   const value = watch("items", []);
   return value;
 };

@@ -205,51 +205,53 @@ export const NewInvoiceForm = () => {
     clearAllData();
   }, []);
 
-  if (!isClient) return <div />;
-
   return (
     <FormProvider {...methods}>
-      {/* Mobile */}
-      <MobileLayout onPreviewOpen={() => setPreviewOpen(true)} />
-      <MobilePreviewSheet open={previewOpen} onClose={() => setPreviewOpen(false)}>
-        <UserDataPreview />
-      </MobilePreviewSheet>
+      {!isClient ? <div /> : (
+        <>
+          {/* Mobile */}
+          <MobileLayout onPreviewOpen={() => setPreviewOpen(true)} />
+          <MobilePreviewSheet open={previewOpen} onClose={() => setPreviewOpen(false)}>
+            <UserDataPreview />
+          </MobilePreviewSheet>
 
-      {/* Desktop — siblings so page.tsx flex-row lays them side by side */}
-      <div className="max-md:hidden md:max-w-lg w-full md:min-h-dvh p-4 md:p-12 md:border-r border-gray-200 flex flex-col md:justify-between">
-        <div>
-          <div className="flex gap-2 items-center justify-between">
-            <div className="flex gap-2 items-center">
-              <Image
-                src="/android-chrome-512x512.png"
-                width={40}
-                height={40}
-                className="rounded-lg"
-                alt="logo"
-              />
-              <div>
-                <p className="font-semibold text-sm md:text-base">Invoice Generator</p>
+          {/* Desktop — siblings so page.tsx flex-row lays them side by side */}
+          <div className="max-md:hidden md:max-w-lg w-full md:min-h-dvh p-4 md:p-12 md:border-r border-gray-200 flex flex-col md:justify-between">
+            <div>
+              <div className="flex gap-2 items-center justify-between">
+                <div className="flex gap-2 items-center">
+                  <Image
+                    src="/android-chrome-512x512.png"
+                    width={40}
+                    height={40}
+                    className="rounded-lg"
+                    alt="logo"
+                  />
+                  <div>
+                    <p className="font-semibold text-sm md:text-base">Invoice Generator</p>
+                  </div>
+                </div>
+                <button
+                  onClick={handleReset}
+                  title="Reset all fields"
+                  className="flex items-center gap-1.5 text-xs text-neutral-400 hover:text-orange-500 transition-colors"
+                >
+                  <RotateCcw className="w-3.5 h-3.5" />
+                  Reset
+                </button>
               </div>
+              <UserInputForm />
+              <AdBanner adSlot="0000000000" format="horizontal" className="mt-6" />
             </div>
-            <button
-              onClick={handleReset}
-              title="Reset all fields"
-              className="flex items-center gap-1.5 text-xs text-neutral-400 hover:text-orange-500 transition-colors"
-            >
-              <RotateCcw className="w-3.5 h-3.5" />
-              Reset
-            </button>
+            <FormSteps />
           </div>
-          <UserInputForm />
-          <AdBanner adSlot="0000000000" format="horizontal" className="mt-6" />
-        </div>
-        <FormSteps />
-      </div>
 
-      <div className="max-md:hidden relative md:min-h-dvh w-full flex justify-center items-start md:items-center p-2 md:p-0">
-        <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]" />
-        <UserDataPreview />
-      </div>
+          <div className="max-md:hidden relative md:min-h-dvh w-full flex justify-center items-start md:items-center p-2 md:p-0">
+            <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]" />
+            <UserDataPreview />
+          </div>
+        </>
+      )}
     </FormProvider>
   );
 };
