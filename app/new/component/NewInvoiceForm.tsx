@@ -75,17 +75,13 @@ const MobileLayout = ({ onPreviewOpen }: { onPreviewOpen: () => void }) => {
           <span className="text-[11px] font-medium text-gray-500 bg-gray-100 px-2.5 py-1 rounded-full whitespace-nowrap">
             Step {step} of 6
           </span>
-          <button
-            onClick={() => {
-              STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
-              localStorage.setItem("step", "1");
-              window.location.reload();
-            }}
-            className="flex items-center gap-1 text-xs text-gray-400 hover:text-orange-500 transition-colors"
-          >
-            <RotateCcw className="w-3 h-3" />
-            <span className="max-sm:hidden">Reset</span>
-          </button>
+            <button
+              onClick={clearAllData}
+              className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-orange-500 transition-colors bg-gray-100 hover:bg-gray-200 px-2.5 py-1.5 rounded-lg"
+            >
+              <RotateCcw className="w-3 h-3" />
+              <span>Reset</span>
+            </button>
         </div>
       </header>
 
@@ -142,10 +138,55 @@ const MobileLayout = ({ onPreviewOpen }: { onPreviewOpen: () => void }) => {
   );
 };
 
+const clearAllData = () => {
+  STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
+  localStorage.setItem("step", "1");
+  window.location.reload();
+};
+
+const STORAGE_ACTIVITY_KEY = "_lastActive";
+const AUTO_CLEAR_MS = 5 * 60 * 1000;
+
+const useAutoClear = () => {
+  useEffect(() => {
+    const now = Date.now();
+    const lastActive = localStorage.getItem(STORAGE_ACTIVITY_KEY);
+    if (lastActive && now - Number(lastActive) > AUTO_CLEAR_MS) {
+      clearAllData();
+      return;
+    }
+
+    const onActivity = () => {
+      localStorage.setItem(STORAGE_ACTIVITY_KEY, String(Date.now()));
+    };
+    window.addEventListener("keydown", onActivity, { passive: true });
+    window.addEventListener("touchstart", onActivity, { passive: true });
+    window.addEventListener("click", onActivity, { passive: true });
+
+    onActivity();
+
+    const interval = setInterval(() => {
+      const active = localStorage.getItem(STORAGE_ACTIVITY_KEY);
+      if (active && Date.now() - Number(active) > AUTO_CLEAR_MS) {
+        clearAllData();
+      }
+    }, 30_000);
+
+    return () => {
+      window.removeEventListener("keydown", onActivity);
+      window.removeEventListener("touchstart", onActivity);
+      window.removeEventListener("click", onActivity);
+      clearInterval(interval);
+    };
+  }, []);
+};
+
 export const NewInvoiceForm = () => {
   const methods = useForm();
   const [isClient, setIsClient] = useState(false);
   const [previewOpen, setPreviewOpen] = useState(false);
+
+  useAutoClear();
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -160,9 +201,7 @@ export const NewInvoiceForm = () => {
   }, []);
 
   const handleReset = useCallback(() => {
-    STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
-    localStorage.setItem("step", "1");
-    window.location.reload();
+    clearAllData();
   }, []);
 
   if (!isClient) return <div />;
