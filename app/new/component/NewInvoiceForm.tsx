@@ -1,10 +1,15 @@
 "use client";
-import Image from "next/image";
 import { UserInputForm } from "@/app/component/form/userInputForm";
 import { UserDataPreview } from "@/app/new/component/userDataPreview";
 import { useForm, FormProvider } from "react-hook-form";
 import { useEffect, useState, useCallback } from "react";
-import { RotateCcw, ChevronDown, Eye, FileText, Users, Receipt, CreditCard } from "lucide-react";
+import { RotateCcw, ChevronDown, Eye, FileText, User, Briefcase, Receipt, CreditCard } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const DownloadInvoiceButton = dynamic(
+  () => import("@/app/component/form/downloadInvoice/downloadInvoiceButton").then((mod) => mod.DownloadInvoiceButton),
+  { ssr: false }
+);
 import { cn } from "@/lib/utils";
 
 const STORAGE_KEYS = [
@@ -93,9 +98,10 @@ const Header = ({ onReset }: { onReset: () => void }) => (
 
 const stepToSection: Record<string, string> = {
   "1": "identity",
-  "2": "stakeholders",
-  "3": "financials",
-  "4": "remittance",
+  "2": "from",
+  "3": "to",
+  "4": "financials",
+  "5": "remittance",
 };
 
 const Sidebar = ({
@@ -116,12 +122,20 @@ const Sidebar = ({
         <UserInputForm section="identity" />
       </AccordionSection>
       <AccordionSection
-        title="From & To"
-        icon={<Users className="w-3.5 h-3.5" />}
-        isOpen={openSection === "stakeholders"}
-        onToggle={() => onOpenSection(openSection === "stakeholders" ? "" : "stakeholders")}
+        title="From"
+        icon={<User className="w-3.5 h-3.5" />}
+        isOpen={openSection === "from"}
+        onToggle={() => onOpenSection(openSection === "from" ? "" : "from")}
       >
-        <UserInputForm section="stakeholders" />
+        <UserInputForm section="from" />
+      </AccordionSection>
+      <AccordionSection
+        title="To"
+        icon={<Briefcase className="w-3.5 h-3.5" />}
+        isOpen={openSection === "to"}
+        onToggle={() => onOpenSection(openSection === "to" ? "" : "to")}
+      >
+        <UserInputForm section="to" />
       </AccordionSection>
       <AccordionSection
         title="Items & Pricing"
@@ -241,9 +255,12 @@ export const NewInvoiceForm = () => {
           </div>
 
           {/* Mobile: View mode */}
-          <div className={cn("md:hidden flex-1 overflow-y-auto bg-[#F4F5F6] p-4", mobileMode === "edit" && "hidden")}>
-            <div className="max-w-[500px] mx-auto">
+          <div className={cn("md:hidden flex-1 overflow-y-auto bg-[#F4F5F6] p-4 pb-24", mobileMode === "edit" && "hidden")}>
+            <div className="max-w-[500px] mx-auto space-y-4">
               <UserDataPreview onSectionChange={handleSectionFromPreview} />
+              <div className="flex justify-center">
+                <DownloadInvoiceButton />
+              </div>
             </div>
           </div>
 
@@ -254,8 +271,11 @@ export const NewInvoiceForm = () => {
 
           {/* Desktop Artboard */}
           <div className="hidden md:flex flex-1 bg-[#F4F5F6] items-start justify-center p-8 overflow-y-auto">
-            <div className="w-full max-w-[500px] sticky top-8">
+            <div className="w-full max-w-[500px] space-y-4">
               <UserDataPreview onSectionChange={handleSectionFromPreview} />
+              <div className="flex justify-center">
+                <DownloadInvoiceButton />
+              </div>
             </div>
           </div>
         </div>
