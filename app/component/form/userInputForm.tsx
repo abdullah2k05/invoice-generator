@@ -6,8 +6,7 @@ import { InvoiceTermsForm } from "@/app/component/form/invoiceTerms/invoiceTerms
 import { PaymentDetailsForm } from "@/app/component/form/paymentDetails/paymentDetailsForm";
 import { CompanyDetailsForm } from "@/app/component/form/companyDetails/companyDetailsForm";
 import { YourDetailsForm } from "@/app/component/form/yourDetails/yourDetailsForm";
-import { useGetValue } from "@/app/hooks/useGetValue";
-import { getInitialValue } from "@/lib/getInitialValue";
+import CurrencyInput from "@/app/component/ui/currencyInput";
 import { AdBanner } from "@/components/AdBanner";
 
 const DownloadInvoiceButton = dynamic(
@@ -15,31 +14,53 @@ const DownloadInvoiceButton = dynamic(
   { ssr: false }
 );
 
-const AD_STEPS = ["3", "5"];
+export const UserInputForm = ({ section }: { section?: string }) => {
+  if (section === "identity") {
+    return (
+      <div>
+        <InvoiceTermsForm compact />
+        <div className="mt-4">
+          <CurrencyInput />
+        </div>
+      </div>
+    );
+  }
 
-export const UserInputForm = () => {
-  const step = useGetValue("step", getInitialValue("step", "1"));
+  if (section === "stakeholders") {
+    return (
+      <div className="space-y-6">
+        <div>
+          <p className="text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-3">From</p>
+          <YourDetailsForm compact />
+        </div>
+        <div>
+          <p className="text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-3">To</p>
+          <CompanyDetailsForm compact />
+        </div>
+      </div>
+    );
+  }
 
-  return (
-    <div>
-      <div className={step === "1" ? "block" : "hidden"}>
-        <YourDetailsForm />
+  if (section === "financials") {
+    return (
+      <div>
+        <InvoiceDetailsForm compact />
+        <AdBanner adSlot="0000000000" format="horizontal" className="mt-6" />
       </div>
-      <div className={step === "2" ? "block" : "hidden"}>
-        <CompanyDetailsForm />
+    );
+  }
+
+  if (section === "remittance") {
+    return (
+      <div>
+        <PaymentDetailsForm compact />
+        <div className="mt-8">
+          <DownloadInvoiceButton />
+        </div>
+        <AdBanner adSlot="0000000000" format="horizontal" className="mt-6" />
       </div>
-      <div className={step === "3" ? "block" : "hidden"}>
-        <InvoiceDetailsForm />
-        {AD_STEPS.includes(step) && <AdBanner adSlot="0000000000" format="horizontal" className="mt-6" />}
-      </div>
-      <div className={step === "4" ? "block" : "hidden"}>
-        <PaymentDetailsForm />
-      </div>
-      <div className={step === "5" ? "block" : "hidden"}>
-        <InvoiceTermsForm />
-        {AD_STEPS.includes(step) && <AdBanner adSlot="0000000000" format="horizontal" className="mt-6" />}
-      </div>
-      {step === "6" && <DownloadInvoiceButton />}
-    </div>
-  );
+    );
+  }
+
+  return null;
 };

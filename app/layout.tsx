@@ -175,17 +175,17 @@ export default function RootLayout({
       </head>
       <body className={`${GeistSans.className} flex flex-col min-h-screen`}>
         {/* Navbar */}
-        <nav className="border-b border-dashed border-gray-300 bg-white/80 backdrop-blur-sm sticky top-0 z-50">
-          <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between border-l border-r border-dashed border-gray-300">
-            <Link href="/" className="font-bold text-lg text-neutral-900 hover:text-orange-500 transition-colors">
+        <nav className="border-b border-[#E2E8F0] bg-white sticky top-0 z-50">
+          <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between border-l border-r border-[#E2E8F0]">
+            <Link href="/" className="font-bold text-lg text-[#0F172A] hover:text-[#4F46E5] transition-colors">
               Invoice Generator
             </Link>
             <div className="flex items-center gap-4 text-sm">
-              <Link href="/new" className="text-neutral-600 hover:text-orange-500 transition-colors">Create</Link>
-              <Link href="/invoice-template" className="text-neutral-600 hover:text-orange-500 transition-colors">Templates</Link>
-              <Link href="/invoice-example" className="text-neutral-600 hover:text-orange-500 transition-colors">Examples</Link>
-              <Link href="/faq" className="text-neutral-600 hover:text-orange-500 transition-colors">FAQ</Link>
-              <a href="https://github.com/abdullah2k05/invoice-generator" target="_blank" rel="noreferrer" className="text-neutral-600 hover:text-orange-500 transition-colors">GitHub</a>
+              <Link href="/new" className="text-[#64748B] hover:text-[#0F172A] transition-colors">Create</Link>
+              <Link href="/invoice-template" className="text-[#64748B] hover:text-[#0F172A] transition-colors">Templates</Link>
+              <Link href="/invoice-example" className="text-[#64748B] hover:text-[#0F172A] transition-colors">Examples</Link>
+              <Link href="/faq" className="text-[#64748B] hover:text-[#0F172A] transition-colors">FAQ</Link>
+              <a href="https://github.com/abdullah2k05/invoice-generator" target="_blank" rel="noreferrer" className="text-[#64748B] hover:text-[#0F172A] transition-colors">GitHub</a>
             </div>
           </div>
         </nav>
@@ -193,12 +193,12 @@ export default function RootLayout({
         {children}
 
         {/* Footer */}
-        <footer className="border-t border-dashed border-gray-300 bg-white">
-          <div className="max-w-4xl mx-auto px-4 py-12 border-l border-r border-dashed border-gray-300">
+        <footer className="border-t border-[#E2E8F0] bg-white">
+          <div className="max-w-4xl mx-auto px-4 py-12 border-l border-r border-[#E2E8F0]">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {footerColumns.map((col) => (
                 <div key={col.heading}>
-                  <h3 className="font-semibold text-neutral-800 text-sm mb-3 uppercase tracking-wider">
+                  <h3 className="font-semibold text-[#0F172A] text-sm mb-3 uppercase tracking-wider">
                     {col.heading}
                   </h3>
                   <ul className="space-y-2">
@@ -209,14 +209,14 @@ export default function RootLayout({
                             href={link.href}
                             target="_blank"
                             rel="noreferrer"
-                            className="text-neutral-500 hover:text-orange-500 transition-colors text-sm"
+                            className="text-[#64748B] hover:text-[#0F172A] transition-colors text-sm"
                           >
                             {link.label}
                           </a>
                         ) : (
                           <Link
                             href={link.href}
-                            className="text-neutral-500 hover:text-orange-500 transition-colors text-sm"
+                            className="text-[#64748B] hover:text-[#0F172A] transition-colors text-sm"
                           >
                             {link.label}
                           </Link>
@@ -228,8 +228,8 @@ export default function RootLayout({
               ))}
             </div>
 
-            <div className="mt-8 pt-6 border-t border-dashed border-gray-300 flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-sm text-neutral-400">
+            <div className="mt-8 pt-6 border-t border-[#E2E8F0] flex flex-col md:flex-row justify-between items-center gap-4">
+              <p className="text-sm text-[#94A3B8]">
                 © {new Date().getFullYear()} Muhammad Abdullah. All rights reserved.
               </p>
               <div className="flex flex-wrap gap-4 text-xs">
@@ -240,7 +240,7 @@ export default function RootLayout({
                       href={link.href}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-neutral-400 hover:text-orange-500 transition-colors"
+                      className="text-[#94A3B8] hover:text-[#0F172A] transition-colors"
                     >
                       {link.label}
                     </a>
@@ -248,7 +248,7 @@ export default function RootLayout({
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="text-neutral-400 hover:text-orange-500 transition-colors"
+                      className="text-[#94A3B8] hover:text-[#0F172A] transition-colors"
                     >
                       {link.label}
                     </Link>

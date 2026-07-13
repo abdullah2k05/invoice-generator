@@ -9,7 +9,7 @@ import { useGetValue } from "@/app/hooks/useGetValue";
 import { Controller } from "react-hook-form";
 import { getItemValue } from "@/lib/getInitialValue";
 
-export const InvoiceDetailsForm = () => {
+export const InvoiceDetailsForm = ({ compact }: { compact?: boolean }) => {
   const value = useGetValue("currency", "USD");
   const currencyDetails = currencyList.find(
     (currency) => currency.value.toLowerCase() === value.toLowerCase()
@@ -18,17 +18,11 @@ export const InvoiceDetailsForm = () => {
   return (
     <Controller
       render={({ field: { onChange, value } }) => (
-        <div className="pt-2">
-          <p className="text-xl md:text-2xl font-semibold pb-3">Invoice Details</p>
-          <div className="flex flex-col gap-6">
+        <div>
+          {!compact && <p className="text-xl md:text-2xl font-semibold pb-3">Invoice Details</p>}
+          <div className="flex flex-col gap-4">
             <div>
-              <p className="pt-3 font-medium text-neutral-500">
-                Select an invoice currency
-              </p>
-              <CurrencyInput />
-            </div>
-            <div>
-              <p className="py-3 font-medium text-sm text-neutral-500">Items</p>
+              <p className="text-xs font-semibold text-[#64748B] uppercase tracking-wider mb-2">Line Items</p>
 
               {/* Desktop: table layout */}
               <div className="max-md:hidden">
@@ -171,7 +165,7 @@ export const InvoiceDetailsForm = () => {
                                 onChange(arr);
                               }
                             }}
-                            className="w-full h-10 px-3 text-sm font-semibold text-gray-900 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 placeholder:text-neutral-400"
+                            className="w-full h-10 px-3 text-sm font-semibold text-gray-900 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-[#4F46E5] focus:ring-1 focus:ring-[#4F46E5] placeholder:text-neutral-400"
                           />
                         </div>
                         <div>
@@ -193,7 +187,7 @@ export const InvoiceDetailsForm = () => {
                                 onChange(arr);
                               }
                             }}
-                            className="w-full h-10 px-3 text-sm font-semibold text-gray-900 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 placeholder:text-neutral-400"
+                            className="w-full h-10 px-3 text-sm font-semibold text-gray-900 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:border-[#4F46E5] focus:ring-1 focus:ring-[#4F46E5] placeholder:text-neutral-400"
                           />
                         </div>
                       </div>
@@ -212,7 +206,7 @@ export const InvoiceDetailsForm = () => {
                     onChange([...value, { itemDescription: "" }]);
                   }}
                   type="button"
-                  className="flex justify-center items-center text-orange-500 font-medium text-sm gap-2 w-full py-3 active:bg-orange-50 rounded-lg transition-colors"
+                  className="flex justify-center items-center text-[#4F46E5] font-medium text-sm gap-2 w-full py-3 active:bg-[#F1F5F9] rounded-lg transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                   <p>Add Item</p>

@@ -31,21 +31,18 @@ const CurrencyInput = () => {
         )?.details;
 
         return (
-          <div className="relative w-full border border-gray-200 transition-all duration-200
-            hover:border-gray-400
-            focus-within:border-orange-500 focus-within:shadow-[0_0_0_3px_rgba(249,115,22,0.1)]
-            rounded-xl bg-white px-4 pt-5 pb-2 h-[60px]">
+          <div className="relative w-full bg-white border-b-2 border-[#E2E8F0] transition-all duration-200 focus-within:border-[#0F172A] pt-5 pb-1.5">
             <Popover open={open} onOpenChange={setOpen}>
               <PopoverTrigger asChild className="w-full">
-                <button className="flex items-center justify-between w-full h-full">
-                  <label className="block text-xs font-medium text-gray-400 leading-tight">
+                <button className="flex items-center justify-between w-full">
+                  <label className="block text-[11px] font-medium text-[#94A3B8] uppercase tracking-wider leading-none mb-0.5">
                     Currency
                   </label>
-                  <div className="flex gap-1.5 bg-gray-100 text-sm pl-2 pr-2.5 rounded-full py-0.5 items-center">
+                  <div className="flex gap-1.5 bg-[#F1F5F9] text-sm pl-2 pr-2.5 rounded-md py-0.5 items-center">
                     {currencyDetails && (
                       <CurrencyFlag iconName={currencyDetails.iconName} className="w-4 h-4 rounded-full" />
                     )}
-                    <p className="font-medium text-sm text-gray-800">
+                    <p className="font-medium text-sm text-[#0F172A]">
                       {currencyDetails?.currencyShortForm}
                     </p>
                   </div>
@@ -55,7 +52,7 @@ const CurrencyInput = () => {
                 <Command className="w-full">
                   <CommandInput
                     placeholder="Search currency..."
-                    className="peer block w-full border-0 py-1.5 text-gray-900 focus:ring-0 sm:text-sm sm:leading-6 placeholder:text-neutral-400 placeholder:font-normal caret-orange-500"
+                    className="peer block w-full border-0 py-1.5 text-[#0F172A] focus:ring-0 sm:text-sm sm:leading-6 placeholder:text-[#94A3B8] placeholder:font-normal caret-[#0F172A]"
                   />
                   <CommandEmpty>No framework found.</CommandEmpty>
                   <CommandGroup className="max-h-96 overflow-y-auto scrollbar-hide">
@@ -78,7 +75,7 @@ const CurrencyInput = () => {
                             <p className="font-medium">
                               {currency.details.currencyName}
                             </p>
-                            <p className="font-medium text-neutral-500">
+                            <p className="font-medium text-[#94A3B8]">
                               {currency.details.currencyShortForm}
                             </p>
                           </div>
@@ -87,7 +84,7 @@ const CurrencyInput = () => {
                               "h-6 w-6 rounded-full",
                               value.toLowerCase() ===
                                 currency.value.toLowerCase()
-                                ? "opacity-100 bg-orange-500 text-white"
+                                ? "opacity-100 bg-[#0F172A] text-white"
                                 : "opacity-0"
                             )}
                           />

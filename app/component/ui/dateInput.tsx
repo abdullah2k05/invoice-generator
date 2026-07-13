@@ -23,25 +23,22 @@ const DateInput = ({ label, variableName }: CustomNumberProps) => {
   return (
     <Controller
       render={({ field: { onChange, value } }) => (
-        <div className="relative w-full border border-gray-200 transition-all duration-200
-          hover:border-gray-400
-          focus-within:border-orange-500 focus-within:shadow-[0_0_0_3px_rgba(249,115,22,0.1)]
-          rounded-xl bg-white px-4 pt-5 pb-2 h-[60px]">
+        <div className="relative w-full bg-white border-b-2 border-[#E2E8F0] transition-all duration-200 focus-within:border-[#0F172A] pt-5 pb-1.5">
           <Popover onOpenChange={setOpen} open={open}>
             <PopoverTrigger asChild className="w-full">
-              <button className="flex items-center justify-between w-full h-full">
-                <label className="block text-xs font-medium text-gray-400 leading-tight">
+              <button className="flex items-center justify-between w-full">
+                <label className="block text-[11px] font-medium text-[#94A3B8] uppercase tracking-wider leading-none mb-0.5">
                   {label}
                 </label>
-                <div className="flex gap-2 items-center text-sm text-gray-700">
+                <div className="flex gap-2 items-center text-sm">
                   {value ? (
-                    <span className="text-sm font-semibold text-gray-900">
+                    <span className="text-sm font-medium text-[#0F172A]">
                       {format(value, "PPP")}
                     </span>
                   ) : (
-                    <span className="text-neutral-400 text-sm">Pick a date</span>
+                    <span className="text-[#94A3B8] text-sm">Pick a date</span>
                   )}
-                  <CalendarIcon className="h-4 w-4 text-gray-400 shrink-0" />
+                  <CalendarIcon className="h-4 w-4 text-[#94A3B8] shrink-0" />
                 </div>
               </button>
             </PopoverTrigger>

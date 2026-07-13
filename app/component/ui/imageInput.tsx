@@ -28,19 +28,17 @@ export const ImageInput = ({ label, variableName }: CustomNumberProps) => {
     <Controller
       render={({ field: { onChange, value } }) => (
         <div
-          className="relative w-full border border-gray-200 transition-all duration-200 cursor-pointer
-            hover:border-gray-400
-            focus-within:border-orange-500 focus-within:shadow-[0_0_0_3px_rgba(249,115,22,0.1)]
-            rounded-xl bg-white px-4 pt-5 pb-2 h-[60px]"
+          className="relative w-full bg-white border-b-2 border-[#E2E8F0] transition-all duration-200 cursor-pointer focus-within:border-[#0F172A] pt-5 pb-1.5"
           onClick={handleButtonClick}
         >
           {label && (
-            <label className="block text-xs font-medium text-gray-400 leading-tight">
+            <label className="block text-[11px] font-medium text-[#94A3B8] uppercase tracking-wider leading-none mb-0.5">
               {label}
             </label>
           )}
           {value ? (
-            <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1">
+            <div className="flex items-center gap-1 mt-0.5">
+              <span className="text-sm font-medium text-[#0F172A]">File uploaded</span>
               <button
                 type="button"
                 onClick={(e) => {
@@ -48,7 +46,7 @@ export const ImageInput = ({ label, variableName }: CustomNumberProps) => {
                   onChange("");
                   localStorage.setItem(variableName, "");
                 }}
-                className="text-red-400 hover:text-red-600 p-0.5 rounded-full hover:bg-red-50"
+                className="text-red-400 hover:text-red-600 p-0.5 rounded-full hover:bg-red-50 ml-auto"
                 title="Remove logo"
               >
                 <X className="w-3.5 h-3.5" />
@@ -57,18 +55,19 @@ export const ImageInput = ({ label, variableName }: CustomNumberProps) => {
                 src={value}
                 width={32}
                 height={32}
-                className="h-8 w-auto rounded-md p-1 hover:bg-neutral-200"
+                className="h-8 w-auto rounded-md"
                 alt="company logo"
               />
             </div>
           ) : (
-            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+            <div className="flex items-center gap-1 mt-0.5">
               <button
                 type="button"
-                className="text-neutral-400 border border-gray-300 rounded-full p-1.5"
+                className="text-[#94A3B8] border border-[#E2E8F0] rounded-md p-1.5 hover:bg-[#F8F9FA]"
               >
                 <Plus className="w-4 h-4" />
               </button>
+              <span className="text-sm text-[#94A3B8]">Upload logo</span>
             </div>
           )}
           <input

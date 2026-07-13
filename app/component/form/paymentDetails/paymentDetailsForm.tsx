@@ -6,14 +6,18 @@ import { getInitialValue } from "@/lib/getInitialValue";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
-export const PaymentDetailsForm = () => {
+export const PaymentDetailsForm = ({ compact }: { compact?: boolean }) => {
   const { control } = useFormContext();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="pt-2">
-      <p className="text-xl md:text-2xl font-semibold pb-1">Payment Details</p>
-      <p className="text-sm text-neutral-400 pb-5">Optional — skip if not needed</p>
+    <div>
+      {!compact && (
+        <>
+          <p className="text-xl md:text-2xl font-semibold pb-1">Payment Details</p>
+          <p className="text-sm text-neutral-400 pb-5">Optional — skip if not needed</p>
+        </>
+      )}
 
       {/* Mobile: accordion toggle */}
       <div className="md:hidden">
@@ -60,7 +64,7 @@ export const PaymentDetailsForm = () => {
                   localStorage.setItem("showPayableIn", val);
                   onChange(val);
                 }}
-                className="w-4 h-4 rounded border-gray-300 text-orange-500 focus:ring-orange-500"
+                className="w-4 h-4 rounded border-gray-300 text-[#4F46E5] focus:ring-[#4F46E5]"
               />
               <span className="text-sm text-neutral-600">Show currency on invoice</span>
             </label>

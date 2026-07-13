@@ -9,8 +9,8 @@ function ListSection({ items }: { items: string[] }) {
   return (
     <ul className="space-y-2 my-4">
       {items.map((item, i) => (
-        <li key={i} className="flex items-start gap-2 text-neutral-700">
-          <span className="text-orange-500 mt-1 flex-shrink-0">•</span>
+        <li key={i} className="flex items-start gap-2 text-[#475569]">
+          <span className="text-[#4F46E5] mt-1 flex-shrink-0">•</span>
           <span>{item}</span>
         </li>
       ))}
@@ -23,9 +23,9 @@ function TableSection({ headers, rows }: { headers: string[]; rows: string[][] }
     <div className="overflow-x-auto my-6">
       <table className="w-full border-collapse text-sm">
         <thead>
-          <tr className="bg-orange-50">
+          <tr className="bg-[#F1F5F9]">
             {headers.map((h, i) => (
-              <th key={i} className="p-3 text-left font-semibold text-neutral-800 border border-dashed border-gray-300">
+              <th key={i} className="p-3 text-left font-semibold text-[#0F172A] border border-[#E2E8F0]">
                 {h}
               </th>
             ))}
@@ -35,7 +35,7 @@ function TableSection({ headers, rows }: { headers: string[]; rows: string[][] }
           {rows.map((row, i) => (
             <tr key={i}>
               {row.map((cell, j) => (
-                <td key={j} className="p-3 text-neutral-600 border border-dashed border-gray-300">
+                <td key={j} className="p-3 text-[#475569] border border-[#E2E8F0]">
                   {cell}
                 </td>
               ))}
@@ -93,14 +93,14 @@ export default function PageRenderer({ pageData, siteUrl }: { pageData: PageData
   }, [pageData, siteUrl]);
 
   return (
-    <div className="bg-[#f7f7f7] min-h-screen">
-      <div className="max-w-3xl mx-auto px-4 py-12 border-l border-r border-dashed border-gray-300 min-h-screen">
-        <nav className="mb-8 text-sm text-neutral-500 flex items-center gap-2 flex-wrap">
-          <Link href="/" className="hover:text-orange-500 transition-colors underline underline-offset-2">
+    <div className="bg-[#F8F9FA] min-h-screen">
+      <div className="max-w-3xl mx-auto px-4 py-12 border-l border-r border-[#E2E8F0] min-h-screen">
+        <nav className="mb-8 text-sm text-[#64748B] flex items-center gap-2 flex-wrap">
+          <Link href="/" className="hover:text-[#0F172A] transition-colors underline underline-offset-2">
             Home
           </Link>
-          <span className="text-neutral-300">/</span>
-          <span className="text-neutral-800 font-medium">
+          <span className="text-[#CBD5E1]">/</span>
+          <span className="text-[#0F172A] font-medium">
             {pageData.title.split(" |")[0].replace(/ – .*$/, "")}
           </span>
         </nav>
@@ -110,11 +110,11 @@ export default function PageRenderer({ pageData, siteUrl }: { pageData: PageData
             case "hero":
               return (
                 <div key={i} className="mb-10">
-                  <h1 className="text-3xl md:text-5xl font-bold text-neutral-900 mb-4">
+                  <h1 className="text-3xl md:text-5xl font-bold text-[#0F172A] mb-4">
                     {section.heading}
                   </h1>
                   {section.content && (
-                    <p className="text-lg text-neutral-600 leading-relaxed">
+                    <p className="text-lg text-[#475569] leading-relaxed">
                       {section.content}
                     </p>
                   )}
@@ -125,23 +125,23 @@ export default function PageRenderer({ pageData, siteUrl }: { pageData: PageData
               return (
                 <div key={i} className="mb-8">
                   {section.heading && (
-                    <h2 className="text-xl md:text-2xl font-semibold text-neutral-800 mb-3">
+                    <h2 className="text-xl md:text-2xl font-semibold text-[#0F172A] mb-3">
                       {section.heading}
                     </h2>
                   )}
                   {section.subheading && (
-                    <h3 className="text-lg font-medium text-neutral-700 mb-2">
+                    <h3 className="text-lg font-medium text-[#334155] mb-2">
                       {section.subheading}
                     </h3>
                   )}
                   {Array.isArray(section.content) ? (
                     section.content.map((p, j) => (
-                      <p key={j} className="text-neutral-600 leading-relaxed mb-3">
+                      <p key={j} className="text-[#475569] leading-relaxed mb-3">
                         {p}
                       </p>
                     ))
                   ) : (
-                    <p className="text-neutral-600 leading-relaxed">{section.content}</p>
+                    <p className="text-[#475569] leading-relaxed">{section.content}</p>
                   )}
                 </div>
               );
@@ -150,7 +150,7 @@ export default function PageRenderer({ pageData, siteUrl }: { pageData: PageData
               return (
                 <div key={i} className="mb-8">
                   {section.heading && (
-                    <h2 className="text-xl md:text-2xl font-semibold text-neutral-800 mb-3">
+                    <h2 className="text-xl md:text-2xl font-semibold text-[#0F172A] mb-3">
                       {section.heading}
                     </h2>
                   )}
@@ -162,7 +162,7 @@ export default function PageRenderer({ pageData, siteUrl }: { pageData: PageData
               return (
                 <div key={i} className="mb-8">
                   {section.heading && (
-                    <h2 className="text-xl md:text-2xl font-semibold text-neutral-800 mb-3">
+                    <h2 className="text-xl md:text-2xl font-semibold text-[#0F172A] mb-3">
                       {section.heading}
                     </h2>
                   )}
@@ -171,7 +171,7 @@ export default function PageRenderer({ pageData, siteUrl }: { pageData: PageData
               );
 
             case "divider":
-              return <hr key={i} className="my-10 border-dashed border-gray-300" />;
+              return <hr key={i} className="my-10 border-[#E2E8F0]" />;
 
             default:
               return null;
@@ -179,8 +179,8 @@ export default function PageRenderer({ pageData, siteUrl }: { pageData: PageData
         })}
 
         {relatedPages.length > 0 && (
-          <div className="mt-12 pt-8 border-t border-dashed border-gray-300">
-            <h2 className="text-xl font-semibold text-neutral-800 mb-4">
+          <div className="mt-12 pt-8 border-t border-[#E2E8F0]">
+            <h2 className="text-xl font-semibold text-[#0F172A] mb-4">
               Related Pages
             </h2>
             <div className="grid sm:grid-cols-2 gap-3">
@@ -188,20 +188,20 @@ export default function PageRenderer({ pageData, siteUrl }: { pageData: PageData
                 <Link
                   key={link.path}
                   href={link.path}
-                  className="p-4 rounded-lg border border-dashed border-gray-300 hover:border-orange-300 hover:bg-orange-50 transition-colors text-neutral-700 hover:text-orange-600"
+                  className="p-4 rounded-lg border border-[#E2E8F0] hover:border-[#4F46E5] hover:bg-[#F1F5F9] transition-colors text-[#475569] hover:text-[#0F172A]"
                 >
                   <span className="font-medium text-sm">{link.label}</span>
-                  <span className="block text-xs text-neutral-400 mt-1">Learn more →</span>
+                  <span className="block text-xs text-[#94A3B8] mt-1">Learn more →</span>
                 </Link>
               ))}
             </div>
           </div>
         )}
 
-        <div className="mt-8 pt-8 border-t border-dashed border-gray-300">
+        <div className="mt-8 pt-8 border-t border-[#E2E8F0]">
           <Link
             href="/new"
-            className="inline-flex items-center justify-center rounded-lg font-medium transition-colors bg-gradient-to-br from-orange-500 to-pink-400 text-white hover:opacity-90 px-6 py-3 text-lg"
+            className="inline-flex items-center justify-center rounded-lg font-medium transition-colors bg-[#0F172A] text-white hover:bg-[#1E293B] px-6 py-3 text-lg"
           >
             Create Your Free Invoice Now →
           </Link>
