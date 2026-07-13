@@ -1,9 +1,12 @@
 "use client";
 import { PreviewDetails } from "@/app/component/form/previewDetails";
 import { useData } from "@/app/hooks/useData";
-import { useFormContext } from "react-hook-form";
 
-export const UserDataPreview = () => {
+export const UserDataPreview = ({
+  onSectionChange,
+}: {
+  onSectionChange?: (step: string) => void;
+}) => {
   const {
     companyDetails,
     invoiceDetails,
@@ -12,11 +15,9 @@ export const UserDataPreview = () => {
     yourDetails,
     showPayableIn,
   } = useData();
-  const { setValue } = useFormContext();
 
   const onClick = (step: string) => {
-    setValue("step", step);
-    localStorage.setItem("step", step);
+    onSectionChange?.(step);
   };
 
   return (

@@ -4,7 +4,7 @@ import { UserInputForm } from "@/app/component/form/userInputForm";
 import { UserDataPreview } from "@/app/new/component/userDataPreview";
 import { useForm, FormProvider } from "react-hook-form";
 import { useEffect, useState, useCallback } from "react";
-import { RotateCcw, ChevronDown, Eye, FileText } from "lucide-react";
+import { RotateCcw, ChevronDown, Eye, FileText, Users, Receipt, CreditCard } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const STORAGE_KEYS = [
@@ -91,40 +91,51 @@ const Header = ({ onReset }: { onReset: () => void }) => (
   </header>
 );
 
-const Sidebar = () => {
-  const [openSection, setOpenSection] = useState<string>("identity");
+const stepToSection: Record<string, string> = {
+  "1": "identity",
+  "2": "stakeholders",
+  "3": "financials",
+  "4": "remittance",
+};
 
+const Sidebar = ({
+  openSection,
+  onOpenSection,
+}: {
+  openSection: string;
+  onOpenSection: (s: string) => void;
+}) => {
   return (
     <aside className="w-full md:w-[400px] bg-[#F8F9FA] border-r border-[#E2E8F0] overflow-y-auto">
       <AccordionSection
-        title="Identity & Meta"
+        title="Invoice Details"
         icon={<FileText className="w-3.5 h-3.5" />}
         isOpen={openSection === "identity"}
-        onToggle={() => setOpenSection(openSection === "identity" ? "" : "identity")}
+        onToggle={() => onOpenSection(openSection === "identity" ? "" : "identity")}
       >
         <UserInputForm section="identity" />
       </AccordionSection>
       <AccordionSection
-        title="Stakeholders"
-        icon={<FileText className="w-3.5 h-3.5" />}
+        title="From & To"
+        icon={<Users className="w-3.5 h-3.5" />}
         isOpen={openSection === "stakeholders"}
-        onToggle={() => setOpenSection(openSection === "stakeholders" ? "" : "stakeholders")}
+        onToggle={() => onOpenSection(openSection === "stakeholders" ? "" : "stakeholders")}
       >
         <UserInputForm section="stakeholders" />
       </AccordionSection>
       <AccordionSection
-        title="Financials"
-        icon={<FileText className="w-3.5 h-3.5" />}
+        title="Items & Pricing"
+        icon={<Receipt className="w-3.5 h-3.5" />}
         isOpen={openSection === "financials"}
-        onToggle={() => setOpenSection(openSection === "financials" ? "" : "financials")}
+        onToggle={() => onOpenSection(openSection === "financials" ? "" : "financials")}
       >
         <UserInputForm section="financials" />
       </AccordionSection>
       <AccordionSection
-        title="Remittance"
-        icon={<FileText className="w-3.5 h-3.5" />}
+        title="Payment Info"
+        icon={<CreditCard className="w-3.5 h-3.5" />}
         isOpen={openSection === "remittance"}
-        onToggle={() => setOpenSection(openSection === "remittance" ? "" : "remittance")}
+        onToggle={() => onOpenSection(openSection === "remittance" ? "" : "remittance")}
       >
         <UserInputForm section="remittance" />
       </AccordionSection>
@@ -181,6 +192,15 @@ export const NewInvoiceForm = () => {
   const methods = useForm();
   const [isClient, setIsClient] = useState(false);
   const [mobileMode, setMobileMode] = useState<"edit" | "view">("edit");
+  const [openSection, setOpenSection] = useState<string>("identity");
+
+  const handleSectionFromPreview = useCallback((step: string) => {
+    const section = stepToSection[step];
+    if (section) {
+      setOpenSection(section);
+      if (mobileMode === "view") setMobileMode("edit");
+    }
+  }, [mobileMode]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -217,25 +237,25 @@ export const NewInvoiceForm = () => {
         <div className="flex-1 flex flex-col md:flex-row overflow-hidden">
           {/* Mobile: Edit mode */}
           <div className={cn("md:hidden flex-1 overflow-y-auto", mobileMode === "view" && "hidden")}>
-            <Sidebar />
+            <Sidebar openSection={openSection} onOpenSection={setOpenSection} />
           </div>
 
           {/* Mobile: View mode */}
           <div className={cn("md:hidden flex-1 overflow-y-auto bg-[#F4F5F6] p-4", mobileMode === "edit" && "hidden")}>
             <div className="max-w-[500px] mx-auto">
-              <UserDataPreview />
+              <UserDataPreview onSectionChange={handleSectionFromPreview} />
             </div>
           </div>
 
           {/* Desktop Sidebar */}
           <div className="hidden md:block flex-shrink-0">
-            <Sidebar />
+            <Sidebar openSection={openSection} onOpenSection={setOpenSection} />
           </div>
 
           {/* Desktop Artboard */}
           <div className="hidden md:flex flex-1 bg-[#F4F5F6] items-start justify-center p-8 overflow-y-auto">
             <div className="w-full max-w-[500px] sticky top-8">
-              <UserDataPreview />
+              <UserDataPreview onSectionChange={handleSectionFromPreview} />
             </div>
           </div>
         </div>
