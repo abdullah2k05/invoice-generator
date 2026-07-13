@@ -3,6 +3,8 @@ import "./globals.css";
 import { GeistSans } from "geist/font/sans";
 import Script from "next/script";
 import Link from "next/link";
+import { BackButtonHandler } from "@/components/BackButtonHandler";
+import { AppInit } from "@/components/AppInit";
 
 export const viewport: Viewport = {
   themeColor: "#f97316",
@@ -174,6 +176,8 @@ export default function RootLayout({
         </Script>
       </head>
       <body className={`${GeistSans.className} flex flex-col min-h-screen`}>
+        <AppInit />
+        <BackButtonHandler />
         {/* Navbar */}
         <nav className="border-b border-[#E2E8F0] bg-white sticky top-0 z-50">
           <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between border-l border-r border-[#E2E8F0]">

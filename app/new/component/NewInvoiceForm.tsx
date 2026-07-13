@@ -2,6 +2,8 @@
 import { UserInputForm } from "@/app/component/form/userInputForm";
 import { UserDataPreview } from "@/app/new/component/userDataPreview";
 import { useForm, FormProvider } from "react-hook-form";
+import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { AdMobBanner } from "@/components/AdMobBanner";
 import { useEffect, useState, useCallback } from "react";
 import { RotateCcw, ChevronDown, Eye, FileText, User, Briefcase, Receipt, CreditCard } from "lucide-react";
 import dynamic from "next/dynamic";
@@ -167,6 +169,14 @@ const Sidebar = ({
           </div>
         </div>
       </AccordionSection>
+      <div className="px-5 py-4 border-t border-[#E2E8F0]">
+        <a
+          href="mailto:hello@mabdullah.top?subject=Invoice%20Generator%20Feedback"
+          className="text-xs text-[#94A3B8] hover:text-[#0F172A] transition-colors"
+        >
+          Send Feedback
+        </a>
+      </div>
     </aside>
   );
 };
@@ -249,7 +259,8 @@ export const NewInvoiceForm = () => {
   if (!isClient) return <div />;
 
   return (
-    <FormProvider {...methods}>
+    <ErrorBoundary>
+      <FormProvider {...methods}>
       <div className="w-full min-h-dvh bg-[#F8F9FA] flex flex-col">
         {/* Desktop Header */}
         <div className="hidden md:block">
@@ -310,7 +321,9 @@ export const NewInvoiceForm = () => {
             )}
           </button>
         </div>
+        <AdMobBanner />
       </div>
     </FormProvider>
+    </ErrorBoundary>
   );
 };
