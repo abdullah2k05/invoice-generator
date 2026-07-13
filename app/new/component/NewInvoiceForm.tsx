@@ -153,6 +153,20 @@ const Sidebar = ({
       >
         <UserInputForm section="remittance" />
       </AccordionSection>
+      <AccordionSection
+        title="Download"
+        icon={<FileText className="w-3.5 h-3.5" />}
+        isOpen={openSection === "download"}
+        onToggle={() => onOpenSection(openSection === "download" ? "" : "download")}
+      >
+        <div className="text-center py-2">
+          <p className="text-sm font-semibold text-[#0F172A]">Your invoice is ready</p>
+          <p className="text-xs text-[#64748B] mt-1 mb-4">Please review the details carefully before downloading your invoice.</p>
+          <div className="flex justify-center">
+            <DownloadInvoiceButton />
+          </div>
+        </div>
+      </AccordionSection>
     </aside>
   );
 };
@@ -271,11 +285,8 @@ export const NewInvoiceForm = () => {
 
           {/* Desktop Artboard */}
           <div className="hidden md:flex flex-1 bg-[#F4F5F6] items-start justify-center p-8 overflow-y-auto">
-            <div className="w-full max-w-[500px] space-y-4">
+            <div className="w-full max-w-[500px]">
               <UserDataPreview onSectionChange={handleSectionFromPreview} />
-              <div className="flex justify-center">
-                <DownloadInvoiceButton />
-              </div>
             </div>
           </div>
         </div>
