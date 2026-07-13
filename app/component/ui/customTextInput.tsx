@@ -8,12 +8,14 @@ type CustomInputProps = {
   label?: string;
   placeholder: string;
   variableName: string;
+  inputMode?: 'text' | 'email' | 'tel' | 'url' | 'numeric' | 'decimal' | 'search';
 };
 
 const CustomTextInput = ({
   label,
   placeholder,
   variableName,
+  inputMode,
 }: CustomInputProps) => (
   <Controller
     render={({ field: { onChange, value } }) => (
@@ -22,6 +24,7 @@ const CustomTextInput = ({
         placeholder={placeholder}
         value={value}
         type="text"
+        inputMode={inputMode}
         onChange={(e) => {
           const updatedValue = e.target.value;
           localStorage.setItem(variableName, updatedValue);

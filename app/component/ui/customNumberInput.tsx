@@ -8,12 +8,14 @@ type CustomNumberProps = {
   label?: string;
   placeholder: string;
   variableName: string;
+  inputMode?: 'text' | 'email' | 'tel' | 'url' | 'numeric' | 'decimal' | 'search';
 };
 
 export const CustomNumberInput = ({
   label,
   placeholder,
   variableName,
+  inputMode,
 }: CustomNumberProps) => (
   <Controller
     render={({ field: { onChange, value } }) => (
@@ -23,6 +25,7 @@ export const CustomNumberInput = ({
         value={value}
         type="text"
         pattern="[0-9]*"
+        inputMode={inputMode || "numeric"}
         onChange={(e) => {
           const updatedValue = e.target.value;
           localStorage.setItem(variableName, updatedValue);

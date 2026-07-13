@@ -11,7 +11,7 @@ export const PaymentDetailsForm = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <div className="pt-6 md:pt-24">
+    <div className="pt-2">
       <p className="text-xl md:text-2xl font-semibold pb-1">Payment Details</p>
       <p className="text-sm text-neutral-400 pb-5">Optional — skip if not needed</p>
 

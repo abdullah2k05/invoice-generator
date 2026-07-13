@@ -21,10 +21,10 @@ import { AdBanner } from "@/components/AdBanner";
 
 const Home = () => {
   return (
-    <div className="bg-[#f7f7f7] flex justify-center items-center overflow-x-hidden">
-      <div className="border-l border-r max-w-4xl w-full mx-auto border-dashed h-full flex justify-center flex-col border-gray-300">
+    <div className="bg-[#F9FAFB] flex justify-center items-center overflow-x-hidden">
+      <div className="border-l border-r max-w-4xl w-full mx-auto border-dashed h-full flex justify-center flex-col border-gray-200">
         <div className="justify-center items-center h-full flex flex-col my-6 md:my-10">
-          <div className="border-t border-dashed border-gray-300 w-full mx-auto py-6 md:py-10 flex justify-center items-center relative">
+          <div className="border-t border-dashed border-gray-200 w-full mx-auto py-6 md:py-10 flex justify-center items-center relative">
             <Plus className="text-orange-500 group-hover:text-orange-500 w-5 h-5 md:w-7 md:h-7 absolute top-0 -translate-x-1/2 -translate-y-1/2 left-0" />
             <Image
               src="/android-chrome-512x512.png"
@@ -35,14 +35,14 @@ const Home = () => {
             />
           </div>
           <div className="relative group">
-            <h1 className="font-semibold text-2xl md:text-7xl text-center w-full border-t border-b py-4 md:py-6 border-dashed text-balance px-4 text-black border-gray-300">
+            <h1 className="font-semibold text-2xl md:text-7xl text-center w-full border-t border-b py-4 md:py-6 border-dashed text-balance px-4 text-black border-gray-200">
               <span className="">Free Invoice Generator – </span>
               <span className="text-transparent bg-clip-text bg-gradient-to-br from-orange-500 to-pink-400">
                 No Signup Required
               </span>
             </h1>
           </div>
-          <div className="pt-6 pb-7 md:pt-10 md:pb-11 flex gap-3 items-center mx-auto border-gray-300 border-b w-full justify-center border-dashed relative">
+          <div className="pt-6 pb-7 md:pt-10 md:pb-11 flex gap-3 items-center mx-auto border-gray-200 border-b w-full justify-center border-dashed relative">
             <Plus className="text-orange-500 group-hover:text-orange-500 w-5 h-5 md:w-7 md:h-7 absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2" />
             <Link
               href="/new"
@@ -73,9 +73,9 @@ const Home = () => {
               Github
             </a>
           </div>
-          <div className="group border-b border-dashed text-balance text-center w-full font-semibold border-gray-300">
+          <div className="group border-b border-dashed text-balance text-center w-full font-semibold border-gray-200">
             <div className="grid grid-cols-2 px-4 relative py-4 md:py-6 text-2xl md:text-7xl max-w-lg mx-auto">
-              <div className="flex flex-col border-r border-dashed border-gray-300">
+              <div className="flex flex-col border-r border-dashed border-gray-200">
                 <div className="flex justify-center items-center gap-1 md:gap-2">
                   <Users className="w-3 h-3 md:w-4 md:h-4" />
                   <span className="text-[10px] md:text-xs">Trusted by</span>
@@ -101,14 +101,14 @@ const Home = () => {
         <div className="px-2 md:px-0 mb-6 md:mb-10">
           <DemoPreview />
         </div>
-        <p className="font-medium text-lg md:text-3xl border-t border-gray-300 border-b border-dashed py-4 md:py-6 px-4 md:px-7 text-neutral-700 text-center">
+        <p className="font-medium text-lg md:text-3xl border-t border-gray-200 border-b border-dashed py-4 md:py-6 px-4 md:px-7 text-neutral-700 text-center">
           Here&apos;s why you&apos;ll love our Free Invoice Generator
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 relative">
           <Plus className="text-orange-500 w-5 h-5 md:w-7 md:h-7 absolute top-0 -translate-x-1/2 -translate-y-1/2 left-0 hidden md:block" />
           <Plus className="text-orange-500 w-5 h-5 md:w-7 md:h-7 absolute bottom-0 right-0 translate-x-1/2 translate-y-1/2 hidden md:block" />
-          <div className="border-b sm:border-r border-dashed p-5 md:p-7 border-gray-300 flex justify-center flex-col items-center">
-            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 border-dashed rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-gray-300 bg-gradient-to-br from-orange-100 to-pink-100">
+          <div className="border-b sm:border-r border-dashed p-5 md:p-7 border-gray-200 flex justify-center flex-col items-center">
+            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 border-dashed rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-gray-200 bg-gradient-to-br from-orange-100 to-pink-100">
               <Rocket className="w-4 h-4 md:w-6 md:h-6" />
             </p>
             <p className="font-bold text-base md:text-xl">Fast & Easy</p>
@@ -116,8 +116,8 @@ const Home = () => {
               Simply fill in the blanks and generate professional invoices in seconds
             </p>
           </div>
-          <div className="border-b border-dashed p-5 md:p-7 border-gray-300 flex justify-center flex-col items-center">
-            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 border-dashed rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-gray-300 bg-gradient-to-br from-orange-100 to-pink-100">
+          <div className="border-b border-dashed p-5 md:p-7 border-gray-200 flex justify-center flex-col items-center">
+            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 border-dashed rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-gray-200 bg-gradient-to-br from-orange-100 to-pink-100">
               <Infinity className="w-4 h-4 md:w-6 md:h-6" />
             </p>
             <p className="font-bold text-base md:text-xl">Free for Lifetime</p>
@@ -125,8 +125,8 @@ const Home = () => {
               No credit card required, no signup needed. Create unlimited invoices free for lifetime.
             </p>
           </div>
-          <div className="border-b sm:border-r border-dashed p-5 md:p-7 border-gray-300 flex justify-center flex-col items-center">
-            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 border-dashed rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-gray-300 bg-gradient-to-br from-orange-100 to-pink-100">
+          <div className="border-b sm:border-r border-dashed p-5 md:p-7 border-gray-200 flex justify-center flex-col items-center">
+            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 border-dashed rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-gray-200 bg-gradient-to-br from-orange-100 to-pink-100">
               <NotebookText className="w-4 h-4 md:w-6 md:h-6" />
             </p>
             <p className="font-bold text-base md:text-xl">Beautiful Templates</p>
@@ -134,8 +134,8 @@ const Home = () => {
               Choose from a variety of modern and customizable invoice templates.
             </p>
           </div>
-          <div className="border-b border-dashed p-5 md:p-7 border-gray-300 flex justify-center flex-col items-center">
-            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 border-dashed rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-gray-300 bg-gradient-to-br from-orange-100 to-pink-100">
+          <div className="border-b border-dashed p-5 md:p-7 border-gray-200 flex justify-center flex-col items-center">
+            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 border-dashed rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-gray-200 bg-gradient-to-br from-orange-100 to-pink-100">
               <Receipt className="w-4 h-4 md:w-6 md:h-6" />
             </p>
             <p className="font-bold text-base md:text-xl">Get Paid Faster</p>
@@ -143,8 +143,8 @@ const Home = () => {
               Send invoices electronically with secure payment links for faster client payments.
             </p>
           </div>
-          <div className="border-b sm:border-r border-dashed p-5 md:p-7 border-gray-300 flex justify-center flex-col items-center">
-            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 border-dashed rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-gray-300 bg-gradient-to-br from-orange-100 to-pink-100">
+          <div className="border-b sm:border-r border-dashed p-5 md:p-7 border-gray-200 flex justify-center flex-col items-center">
+            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 border-dashed rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-gray-200 bg-gradient-to-br from-orange-100 to-pink-100">
               <Hourglass className="w-4 h-4 md:w-6 md:h-6" />
             </p>
             <p className="font-bold text-base md:text-xl">Save Time & Money</p>
@@ -152,8 +152,8 @@ const Home = () => {
               Ditch the spreadsheets and expensive invoicing software.
             </p>
           </div>
-          <div className="border-b border-dashed p-5 md:p-7 border-gray-300 flex justify-center flex-col items-center">
-            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 border-dashed rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-gray-300 bg-gradient-to-br from-orange-100 to-pink-100">
+          <div className="border-b border-dashed p-5 md:p-7 border-gray-200 flex justify-center flex-col items-center">
+            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 border-dashed rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-gray-200 bg-gradient-to-br from-orange-100 to-pink-100">
               <CodeXml className="w-4 h-4 md:w-6 md:h-6" />
             </p>
             <p className="font-bold text-base md:text-xl">Free for Lifetime</p>
@@ -162,7 +162,7 @@ const Home = () => {
             </p>
           </div>
         </div>
-        <div className="px-4 md:px-5 py-8 md:py-11 flex justify-center items-center border-b border-dashed border-gray-300">
+        <div className="px-4 md:px-5 py-8 md:py-11 flex justify-center items-center border-b border-dashed border-gray-200">
           <div className="flex justify-center rounded-2xl max-w-3xl border-dashed items-center px-4 py-6 md:py-10 w-full flex-col gap-3 md:gap-4 bg-gradient-to-br from-orange-100 to-pink-100">
             <p className="md:max-w-2xl text-center font-semibold text-base md:text-3xl text-black px-2 md:p-4 text-balance">
               Free invoice generator – no signup required, no credit card needed.
@@ -176,7 +176,7 @@ const Home = () => {
             </Link>
           </div>
         </div>
-        <AdBanner adSlot="0000000000" format="horizontal" className="py-4 md:py-6 border-b border-dashed border-gray-300" />
+        <AdBanner adSlot="0000000000" format="horizontal" className="py-4 md:py-6 border-b border-dashed border-gray-200" />
       </div>
     </div>
   );

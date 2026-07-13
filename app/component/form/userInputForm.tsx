@@ -8,11 +8,14 @@ import { CompanyDetailsForm } from "@/app/component/form/companyDetails/companyD
 import { YourDetailsForm } from "@/app/component/form/yourDetails/yourDetailsForm";
 import { useGetValue } from "@/app/hooks/useGetValue";
 import { getInitialValue } from "@/lib/getInitialValue";
+import { AdBanner } from "@/components/AdBanner";
 
 const DownloadInvoiceButton = dynamic(
   () => import("@/app/component/form/downloadInvoice/downloadInvoiceButton").then((mod) => mod.DownloadInvoiceButton),
   { ssr: false }
 );
+
+const AD_STEPS = ["3", "5"];
 
 export const UserInputForm = () => {
   const step = useGetValue("step", getInitialValue("step", "1"));
@@ -27,12 +30,14 @@ export const UserInputForm = () => {
       </div>
       <div className={step === "3" ? "block" : "hidden"}>
         <InvoiceDetailsForm />
+        {AD_STEPS.includes(step) && <AdBanner adSlot="0000000000" format="horizontal" className="mt-6" />}
       </div>
       <div className={step === "4" ? "block" : "hidden"}>
         <PaymentDetailsForm />
       </div>
       <div className={step === "5" ? "block" : "hidden"}>
         <InvoiceTermsForm />
+        {AD_STEPS.includes(step) && <AdBanner adSlot="0000000000" format="horizontal" className="mt-6" />}
       </div>
       {step === "6" && <DownloadInvoiceButton />}
     </div>

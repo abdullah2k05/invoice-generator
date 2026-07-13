@@ -5,7 +5,6 @@ import { FormSteps } from "@/app/component/form/step/fromSteps";
 import { UserDataPreview } from "@/app/new/component/userDataPreview";
 import { useForm, useFormContext, FormProvider } from "react-hook-form";
 import { useEffect, useState, useCallback } from "react";
-import { AdBanner } from "@/components/AdBanner";
 import { MobilePreviewSheet } from "@/app/component/ui/mobilePreviewSheet";
 import { useData } from "@/app/hooks/useData";
 import { useGetValue } from "@/app/hooks/useGetValue";
@@ -131,33 +130,30 @@ const MobileLayout = ({ onPreviewOpen }: { onPreviewOpen: () => void }) => {
 
       <main className="flex-1 overflow-y-auto px-4 py-5">
         <UserInputForm />
-        <div className="pt-4 pb-4">
-          <AdBanner adSlot="0000000000" format="horizontal" />
-        </div>
       </main>
 
       {!isLastStep && (
         <button
           onClick={onPreviewOpen}
           className="fixed bottom-20 left-1/2 -translate-x-1/2 z-40
-            bg-gray-900 text-white font-medium text-sm
+            bg-gradient-to-br from-orange-500 to-pink-400 text-white font-medium text-sm
             px-5 py-3 rounded-full flex items-center gap-2
-            shadow-lg active:scale-95 transition-transform"
+            shadow-lg active:scale-95 transition-all duration-150"
         >
-          <Eye className="w-4 h-4 text-orange-400" />
+          <Eye className="w-4 h-4 text-white/80" />
           <span>
-            Preview Invoice{" "}
+            View Live Preview{" "}
             {curDetails ? `${curDetails.currencySymbol}${totalAmount.toLocaleString()}` : ""}
           </span>
         </button>
       )}
 
-      <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white/90 backdrop-blur-md border-t border-gray-100 px-4 py-3">
+      <nav className="fixed bottom-0 left-0 right-0 z-30 bg-white/80 backdrop-blur-xl border-t border-gray-200 px-4 py-3 safe-area-bottom">
         <div className="grid grid-cols-12 gap-3">
           {nav.prev ? (
             <button
               onClick={() => goToStep(nav.prev!)}
-              className="col-span-3 flex items-center justify-center gap-1 h-12 border border-gray-200 rounded-xl active:bg-gray-50 transition-colors"
+              className="col-span-3 flex items-center justify-center gap-1 h-12 border border-gray-200 rounded-xl active:scale-95 transition-all duration-150"
             >
               <ChevronLeft className="w-5 h-5 text-gray-600" />
             </button>
@@ -166,10 +162,10 @@ const MobileLayout = ({ onPreviewOpen }: { onPreviewOpen: () => void }) => {
           )}
           <button
             onClick={() => nav.next && goToStep(nav.next)}
-            className={`col-span-9 h-12 rounded-xl font-bold text-sm flex items-center justify-center gap-1.5 transition-all active:scale-[0.98]
+            className={`col-span-9 h-12 rounded-xl font-bold text-sm flex items-center justify-center gap-1.5 transition-all duration-150 active:scale-[0.97]
               ${isLastStep
                 ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                : "bg-orange-500 text-white shadow-sm active:bg-orange-600"
+                : "bg-gradient-to-br from-orange-500 to-pink-400 text-white shadow-sm active:opacity-90"
               }`}
             disabled={isLastStep}
           >
@@ -215,40 +211,41 @@ export const NewInvoiceForm = () => {
             <UserDataPreview />
           </MobilePreviewSheet>
 
-          {/* Desktop — siblings so page.tsx flex-row lays them side by side */}
-          <div className="max-md:hidden md:max-w-lg w-full md:min-h-dvh p-4 md:p-12 md:border-r border-gray-200 flex flex-col md:justify-between">
+          {/* Desktop — 7:5 asymmetric split */}
+          <div className="max-md:hidden w-7/12 min-h-dvh bg-[#F9FAFB] p-4 md:p-12 md:border-r border-gray-200 flex flex-col md:justify-between">
             <div>
-              <div className="flex gap-2 items-center justify-between">
+              <div className="flex gap-2 items-center justify-between mb-8">
                 <div className="flex gap-2 items-center">
                   <Image
                     src="/android-chrome-512x512.png"
-                    width={40}
-                    height={40}
+                    width={36}
+                    height={36}
                     className="rounded-lg"
                     alt="logo"
                   />
                   <div>
-                    <p className="font-semibold text-sm md:text-base">Invoice Generator</p>
+                    <p className="font-semibold text-sm text-gray-900">Invoice Generator</p>
                   </div>
                 </div>
                 <button
                   onClick={handleReset}
                   title="Reset all fields"
-                  className="flex items-center gap-1.5 text-xs text-neutral-400 hover:text-orange-500 transition-colors"
+                  className="flex items-center gap-1.5 text-xs text-gray-400 hover:text-orange-500 transition-colors"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   Reset
                 </button>
               </div>
               <UserInputForm />
-              <AdBanner adSlot="0000000000" format="horizontal" className="mt-6" />
             </div>
             <FormSteps />
           </div>
 
-          <div className="max-md:hidden relative md:min-h-dvh w-full flex justify-center items-start md:items-center p-2 md:p-0">
-            <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]" />
-            <UserDataPreview />
+          <div className="max-md:hidden relative w-5/12 min-h-dvh bg-[#F9FAFB] flex justify-center items-start md:items-center p-6">
+            <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]" />
+            <div className="relative w-full max-w-[450px]">
+              <UserDataPreview />
+            </div>
           </div>
         </>
       )}

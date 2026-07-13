@@ -3,12 +3,13 @@ import CustomNumberInput from "@/app/component/ui/customNumberInput";
 import ImageInput from "@/app/component/ui/imageInput";
 
 export const CompanyDetailsForm = () => (
-  <div className="pt-6 md:pt-24">
+  <div className="pt-2">
     <p className="text-xl md:text-2xl font-semibold pb-3">Company Details (To)</p>
     <CustomTextInput
       label="Email"
       placeholder="e.g. info@company.pk"
       variableName="email"
+      inputMode="email"
     />
     <p className="pb-6 md:pb-10 pt-3 text-xs font-medium text-neutral-500">
       We&apos;ll fill the billing details automatically if we find the company.

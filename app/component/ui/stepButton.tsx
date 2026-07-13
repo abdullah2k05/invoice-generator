@@ -14,7 +14,7 @@ const StepButton = ({ isPrevious, title, step }: StepButtonProps) => (
       <div className="mt-3 w-full flex">
         {isPrevious ? (
           <button
-            className="flex-1 border border-gray-200 hover:border-gray-300 hover:bg-gray-50 rounded-lg p-3 transition-all"
+            className="flex-1 border border-gray-200 hover:border-gray-300 hover:bg-gray-50 rounded-xl p-3 transition-all duration-150 active:scale-[0.98]"
             onClick={() => {
               localStorage.setItem("step", step);
               onChange(step);
@@ -43,7 +43,7 @@ const StepButton = ({ isPrevious, title, step }: StepButtonProps) => (
               localStorage.setItem("step", step);
               onChange(step);
             }}
-            className="flex-1 bg-orange-500 hover:bg-orange-600 text-white rounded-lg p-3 transition-all shadow-sm"
+            className="flex-1 bg-gradient-to-br from-orange-500 to-pink-400 hover:opacity-90 text-white rounded-xl p-3 transition-all duration-150 shadow-sm active:scale-[0.98]"
           >
             <div className="flex gap-2 justify-end items-center">
               <p className="text-sm font-medium text-white/90">Next</p>

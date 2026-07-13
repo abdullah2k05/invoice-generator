@@ -18,7 +18,7 @@ export const InvoiceDetailsForm = () => {
   return (
     <Controller
       render={({ field: { onChange, value } }) => (
-        <div className="pt-6 md:pt-24">
+        <div className="pt-2">
           <p className="text-xl md:text-2xl font-semibold pb-3">Invoice Details</p>
           <div className="flex flex-col gap-6">
             <div>
@@ -57,6 +57,7 @@ export const InvoiceDetailsForm = () => {
                           placeholder="Item name"
                           value={itemDescription}
                           type="text"
+                          inputMode="text"
                           onChange={(e) => {
                             const updatedArray = [...value];
                             updatedArray[index] = {
@@ -71,10 +72,11 @@ export const InvoiceDetailsForm = () => {
                       </div>
                       <div className="w-14">
                         <Input
-                          placeholder="Qat"
+                          placeholder="Qty"
                           value={`${qty || ""}`}
                           type="text"
                           pattern="[0-9]*"
+                          inputMode="numeric"
                           onChange={(e) => {
                             const inputValue = e.target.value;
                             if (/^-?\d*\.?\d*$/.test(inputValue) || inputValue === "") {
@@ -92,6 +94,7 @@ export const InvoiceDetailsForm = () => {
                           value={`${amount || ""}`}
                           type="text"
                           pattern="[0-9]*"
+                          inputMode="decimal"
                           onChange={(e) => {
                             const inputValue = e.target.value;
                             if (/^-?\d*\.?\d*$/.test(inputValue) || inputValue === "") {
