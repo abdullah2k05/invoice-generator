@@ -29,9 +29,9 @@ export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps & { template?: P
 
   const hasBankDetails = bankName || accountNumber || accountName || swiftCode || routingCode || ifscCode;
   const tc = template?.colors;
-  const titleStyle = { ...pdfTypography.title, color: tc?.title || pdfTypography.title.color };
-  const paymentTitleStyle = { ...pdfTypography.paymentTitle, color: tc?.paymentTitle || pdfTypography.paymentTitle.color };
-  const itemDescStyle = { ...pdfTypography.itemDescription, color: tc?.itemDescription || pdfTypography.itemDescription.color };
+  const titleStyle: any = { ...pdfTypography.title, color: tc?.title || pdfTypography.title.color, fontSize: template?.fontSizes.title ?? 11 };
+  const paymentTitleStyle: any = { ...pdfTypography.paymentTitle, color: tc?.paymentTitle || pdfTypography.paymentTitle.color, fontSize: template?.fontSizes.title ?? 11 };
+  const itemDescStyle: any = { ...pdfTypography.itemDescription, color: tc?.itemDescription || pdfTypography.itemDescription.color, fontSize: template?.fontSizes.itemText ?? 12 };
 
   return (
     <View

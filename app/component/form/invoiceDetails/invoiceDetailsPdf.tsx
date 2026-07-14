@@ -22,18 +22,19 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails & { template?: PdfTe
   const totalAmount = discountAmount + taxAmount;
   const tc = template?.colors;
 
-  const titleStyle = { ...pdfTypography.title, color: tc?.title || pdfTypography.title.color };
-  const itemDescStyle = { ...pdfTypography.itemDescription, color: tc?.itemDescription || pdfTypography.itemDescription.color };
-  const amountStyle = { ...pdfTypography.amount, color: tc?.amount || "#111827" };
+  const titleStyle: any = { ...pdfTypography.title, color: tc?.title || pdfTypography.title.color, fontSize: template?.fontSizes.title ?? 11 };
+  const itemDescStyle: any = { ...pdfTypography.itemDescription, color: tc?.itemDescription || pdfTypography.itemDescription.color, fontSize: template?.fontSizes.itemText ?? 12 };
+  const amountStyle: any = { ...pdfTypography.amount, color: tc?.amount || "#111827", fontSize: template?.fontSizes.amount ?? 16 };
   const borderColor = tc?.border || "#e5e7eb";
 
   const borderBottom = { borderBottom: `1px ${template?.borderStyle || "dashed"} ${borderColor}` };
   const borderTop = { borderTop: `1px ${template?.borderStyle || "dashed"} ${borderColor}` };
+  const irp = template?.layout.itemRowPadding ?? 14;
 
   return (
     <View>
       <View style={pdfUtils.flexRowItemCenter}>
-        <View style={{ flex: 1, paddingHorizontal: 40, paddingVertical: 16 }}>
+        <View style={{ flex: 1, paddingHorizontal: 40, paddingVertical: irp + 2 }}>
           <Text style={titleStyle}>Description</Text>
         </View>
         <View
@@ -41,7 +42,7 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails & { template?: PdfTe
             flex: 1,
             ...pdfUtils.flexRowItemCenter,
             paddingHorizontal: 40,
-            paddingVertical: 16,
+            paddingVertical: irp + 2,
           }}
         >
           <View style={{ flex: 1 }}>
@@ -58,7 +59,7 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails & { template?: PdfTe
       {items.map(({ itemDescription, amount, qty }, index) => {
         const containerStyle = {
           marginHorizontal: 40,
-          paddingVertical: 14,
+          paddingVertical: irp,
           ...borderBottom,
           ...pdfUtils.flexRowItemCenter,
         };
@@ -115,7 +116,7 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails & { template?: PdfTe
           <View
             style={{
               marginHorizontal: 40,
-              paddingVertical: 14,
+              paddingVertical: irp,
               ...pdfUtils.flexRowItemCenter,
               ...borderBottom,
             }}
@@ -138,7 +139,7 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails & { template?: PdfTe
             <View
               style={{
                 marginHorizontal: 40,
-                paddingVertical: 14,
+                paddingVertical: irp,
                 ...pdfUtils.flexRowItemCenter,
                 ...borderBottom,
               }}
@@ -162,7 +163,7 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails & { template?: PdfTe
             <View
               style={{
                 marginHorizontal: 40,
-                paddingVertical: 14,
+                paddingVertical: irp,
                 ...pdfUtils.flexRowItemCenter,
                 ...borderBottom,
               }}
@@ -185,7 +186,7 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails & { template?: PdfTe
           <View
             style={{
               marginHorizontal: 40,
-              paddingVertical: 14,
+              paddingVertical: irp,
               ...pdfUtils.flexRowItemCenter,
             }}
           >

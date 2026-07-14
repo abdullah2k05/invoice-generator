@@ -18,32 +18,50 @@ export const YourDetailsPDF: React.FC<YourDetails & { template?: PdfTemplate }> 
   yourTaxId,
   yourZip,
   template,
-}) => (
-  <View style={pdfContainers.YourDetails}>
-    <Text style={{ ...pdfTypography.title, marginBottom: 14, color: template?.colors.title || pdfTypography.title.color }}>
-      From
-    </Text>
+}) => {
+  const tc = template?.colors;
+  const sp = template?.layout.sectionPadding ?? 16;
+  const titleColor = tc?.title || pdfTypography.title.color;
 
-    <View style={pdfContainers.imageContainer}>
-      {yourLogo && (
-        <Image style={{ height: 40, borderRadius: 6 }} src={yourLogo} />
-      )}
-    </View>
-    {yourName && <Text style={{ ...pdfTypography.text2xl, color: template?.colors.subtitle || "#111827" }}>{yourName}</Text>}
-    {yourEmail && (
-      <Text style={{ ...pdfTypography.description, marginBottom: 12, color: template?.colors.description || pdfTypography.description.color }}>
-        {yourEmail}
-      </Text>
-    )}
-    <View style={{ ...pdfTypography.description, color: template?.colors.description || pdfTypography.description.color }}>
-      {yourAddress && <Text>{yourAddress}</Text>}
-      {(yourCity || yourState || yourZip) && (
-        <Text style={{ marginBottom: 2 }}>
-          {yourCity}, {yourState} {yourZip}
+  const sectionStyle = { ...pdfContainers.YourDetails, paddingVertical: sp } as any;
+  if (template?.sectionHeaderStyle === "accent-left-bar") {
+    sectionStyle.borderLeft = `4 solid ${tc?.accent || "#635bff"}`;
+    sectionStyle.paddingLeft = 44;
+  }
+
+  const headerBg = template?.sectionHeaderStyle === "background-block"
+    ? { backgroundColor: tc?.accent || "#dc2626", paddingVertical: 4, paddingHorizontal: 8, marginBottom: 12 }
+    : { marginBottom: 14 };
+
+  return (
+    <View style={sectionStyle}>
+      <View style={{ backgroundColor: template?.sectionHeaderStyle === "background-block" ? (tc?.accent || "#dc2626") : "transparent", paddingVertical: template?.sectionHeaderStyle === "background-block" ? 4 : 0, paddingHorizontal: template?.sectionHeaderStyle === "background-block" ? 8 : 0, marginBottom: template?.sectionHeaderStyle === "background-block" ? 12 : 14, alignSelf: template?.sectionHeaderStyle === "background-block" ? "flex-start" : "auto", borderRadius: 2 }}>
+        <Text style={{ ...pdfTypography.title, color: template?.sectionHeaderStyle === "background-block" ? "#ffffff" : titleColor, fontSize: template?.fontSizes.title }}>
+          From
+        </Text>
+      </View>
+
+      <View style={pdfContainers.imageContainer}>
+        {yourLogo && (
+          <Image style={{ height: 40, borderRadius: 6 }} src={yourLogo} />
+        )}
+      </View>
+      {yourName && <Text style={{ ...pdfTypography.text2xl, color: tc?.subtitle || "#111827" }}>{yourName}</Text>}
+      {yourEmail && (
+        <Text style={{ ...pdfTypography.description, marginBottom: 12, color: tc?.description || pdfTypography.description.color }}>
+          {yourEmail}
         </Text>
       )}
-      {yourCountry && <Text style={{ marginBottom: 4 }}>{yourCountry}</Text>}
-      {yourTaxId && <Text>Tax ID:{yourTaxId}</Text>}
+      <View style={{ ...pdfTypography.description, color: tc?.description || pdfTypography.description.color }}>
+        {yourAddress && <Text>{yourAddress}</Text>}
+        {(yourCity || yourState || yourZip) && (
+          <Text style={{ marginBottom: 2 }}>
+            {yourCity}, {yourState} {yourZip}
+          </Text>
+        )}
+        {yourCountry && <Text style={{ marginBottom: 4 }}>{yourCountry}</Text>}
+        {yourTaxId && <Text>Tax ID:{yourTaxId}</Text>}
+      </View>
     </View>
-  </View>
-);
+  );
+};

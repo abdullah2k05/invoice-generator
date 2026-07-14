@@ -97,21 +97,29 @@ export const DownloadInvoiceButton = () => {
 
             try {
               await Filesystem.writeFile({
-                path: "Download/Invoice.pdf",
+                path: "Invoice.pdf",
                 data: base64,
-                directory: Directory.ExternalStorage,
+                directory: Directory.Documents,
               });
             } catch {
-              const saved = await Filesystem.writeFile({
-                path: "invoice.pdf",
-                data: base64,
-                directory: Directory.Cache,
-              });
-              await Share.share({
-                title: "Invoice",
-                files: [saved.uri],
-                dialogTitle: "Save Invoice",
-              });
+              try {
+                await Filesystem.writeFile({
+                  path: "Download/Invoice.pdf",
+                  data: base64,
+                  directory: Directory.ExternalStorage,
+                });
+              } catch {
+                const saved = await Filesystem.writeFile({
+                  path: "invoice.pdf",
+                  data: base64,
+                  directory: Directory.Cache,
+                });
+                await Share.share({
+                  title: "Invoice",
+                  files: [saved.uri],
+                  dialogTitle: "Save Invoice",
+                });
+              }
             }
           } else {
             saveAs(blob, "invoice.pdf");

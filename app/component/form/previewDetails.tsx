@@ -13,6 +13,7 @@ export const PreviewDetails = ({
   invoiceTerms,
   onClick,
   showPayableIn = true,
+  templateColors,
 }: {
   yourDetails: YourDetails;
   companyDetails: CompanyDetails;
@@ -21,13 +22,34 @@ export const PreviewDetails = ({
   invoiceTerms: InvoiceTerms;
   onClick?: (step: string) => void;
   showPayableIn?: boolean;
-}) => (
+  templateColors?: {
+    title: string;
+    accent: string;
+    border: string;
+    borderStyle: string;
+  };
+}) => {
+  const tc = templateColors;
+  const borderCls = tc?.border || "#E2E8F0";
+  const borderSty = tc?.borderStyle || "solid";
+
+  return (
   <div className="w-full flex justify-center">
-    <div id="invoice-preview" className="w-full max-w-[595px] bg-white shadow-sm border border-[#E2E8F0] mx-2 md:mx-0">
+    <div
+      id="invoice-preview"
+      className="w-full max-w-[595px] bg-white shadow-sm mx-2 md:mx-0"
+      style={{
+        border: `1px ${borderSty} ${borderCls}`,
+      }}
+    >
       <InvoiceTermsPreview {...invoiceTerms} onClick={onClick} />
-      <div className="border-b border-[#E2E8F0] grid grid-cols-2">
+      <div
+        className="grid grid-cols-2"
+        style={{ borderBottom: `1px ${borderSty} ${borderCls}` }}
+      >
         <div
-          className="py-3 px-4 md:py-4 md:px-10 border-r border-[#E2E8F0] cursor-pointer relative group"
+          className="py-3 px-4 md:py-4 md:px-10 cursor-pointer relative group"
+          style={{ borderRight: `1px ${borderSty} ${borderCls}` }}
           onClick={() => onClick && onClick("1")}
         >
           {!!onClick && (
@@ -56,7 +78,7 @@ export const PreviewDetails = ({
         </div>
       </div>
       <div className="flex flex-col">
-        <div className="border-b border-[#E2E8F0]">
+        <div style={{ borderBottom: `1px ${borderSty} ${borderCls}` }}>
           <InvoiceDetailsPreview {...invoiceDetails} onClick={onClick} />
         </div>
         <div>
@@ -66,3 +88,4 @@ export const PreviewDetails = ({
     </div>
   </div>
 );
+};
