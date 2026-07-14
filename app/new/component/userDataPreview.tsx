@@ -35,12 +35,7 @@ export const UserDataPreview = ({
       paymentDetails={paymentDetails}
       yourDetails={yourDetails}
       showPayableIn={showPayableIn}
-      templateColors={{
-        title: template.colors.title,
-        accent: template.colors.accent,
-        border: template.colors.border,
-        borderStyle: template.borderStyle,
-      }}
+      template={template}
     />
   );
 };

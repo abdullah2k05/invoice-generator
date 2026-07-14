@@ -234,7 +234,7 @@ const MobileToggleHeader = ({
 
 export const NewInvoiceForm = () => {
   const methods = useForm({
-    defaultValues: { invoiceTemplate: "classic" },
+    defaultValues: { invoiceTemplate: "stripe" },
   });
   const [isClient, setIsClient] = useState(false);
   const [mobileMode, setMobileMode] = useState<"edit" | "view">("edit");

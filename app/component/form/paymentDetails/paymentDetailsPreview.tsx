@@ -1,8 +1,9 @@
 import { currencyList } from "@/lib/currency";
 import { ChevronDown } from "lucide-react";
+import type { PdfTemplate } from "@/lib/pdfTemplates";
 
 export const PaymentDetailsPreview: React.FC<
-  PaymentDetails & { onClick?: (step: string) => void; showPayableIn?: boolean; templateColors?: { title?: string; accent?: string; border?: string; borderStyle?: string } }
+  PaymentDetails & { onClick?: (step: string) => void; showPayableIn?: boolean; template?: PdfTemplate }
 > = ({
   bankName,
   accountNumber,
@@ -13,7 +14,7 @@ export const PaymentDetailsPreview: React.FC<
   currency = "USD",
   onClick,
   showPayableIn = true,
-  templateColors,
+  template,
 }) => {
   const currencyDetails = currencyList.find(
     (currencyDetails) =>
@@ -21,13 +22,27 @@ export const PaymentDetailsPreview: React.FC<
   )?.details;
 
   const hasBankDetails = bankName || accountNumber || accountName || swiftCode || routingCode || ifscCode;
-  const tc = templateColors;
+  const tc = template?.colors;
+  const isEditorial = template?.id === "editorial";
+  const isSwiss = template?.id === "swiss";
+  const isStripe = template?.id === "stripe";
+
+  const headerStyle: React.CSSProperties = {
+    color: tc?.title || "#a1a1aa",
+    fontSize: template?.fontSizes.title ?? 10,
+    fontFamily: isEditorial ? "Georgia, serif" : undefined,
+    fontStyle: isEditorial ? "italic" : undefined,
+    letterSpacing: isSwiss ? "-0.02em" : "0.05em",
+    fontWeight: isSwiss ? 800 : 600,
+  };
+
+  const borderColor = tc?.border || (isStripe ? "#f4f4f5" : "#e4e4e7");
 
   return (
     <div
       className="grid grid-cols-2 group cursor-pointer relative"
       onClick={() => onClick && onClick("4")}
-      style={{ borderTop: `1px ${tc?.borderStyle || "solid"} ${tc?.border || "#e5e7eb"}` }}
+      style={{ borderTop: isStripe ? `1px solid #f4f4f5` : `1px solid ${borderColor}` }}
     >
       {!!onClick && (
         <>
@@ -39,7 +54,7 @@ export const PaymentDetailsPreview: React.FC<
       )}
       {hasBankDetails && (
         <div className="py-3 md:py-4 pl-4 md:pl-10 pr-2 md:pr-3">
-          <p className="text-xs md:text-[11px] font-semibold uppercase tracking-wider mb-2 md:mb-3" style={{ color: tc?.title || "#a3a3a3" }}>
+          <p style={headerStyle} className="text-xs md:text-[11px] font-semibold uppercase tracking-wider mb-2 md:mb-3">
             Bank Details
           </p>
           <div className="space-y-1">
@@ -84,7 +99,7 @@ export const PaymentDetailsPreview: React.FC<
       )}
       {showPayableIn && (
         <div className={`py-3 md:py-4 ${hasBankDetails ? "px-4 md:px-10" : "col-span-2 px-4 md:px-10"}`}>
-          <p className="text-xs md:text-[11px] font-semibold uppercase tracking-wider mb-2 md:mb-3" style={{ color: tc?.title || "#a3a3a3" }}>
+          <p style={headerStyle} className="text-xs md:text-[11px] font-semibold uppercase tracking-wider mb-2 md:mb-3">
             Payable in
           </p>
           {currencyDetails && (
