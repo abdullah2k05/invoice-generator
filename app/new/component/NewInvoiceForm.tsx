@@ -3,15 +3,19 @@ import { UserInputForm } from "@/app/component/form/userInputForm";
 import { UserDataPreview } from "@/app/new/component/userDataPreview";
 import { useForm, FormProvider } from "react-hook-form";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
-import { AdMobBanner } from "@/components/AdMobBanner";
 import { useEffect, useState, useCallback } from "react";
-import { RotateCcw, ChevronDown, Eye, FileText, User, Briefcase, Receipt, CreditCard } from "lucide-react";
+import { RotateCcw, ChevronDown, Eye, FileText, User, Briefcase, Receipt, CreditCard, LayoutTemplate } from "lucide-react";
 import dynamic from "next/dynamic";
 
 const DownloadInvoiceButton = dynamic(
   () => import("@/app/component/form/downloadInvoice/downloadInvoiceButton").then((mod) => mod.DownloadInvoiceButton),
   { ssr: false }
 );
+const ShareInvoiceButton = dynamic(
+  () => import("@/app/component/form/downloadInvoice/shareInvoiceButton").then((mod) => mod.ShareInvoiceButton),
+  { ssr: false }
+);
+import { TemplateSelector } from "@/app/component/form/templateSelector";
 import { cn } from "@/lib/utils";
 
 const STORAGE_KEYS = [
@@ -21,7 +25,7 @@ const STORAGE_KEYS = [
   "companyCountry", "companyLogo", "companyTaxId", "companyZip",
   "note", "discount", "tax",
   "bankName", "accountNumber", "accountName", "routingCode", "swiftCode", "ifscCode",
-  "invoiceNo", "issueDate", "dueDate", "currency", "step", "items", "showPayableIn",
+  "invoiceNo", "issueDate", "dueDate", "currency", "step", "items", "showPayableIn", "invoiceTemplate",
 ];
 
 const clearAllData = () => {
@@ -156,27 +160,29 @@ const Sidebar = ({
         <UserInputForm section="remittance" />
       </AccordionSection>
       <AccordionSection
+        title="Template"
+        icon={<LayoutTemplate className="w-3.5 h-3.5" />}
+        isOpen={openSection === "template"}
+        onToggle={() => onOpenSection(openSection === "template" ? "" : "template")}
+      >
+        <TemplateSelector />
+      </AccordionSection>
+      <AccordionSection
         title="Download"
         icon={<FileText className="w-3.5 h-3.5" />}
         isOpen={openSection === "download"}
         onToggle={() => onOpenSection(openSection === "download" ? "" : "download")}
       >
-        <div className="text-center py-2">
-          <p className="text-sm font-semibold text-[#0F172A]">Your invoice is ready</p>
-          <p className="text-xs text-[#64748B] mt-1 mb-4">Please review the details carefully before downloading your invoice.</p>
-          <div className="flex justify-center">
-            <DownloadInvoiceButton />
+          <div className="text-center py-2">
+            <p className="text-sm font-semibold text-[#0F172A]">Your invoice is ready</p>
+            <p className="text-xs text-[#64748B] mt-1 mb-4">Please review the details carefully before downloading or sharing your invoice.</p>
+            <div className="flex flex-col gap-2">
+              <DownloadInvoiceButton />
+              <ShareInvoiceButton />
+            </div>
           </div>
-        </div>
       </AccordionSection>
-      <div className="px-5 py-4 border-t border-[#E2E8F0]">
-        <a
-          href="mailto:hello@mabdullah.top?subject=Invoice%20Generator%20Feedback"
-          className="text-xs text-[#94A3B8] hover:text-[#0F172A] transition-colors"
-        >
-          Send Feedback
-        </a>
-      </div>
+
     </aside>
   );
 };
@@ -227,7 +233,9 @@ const MobileToggleHeader = ({
 );
 
 export const NewInvoiceForm = () => {
-  const methods = useForm();
+  const methods = useForm({
+    defaultValues: { invoiceTemplate: "classic" },
+  });
   const [isClient, setIsClient] = useState(false);
   const [mobileMode, setMobileMode] = useState<"edit" | "view">("edit");
   const [openSection, setOpenSection] = useState<string>("identity");
@@ -283,8 +291,9 @@ export const NewInvoiceForm = () => {
           <div className={cn("md:hidden flex-1 overflow-y-auto bg-[#F4F5F6] p-4 pb-24", mobileMode === "edit" && "hidden")}>
             <div className="max-w-[500px] mx-auto space-y-4">
               <UserDataPreview onSectionChange={handleSectionFromPreview} />
-              <div className="flex justify-center">
+              <div className="flex flex-col gap-2">
                 <DownloadInvoiceButton />
+                <ShareInvoiceButton />
               </div>
             </div>
           </div>
@@ -321,7 +330,6 @@ export const NewInvoiceForm = () => {
             )}
           </button>
         </div>
-        <AdMobBanner />
       </div>
     </FormProvider>
     </ErrorBoundary>

@@ -1,7 +1,6 @@
 "use client";
 
 import { Component, type ErrorInfo, type ReactNode } from "react";
-import { Capacitor } from "@capacitor/core";
 
 export class ErrorBoundary extends Component<
   { children: ReactNode; fallback?: ReactNode },
@@ -17,17 +16,7 @@ export class ErrorBoundary extends Component<
   }
 
   async componentDidCatch(error: Error, info: ErrorInfo) {
-    if (Capacitor.isNativePlatform()) {
-      try {
-        const { FirebaseCrashlytics } = await import("@capacitor-firebase/crashlytics");
-        await FirebaseCrashlytics.recordException({
-          message: `${error.message}\n${info.componentStack}`,
-        });
-        await FirebaseCrashlytics.sendUnsentReports();
-      } catch {
-        // silently fail
-      }
-    }
+    // Firebase Crashlytics not available in this build
   }
 
   render() {

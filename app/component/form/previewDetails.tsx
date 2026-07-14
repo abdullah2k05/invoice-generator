@@ -23,7 +23,7 @@ export const PreviewDetails = ({
   showPayableIn?: boolean;
 }) => (
   <div className="w-full flex justify-center">
-    <div className="w-full max-w-[595px] bg-white shadow-sm border border-[#E2E8F0] mx-2 md:mx-0">
+    <div id="invoice-preview" className="w-full max-w-[595px] bg-white shadow-sm border border-[#E2E8F0] mx-2 md:mx-0">
       <InvoiceTermsPreview {...invoiceTerms} onClick={onClick} />
       <div className="border-b border-[#E2E8F0] grid grid-cols-2">
         <div

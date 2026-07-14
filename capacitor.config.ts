@@ -6,16 +6,14 @@ const config: CapacitorConfig = {
   webDir: 'out',
   plugins: {
     SplashScreen: {
-      launchShowDuration: 3000,
       launchAutoHide: true,
-      backgroundColor: "#FFFFFF",
+      backgroundColor: "#ffffff",
+      androidScaleType: "CENTER_CROP",
+      showSpinner: false,
       splashFullScreen: true,
       splashImmersive: true,
-      layoutName: "splash_layout",
-    },
-    StatusBar: {
-      style: "DARK",
-      backgroundColor: "#FFFFFF",
+      layoutName: "launch_screen",
+      useDialog: true,
     },
   },
 };

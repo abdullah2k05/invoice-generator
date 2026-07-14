@@ -1,12 +1,11 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Document, Font, Page } from "@react-pdf/renderer";
-import { CheckCircle2, Download, LoaderIcon } from "lucide-react";
+import { Document, Page } from "@react-pdf/renderer";
+import { CheckCircle2, LoaderIcon, Share2 } from "lucide-react";
 import { PdfDetails } from "../pdfDetails";
 import { useData } from "@/app/hooks/useData";
 import { pdfContainers } from "@/lib/pdfStyles";
-import { saveAs } from "file-saver";
 import { pdf } from "@react-pdf/renderer";
 import { svgToDataUri } from "@/lib/svgToDataUri";
 import { useEffect, useState } from "react";
@@ -14,10 +13,10 @@ import { useFormContext } from "react-hook-form";
 import { currencyList } from "@/lib/currency";
 import { Capacitor } from "@capacitor/core";
 
-export const DownloadInvoiceButton = () => {
+export const ShareInvoiceButton = () => {
   const [status, setStatus] = useState<
-    "downloaded" | "downloading" | "not-downloaded"
-  >("not-downloaded");
+    "shared" | "sharing" | "not-shared"
+  >("not-shared");
   const { watch } = useFormContext();
   const templateId = watch("invoiceTemplate", "classic");
   const {
@@ -30,17 +29,17 @@ export const DownloadInvoiceButton = () => {
   } = useData();
 
   useEffect(() => {
-    if (status === "downloaded") {
-      setTimeout(() => setStatus("not-downloaded"), 2000);
+    if (status === "shared") {
+      setTimeout(() => setStatus("not-shared"), 2000);
     }
   }, [status]);
 
   return (
     <Button
-      disabled={status === "downloading"}
+      disabled={status === "sharing"}
       onClick={async () => {
         try {
-          setStatus("downloading");
+          setStatus("sharing");
 
           const currencyDetails = currencyList.find(
             (cd) =>
@@ -58,7 +57,7 @@ export const DownloadInvoiceButton = () => {
           const svgFlag = await res.text();
           const countryImageUrl = await svgToDataUri(svgFlag);
           if (!countryImageUrl) {
-            setStatus("not-downloaded");
+            setStatus("not-shared");
             return;
           }
 
@@ -93,68 +92,58 @@ export const DownloadInvoiceButton = () => {
             const { Filesystem, Directory } = await import(
               "@capacitor/filesystem"
             );
-            const { Share } = await import("@capacitor/share");
+            const saved = await Filesystem.writeFile({
+              path: "invoice.pdf",
+              data: base64,
+              directory: Directory.Cache,
+            });
 
-            try {
-              await Filesystem.writeFile({
-                path: "Download/Invoice.pdf",
-                data: base64,
-                directory: Directory.ExternalStorage,
-              });
-            } catch {
-              const saved = await Filesystem.writeFile({
-                path: "invoice.pdf",
-                data: base64,
-                directory: Directory.Cache,
-              });
-              await Share.share({
-                title: "Invoice",
-                files: [saved.uri],
-                dialogTitle: "Save Invoice",
-              });
+            const { Share } = await import("@capacitor/share");
+            await Share.share({
+              title: "Invoice",
+              text: "Here is your invoice",
+              files: [saved.uri],
+              dialogTitle: "Share Invoice",
+            });
+          } else if (navigator.share) {
+            const file = new File([blob], "invoice.pdf", {
+              type: "application/pdf",
+            });
+            if (navigator.canShare?.({ files: [file] })) {
+              await navigator.share({ files: [file], title: "Invoice" });
+            } else {
+              const { saveAs } = await import("file-saver");
+              saveAs(blob, "invoice.pdf");
             }
           } else {
+            const { saveAs } = await import("file-saver");
             saveAs(blob, "invoice.pdf");
           }
 
-          setStatus("downloaded");
+          setStatus("shared");
         } catch (e) {
-          console.error("Download failed:", e);
-          setStatus("not-downloaded");
+          console.error("Share failed:", e);
+          setStatus("not-shared");
         }
       }}
       type="button"
       className="w-full h-10 text-sm"
     >
-      {status === "not-downloaded" && (
+      {status === "not-shared" && (
         <>
-          <Download className="mr-2 h-4 w-4" /> Download Invoice
+          <Share2 className="mr-2 h-4 w-4" /> Share Invoice
         </>
       )}
-      {status === "downloading" && (
+      {status === "sharing" && (
         <>
-          <LoaderIcon className="mr-2 h-4 w-4 animate-spin" /> Generating...
+          <LoaderIcon className="mr-2 h-4 w-4 animate-spin" /> Sharing...
         </>
       )}
-      {status === "downloaded" && (
+      {status === "shared" && (
         <>
-          <CheckCircle2 className="mr-2 h-4 w-4" /> Downloaded Successfully ✓
+          <CheckCircle2 className="mr-2 h-4 w-4" /> Shared
         </>
       )}
     </Button>
   );
 };
-
-Font.register({
-  family: "Geist",
-  fonts: [
-    { src: "/font/Geist-Thin.ttf", fontWeight: "thin" },
-    { src: "/font/Geist-Ultralight.ttf", fontWeight: "ultralight" },
-    { src: "/font/Geist-Light.ttf", fontWeight: "light" },
-    { src: "/font/Geist-Regular.ttf", fontWeight: "normal" },
-    { src: "/font/Geist-Medium.ttf", fontWeight: "medium" },
-    { src: "/font/Geist-SemiBold.ttf", fontWeight: "semibold" },
-    { src: "/font/Geist-Bold.ttf", fontWeight: "bold" },
-    { src: "/font/Geist-UltraBlack.ttf", fontWeight: "ultrabold" },
-  ],
-});

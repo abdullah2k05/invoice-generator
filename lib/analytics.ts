@@ -1,17 +1,8 @@
 "use client";
 
-import { Capacitor } from "@capacitor/core";
-
 export function useAnalytics() {
-  const logEvent = async (name: string, params?: Record<string, string>) => {
-    try {
-      if (Capacitor.isNativePlatform()) {
-        const { FirebaseAnalytics } = await import("@capacitor-firebase/analytics");
-        await FirebaseAnalytics.logEvent({ name, params });
-      }
-    } catch {
-      // silently fail
-    }
+  const logEvent = async (_name: string, _params?: Record<string, string>) => {
+    // Analytics disabled
   };
 
   return { logEvent };

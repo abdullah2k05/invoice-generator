@@ -3,13 +3,14 @@ import React from "react";
 import { Image, Text, View } from "@react-pdf/renderer";
 import { currencyList } from "@/lib/currency";
 import { pdfTypography, pdfUtils } from "@/lib/pdfStyles";
+import type { PdfTemplate } from "@/lib/pdfTemplates";
 
 interface PaymentDetailsPdfProps extends PaymentDetails {
   countryImageUrl: string;
   showPayableIn?: boolean;
 }
 
-export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps> = ({
+export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps & { template?: PdfTemplate }> = ({
   bankName,
   accountNumber,
   accountName,
@@ -19,6 +20,7 @@ export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps> = ({
   currency = "USD",
   countryImageUrl,
   showPayableIn = true,
+  template,
 }) => {
   const currencyDetails = currencyList.find(
     (currencyDetail) =>
@@ -26,6 +28,10 @@ export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps> = ({
   )?.details;
 
   const hasBankDetails = bankName || accountNumber || accountName || swiftCode || routingCode || ifscCode;
+  const tc = template?.colors;
+  const titleStyle = { ...pdfTypography.title, color: tc?.title || pdfTypography.title.color };
+  const paymentTitleStyle = { ...pdfTypography.paymentTitle, color: tc?.paymentTitle || pdfTypography.paymentTitle.color };
+  const itemDescStyle = { ...pdfTypography.itemDescription, color: tc?.itemDescription || pdfTypography.itemDescription.color };
 
   return (
     <View
@@ -44,17 +50,17 @@ export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps> = ({
             flexDirection: "column",
           }}
         >
-          <Text style={{ paddingBottom: 12, ...pdfTypography.title }}>
+          <Text style={{ paddingBottom: 12, ...titleStyle }}>
             Bank Details
           </Text>
           <View style={{ flexDirection: "column", gap: 5 }}>
             {bankName && (
               <View style={pdfUtils.flexRowItemCenter}>
-                <Text style={pdfTypography.paymentTitle}>Bank Name</Text>
+                <Text style={paymentTitleStyle}>Bank Name</Text>
                 <Text
                   style={{
                     flex: 1,
-                    ...pdfTypography.itemDescription,
+                    ...itemDescStyle,
                     paddingLeft: 44.5,
                   }}
                 >
@@ -64,11 +70,11 @@ export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps> = ({
             )}
             {accountNumber && (
               <View style={pdfUtils.flexRowItemCenter}>
-                <Text style={pdfTypography.paymentTitle}>Account Number</Text>
+                <Text style={paymentTitleStyle}>Account Number</Text>
                 <Text
                   style={{
                     flex: 1,
-                    ...pdfTypography.itemDescription,
+                    ...itemDescStyle,
                     paddingLeft: 14,
                   }}
                 >
@@ -78,11 +84,11 @@ export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps> = ({
             )}
             {accountName && (
               <View style={pdfUtils.flexRowItemCenter}>
-                <Text style={pdfTypography.paymentTitle}>Account Name</Text>
+                <Text style={paymentTitleStyle}>Account Name</Text>
                 <Text
                   style={{
                     flex: 1,
-                    ...pdfTypography.itemDescription,
+                    ...itemDescStyle,
                     paddingLeft: 26,
                   }}
                 >
@@ -92,11 +98,11 @@ export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps> = ({
             )}
             {swiftCode && (
               <View style={pdfUtils.flexRowItemCenter}>
-                <Text style={pdfTypography.paymentTitle}>Swift Code</Text>
+                <Text style={paymentTitleStyle}>Swift Code</Text>
                 <Text
                   style={{
                     flex: 1,
-                    ...pdfTypography.itemDescription,
+                    ...itemDescStyle,
                     paddingLeft: 45,
                   }}
                 >
@@ -106,11 +112,11 @@ export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps> = ({
             )}
             {ifscCode && (
               <View style={pdfUtils.flexRowItemCenter}>
-                <Text style={pdfTypography.paymentTitle}>IFSC Code</Text>
+                <Text style={paymentTitleStyle}>IFSC Code</Text>
                 <Text
                   style={{
                     flex: 1,
-                    ...pdfTypography.itemDescription,
+                    ...itemDescStyle,
                     paddingLeft: 48,
                   }}
                 >
@@ -120,11 +126,11 @@ export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps> = ({
             )}
             {routingCode && (
               <View style={pdfUtils.flexRowItemCenter}>
-                <Text style={pdfTypography.paymentTitle}>Routing Code</Text>
+                <Text style={paymentTitleStyle}>Routing Code</Text>
                 <Text
                   style={{
                     flex: 1,
-                    ...pdfTypography.itemDescription,
+                    ...itemDescStyle,
                     paddingLeft: 32,
                   }}
                 >
@@ -145,7 +151,7 @@ export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps> = ({
             flexDirection: "column",
           }}
         >
-          <Text style={{ ...pdfTypography.title, paddingBottom: 12 }}>
+          <Text style={{ ...titleStyle, paddingBottom: 12 }}>
             Payable in
           </Text>
           {currencyDetails && (
@@ -164,7 +170,7 @@ export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps> = ({
                 <Text style={{ fontSize: 14, fontWeight: "medium" }}>
                   {currencyDetails.currencyName}
                 </Text>
-                <Text style={pdfTypography.title}>
+                <Text style={titleStyle}>
                   {currencyDetails.currencySymbol}{" "}
                   {currencyDetails.currencyShortForm}
                 </Text>

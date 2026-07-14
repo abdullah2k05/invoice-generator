@@ -2,13 +2,15 @@ import React from "react";
 import { Text, View } from "@react-pdf/renderer";
 import { currencyList } from "@/lib/currency";
 import { pdfTypography, pdfUtils } from "@/lib/pdfStyles";
+import type { PdfTemplate } from "@/lib/pdfTemplates";
 
-export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails> = ({
+export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails & { template?: PdfTemplate }> = ({
   note,
   discount,
   taxRate,
   items,
   currency = "INR",
+  template,
 }) => {
   const currencyType = currency;
   const currencyDetails = currencyList.find(
@@ -18,12 +20,21 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails> = ({
   const discountAmount = subtotal - (discount ? +discount : 0);
   const taxAmount = discountAmount * ((taxRate ? +taxRate : 0) / 100);
   const totalAmount = discountAmount + taxAmount;
+  const tc = template?.colors;
+
+  const titleStyle = { ...pdfTypography.title, color: tc?.title || pdfTypography.title.color };
+  const itemDescStyle = { ...pdfTypography.itemDescription, color: tc?.itemDescription || pdfTypography.itemDescription.color };
+  const amountStyle = { ...pdfTypography.amount, color: tc?.amount || "#111827" };
+  const borderColor = tc?.border || "#e5e7eb";
+
+  const borderBottom = { borderBottom: `1px ${template?.borderStyle || "dashed"} ${borderColor}` };
+  const borderTop = { borderTop: `1px ${template?.borderStyle || "dashed"} ${borderColor}` };
 
   return (
     <View>
       <View style={pdfUtils.flexRowItemCenter}>
         <View style={{ flex: 1, paddingHorizontal: 40, paddingVertical: 16 }}>
-          <Text style={pdfTypography.title}>Description</Text>
+          <Text style={titleStyle}>Description</Text>
         </View>
         <View
           style={{
@@ -34,13 +45,13 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails> = ({
           }}
         >
           <View style={{ flex: 1 }}>
-            <Text style={pdfTypography.title}>QTY</Text>
+            <Text style={titleStyle}>QTY</Text>
           </View>
           <View style={{ flex: 1 }}>
-            <Text style={pdfTypography.title}>Price</Text>
+            <Text style={titleStyle}>Price</Text>
           </View>
           <View style={{ flex: 1, textAlign: "right" }}>
-            <Text style={pdfTypography.title}>Amount</Text>
+            <Text style={titleStyle}>Amount</Text>
           </View>
         </View>
       </View>
@@ -48,20 +59,20 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails> = ({
         const containerStyle = {
           marginHorizontal: 40,
           paddingVertical: 14,
-          ...pdfUtils.borderBottom,
+          ...borderBottom,
           ...pdfUtils.flexRowItemCenter,
         };
-        const borderStyle = index === 0 ? pdfUtils.borderTop : {};
+        const borderTopStyle = index === 0 ? borderTop : {};
 
         return (
           <View
             key={index}
             style={{
               ...containerStyle,
-              ...borderStyle,
+              ...borderTopStyle,
             }}
           >
-            <Text style={{ flex: 1, ...pdfTypography.itemDescription }}>
+            <Text style={{ flex: 1, ...itemDescStyle }}>
               {itemDescription}
             </Text>
             <View
@@ -71,16 +82,16 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails> = ({
                 paddingLeft: 80,
               }}
             >
-              <Text style={{ flex: 1, ...pdfTypography.itemDescription }}>
+              <Text style={{ flex: 1, ...itemDescStyle }}>
                 {qty ? qty : "-"}
               </Text>
-              <Text style={{ flex: 1, ...pdfTypography.itemDescription }}>
+              <Text style={{ flex: 1, ...itemDescStyle }}>
                 {amount ? addCommasToNumber(amount) : ""}
               </Text>
               <Text
                 style={{
                   flex: 1,
-                  ...pdfTypography.itemDescription,
+                  ...itemDescStyle,
                   textAlign: "right",
                 }}
               >
@@ -95,8 +106,8 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails> = ({
         <View style={{ flex: 1, paddingTop: 24 }}>
           {note && (
             <View style={{ paddingHorizontal: 40 }}>
-              <Text style={pdfTypography.title}>Note</Text>
-              <Text style={pdfTypography.itemDescription}>{note}</Text>
+              <Text style={titleStyle}>Note</Text>
+              <Text style={itemDescStyle}>{note}</Text>
             </View>
           )}
         </View>
@@ -106,15 +117,15 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails> = ({
               marginHorizontal: 40,
               paddingVertical: 14,
               ...pdfUtils.flexRowItemCenter,
-              ...pdfUtils.borderBottom,
+              ...borderBottom,
             }}
           >
-            <Text style={{ ...pdfTypography.itemDescription, flex: 1 }}>
+            <Text style={{ ...itemDescStyle, flex: 1 }}>
               Subtotal
             </Text>
             <Text
               style={{
-                ...pdfTypography.itemDescription,
+                ...itemDescStyle,
                 flex: 1,
                 textAlign: "right",
               }}
@@ -129,15 +140,15 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails> = ({
                 marginHorizontal: 40,
                 paddingVertical: 14,
                 ...pdfUtils.flexRowItemCenter,
-                ...pdfUtils.borderBottom,
+                ...borderBottom,
               }}
             >
-              <Text style={{ ...pdfTypography.itemDescription, flex: 1 }}>
+              <Text style={{ ...itemDescStyle, flex: 1 }}>
                 Discount
               </Text>
               <Text
                 style={{
-                  ...pdfTypography.itemDescription,
+                  ...itemDescStyle,
                   flex: 1,
                   textAlign: "right",
                 }}
@@ -153,15 +164,15 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails> = ({
                 marginHorizontal: 40,
                 paddingVertical: 14,
                 ...pdfUtils.flexRowItemCenter,
-                ...pdfUtils.borderBottom,
+                ...borderBottom,
               }}
             >
-              <Text style={{ ...pdfTypography.itemDescription, flex: 1 }}>
+              <Text style={{ ...itemDescStyle, flex: 1 }}>
                 Tax ({taxRate})%
               </Text>
               <Text
                 style={{
-                  ...pdfTypography.itemDescription,
+                  ...itemDescStyle,
                   flex: 1,
                   textAlign: "right",
                 }}
@@ -178,11 +189,11 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails> = ({
               ...pdfUtils.flexRowItemCenter,
             }}
           >
-            <Text style={{ ...pdfTypography.itemDescription, flex: 1 }}>
+            <Text style={{ ...itemDescStyle, flex: 1 }}>
               Amount
             </Text>
             <Text
-              style={{ ...pdfTypography.amount, textAlign: "right", flex: 1 }}
+              style={{ ...amountStyle, textAlign: "right", flex: 1 }}
             >
               {currencyDetails?.currencySymbol}
               {addCommasToNumber(totalAmount)}

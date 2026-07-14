@@ -114,7 +114,6 @@ const footerColumns = [
       { label: "About", href: "/about" },
       { label: "Contact", href: "/contact" },
       { label: "Blog", href: "/blog/how-to-create-an-invoice" },
-      { label: "Portfolio", href: "https://mabdullah.top", external: true },
     ],
   },
   {
@@ -136,8 +135,7 @@ const footerBottomLinks = [
   { label: "Disclaimer", href: "/disclaimer" },
   { label: "Contact", href: "/contact" },
   { label: "About", href: "/about" },
-  { label: "Portfolio", href: "https://mabdullah.top", external: true },
-  { label: "GitHub", href: "https://github.com/abdullah2k05/invoice-generator", external: true },
+
 ];
 
 export default function RootLayout({
@@ -189,7 +187,6 @@ export default function RootLayout({
               <Link href="/invoice-template" className="text-[#64748B] hover:text-[#0F172A] transition-colors">Templates</Link>
               <Link href="/invoice-example" className="text-[#64748B] hover:text-[#0F172A] transition-colors">Examples</Link>
               <Link href="/faq" className="text-[#64748B] hover:text-[#0F172A] transition-colors">FAQ</Link>
-              <a href="https://github.com/abdullah2k05/invoice-generator" target="_blank" rel="noreferrer" className="text-[#64748B] hover:text-[#0F172A] transition-colors">GitHub</a>
             </div>
           </div>
         </nav>
@@ -208,23 +205,12 @@ export default function RootLayout({
                   <ul className="space-y-2">
                     {col.links.map((link) => (
                       <li key={link.href}>
-                        {link.external ? (
-                          <a
-                            href={link.href}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="text-[#64748B] hover:text-[#0F172A] transition-colors text-sm"
-                          >
-                            {link.label}
-                          </a>
-                        ) : (
-                          <Link
-                            href={link.href}
-                            className="text-[#64748B] hover:text-[#0F172A] transition-colors text-sm"
-                          >
-                            {link.label}
-                          </Link>
-                        )}
+                        <Link
+                          href={link.href}
+                          className="text-[#64748B] hover:text-[#0F172A] transition-colors text-sm"
+                        >
+                          {link.label}
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -234,21 +220,10 @@ export default function RootLayout({
 
             <div className="mt-8 pt-6 border-t border-[#E2E8F0] flex flex-col md:flex-row justify-between items-center gap-4">
               <p className="text-sm text-[#94A3B8]">
-                © {new Date().getFullYear()} Muhammad Abdullah. All rights reserved.
+                © {new Date().getFullYear()} Invoice Generator. All rights reserved.
               </p>
               <div className="flex flex-wrap gap-4 text-xs">
                 {footerBottomLinks.map((link) => (
-                  link.external ? (
-                    <a
-                      key={link.href}
-                      href={link.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-[#94A3B8] hover:text-[#0F172A] transition-colors"
-                    >
-                      {link.label}
-                    </a>
-                  ) : (
                     <Link
                       key={link.href}
                       href={link.href}
@@ -256,7 +231,6 @@ export default function RootLayout({
                     >
                       {link.label}
                     </Link>
-                  )
                 ))}
               </div>
             </div>
