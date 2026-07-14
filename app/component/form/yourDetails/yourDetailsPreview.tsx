@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 
-export const YourDetailsPreview: React.FC<YourDetails> = ({
+export const YourDetailsPreview: React.FC<YourDetails & { templateColors?: { title?: string; accent?: string; border?: string; borderStyle?: string } }> = ({
   yourEmail,
   yourName,
   yourAddress,
@@ -11,9 +11,12 @@ export const YourDetailsPreview: React.FC<YourDetails> = ({
   yourLogo,
   yourTaxId,
   yourZip,
-}) => (
+  templateColors,
+}) => {
+  const tc = templateColors;
+  return (
   <div>
-    <p className="text-xs md:text-[11px] text-neutral-400 font-semibold uppercase pb-2 md:pb-3.5">
+    <p className="text-xs md:text-[11px] font-semibold uppercase pb-2 md:pb-3.5" style={{ color: tc?.title || "#a3a3a3" }}>
       From
     </p>
     <div className="h-8 md:h-10 mb-2 md:mb-3">
@@ -50,4 +53,5 @@ export const YourDetailsPreview: React.FC<YourDetails> = ({
       {yourTaxId && <p>Tax ID: {yourTaxId}</p>}
     </div>
   </div>
-);
+  );
+};

@@ -3,7 +3,7 @@
 
 import React from "react";
 
-export const CompanyDetailsPreview: React.FC<CompanyDetails> = ({
+export const CompanyDetailsPreview: React.FC<CompanyDetails & { templateColors?: { title?: string; accent?: string; border?: string; borderStyle?: string } }> = ({
   email,
   companyName,
   companyAddress,
@@ -13,9 +13,12 @@ export const CompanyDetailsPreview: React.FC<CompanyDetails> = ({
   companyLogo,
   companyTaxId,
   companyZip,
-}) => (
+  templateColors,
+}) => {
+  const tc = templateColors;
+  return (
   <div>
-    <p className="text-xs md:text-[11px] text-neutral-400 font-semibold uppercase pb-2 md:pb-3.5">
+    <p className="text-xs md:text-[11px] font-semibold uppercase pb-2 md:pb-3.5" style={{ color: tc?.title || "#a3a3a3" }}>
       To
     </p>
     <div className="h-8 md:h-10 mb-2 md:mb-3">
@@ -52,4 +55,5 @@ export const CompanyDetailsPreview: React.FC<CompanyDetails> = ({
       {companyTaxId && <p>Tax ID: {companyTaxId}</p>}
     </div>
   </div>
-);
+  );
+};

@@ -42,7 +42,7 @@ export const PreviewDetails = ({
         border: `1px ${borderSty} ${borderCls}`,
       }}
     >
-      <InvoiceTermsPreview {...invoiceTerms} onClick={onClick} />
+      <InvoiceTermsPreview {...invoiceTerms} onClick={onClick} templateColors={tc} />
       <div
         className="grid grid-cols-2"
         style={{ borderBottom: `1px ${borderSty} ${borderCls}` }}
@@ -60,7 +60,7 @@ export const PreviewDetails = ({
               <ChevronDown className="animate-pulse w-4 h-4 text-[#4F46E5] -rotate-45 group-hover:block hidden absolute bottom-0 right-0 " />
             </>
           )}
-          <YourDetailsPreview {...yourDetails} />
+          <YourDetailsPreview {...yourDetails} templateColors={tc} />
         </div>
         <div
           className="py-3 px-4 md:py-4 md:px-10 cursor-pointer relative group"
@@ -74,15 +74,15 @@ export const PreviewDetails = ({
               <ChevronDown className="animate-pulse w-4 h-4 text-[#4F46E5] -rotate-45 group-hover:block hidden absolute bottom-0 right-0 " />
             </>
           )}
-          <CompanyDetailsPreview {...companyDetails} />
+          <CompanyDetailsPreview {...companyDetails} templateColors={tc} />
         </div>
       </div>
       <div className="flex flex-col">
         <div style={{ borderBottom: `1px ${borderSty} ${borderCls}` }}>
-          <InvoiceDetailsPreview {...invoiceDetails} onClick={onClick} />
+          <InvoiceDetailsPreview {...invoiceDetails} onClick={onClick} templateColors={tc} />
         </div>
         <div>
-          <PaymentDetailsPreview {...paymentDetails} onClick={onClick} showPayableIn={showPayableIn} />
+          <PaymentDetailsPreview {...paymentDetails} onClick={onClick} showPayableIn={showPayableIn} templateColors={tc} />
         </div>
       </div>
     </div>

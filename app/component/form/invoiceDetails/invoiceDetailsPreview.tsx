@@ -4,8 +4,9 @@ import { currencyList } from "@/lib/currency";
 import { ChevronDown } from "lucide-react";
 
 export const InvoiceDetailsPreview: React.FC<
-  InvoiceItemDetails & { onClick?: (step: string) => void }
-> = ({ note, discount, taxRate, items, currency = "INR", onClick }) => {
+  InvoiceItemDetails & { onClick?: (step: string) => void; templateColors?: { title?: string; accent?: string; border?: string; borderStyle?: string } }
+> = ({ note, discount, taxRate, items, currency = "INR", onClick, templateColors }) => {
+  const tc = templateColors;
   const currencyType = currency;
   const currencyDetails = currencyList.find(
     (currency) => currency.value.toLowerCase() === currencyType.toLowerCase()
@@ -28,25 +29,25 @@ export const InvoiceDetailsPreview: React.FC<
           <ChevronDown className="animate-pulse w-4 h-4 text-[#4F46E5] -rotate-45 group-hover:block hidden absolute bottom-0 right-0 " />
         </>
       )}
-      <div className="grid grid-cols-2 items-center border-b border-gray-200">
+      <div className="grid grid-cols-2 items-center" style={{ borderBottom: `1px ${tc?.borderStyle || "solid"} ${tc?.border || "#e5e7eb"}` }}>
         <div className="py-2 md:py-4 px-4 md:px-10">
-          <p className="text-xs md:text-[11px] text-neutral-400 font-semibold uppercase tracking-wider">
+          <p className="text-xs md:text-[11px] font-semibold uppercase tracking-wider" style={{ color: tc?.title || "#a3a3a3" }}>
             Description
           </p>
         </div>
         <div className="py-2 md:py-4 px-4 md:px-10 grid grid-cols-3 items-center">
           <div>
-            <p className="text-xs md:text-[11px] text-neutral-400 font-semibold uppercase tracking-wider">
+            <p className="text-xs md:text-[11px] font-semibold uppercase tracking-wider" style={{ color: tc?.title || "#a3a3a3" }}>
               QTY
             </p>
           </div>
           <div>
-            <p className="text-xs md:text-[11px] text-neutral-400 font-semibold uppercase tracking-wider">
+            <p className="text-xs md:text-[11px] font-semibold uppercase tracking-wider" style={{ color: tc?.title || "#a3a3a3" }}>
               Price
             </p>
           </div>
           <div>
-            <p className="text-xs md:text-[11px] text-neutral-400 font-semibold uppercase tracking-wider text-right">
+            <p className="text-xs md:text-[11px] font-semibold uppercase tracking-wider text-right" style={{ color: tc?.title || "#a3a3a3" }}>
               Amount
             </p>
           </div>
@@ -54,9 +55,11 @@ export const InvoiceDetailsPreview: React.FC<
       </div>
       {items.map(({ itemDescription, amount, qty }, index) => (
         <div
-          className={`grid grid-cols-2 items-center border-b border-gray-200 ${
-            index === 0 ? "border-t border-gray-200" : ""
-          } mx-4 md:mx-10 py-2 md:py-3`}
+          className="grid grid-cols-2 items-center mx-4 md:mx-10 py-2 md:py-3"
+          style={{
+            borderBottom: `1px ${tc?.borderStyle || "solid"} ${tc?.border || "#e5e7eb"}`,
+            borderTop: index === 0 ? `1px ${tc?.borderStyle || "solid"} ${tc?.border || "#e5e7eb"}` : "none",
+          }}
           key={index}
         >
           <p className="flex truncate text-xs md:text-xs font-medium text-gray-700 pr-2">
@@ -79,7 +82,7 @@ export const InvoiceDetailsPreview: React.FC<
       <div className="grid grid-cols-2">
         {note ? (
           <div className="pt-4 md:pt-6 pb-2 md:pb-4">
-            <p className="flex truncate text-xs font-semibold text-neutral-400 pb-1 px-4 md:px-10 uppercase tracking-wider">
+            <p className="flex truncate text-xs font-semibold pb-1 px-4 md:px-10 uppercase tracking-wider" style={{ color: tc?.title || "#a3a3a3" }}>
               Note
             </p>
             <p className="text-xs font-medium text-neutral-500 px-4 md:px-10 break-words">
@@ -89,8 +92,8 @@ export const InvoiceDetailsPreview: React.FC<
         ) : (
           <div />
         )}
-        <div className="border-t border-gray-200">
-          <div className="flex justify-between items-center mx-4 md:mx-10 border-b border-gray-200 py-2 md:py-3">
+        <div style={{ borderTop: `1px ${tc?.borderStyle || "solid"} ${tc?.border || "#e5e7eb"}` }}>
+          <div className="flex justify-between items-center mx-4 md:mx-10 py-2 md:py-3" style={{ borderBottom: `1px ${tc?.borderStyle || "solid"} ${tc?.border || "#e5e7eb"}` }}>
             <p className="flex truncate text-xs font-medium text-gray-600">
               Subtotal
             </p>
@@ -100,7 +103,7 @@ export const InvoiceDetailsPreview: React.FC<
             </p>
           </div>
           {discount && (
-            <div className="flex justify-between items-center mx-4 md:mx-10 border-b border-gray-200 py-2 md:py-3">
+            <div className="flex justify-between items-center mx-4 md:mx-10 py-2 md:py-3" style={{ borderBottom: `1px ${tc?.borderStyle || "solid"} ${tc?.border || "#e5e7eb"}` }}>
               <p className="flex truncate text-xs font-medium text-gray-600">
                 Discount
               </p>
@@ -111,7 +114,7 @@ export const InvoiceDetailsPreview: React.FC<
             </div>
           )}
           {taxRate && (
-            <div className="flex justify-between items-center mx-4 md:mx-10 border-b border-gray-200 py-2 md:py-3">
+            <div className="flex justify-between items-center mx-4 md:mx-10 py-2 md:py-3" style={{ borderBottom: `1px ${tc?.borderStyle || "solid"} ${tc?.border || "#e5e7eb"}` }}>
               <p className="flex truncate text-xs font-medium text-gray-600">
                 Tax ({taxRate})%
               </p>
