@@ -4,6 +4,8 @@ import CurrencyInput from "@/app/component/ui/currencyInput";
 import { currencyList } from "@/lib/currency";
 import { Input } from "@/app/component/ui/input";
 import { Plus, Trash2 } from "lucide-react";
+import { SavedProductsPanel } from "@/app/component/ui/SavedProductsPanel";
+import type { SavedProduct } from "@/lib/localData";
 import CustomNumberInput from "@/app/component/ui/customNumberInput";
 import { useGetValue } from "@/app/hooks/useGetValue";
 import { Controller } from "react-hook-form";
@@ -212,6 +214,18 @@ export const InvoiceDetailsForm = ({ compact }: { compact?: boolean }) => {
                   <p>Add Item</p>
                 </button>
               </div>
+              <SavedProductsPanel
+                onSelect={(product: SavedProduct) => {
+                  const newItem = {
+                    itemDescription: product.name,
+                    amount: product.price,
+                    qty: 1,
+                  };
+                  const updated = [...value, newItem];
+                  localStorage.setItem("items", JSON.stringify(updated));
+                  onChange(updated);
+                }}
+              />
             </div>
             <div>
               <p className="pt-3 font-medium text-sm text-neutral-500 pb-5">

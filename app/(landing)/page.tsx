@@ -15,6 +15,7 @@ import Image from "next/image";
 import Link from "next/link";
 import DemoPreview from "./components/demoPreview";
 import { AdBanner } from "@/components/AdBanner";
+import { RecentInvoices } from "@/app/component/RecentInvoices";
 
 const Home = () => {
   return (
@@ -134,6 +135,7 @@ const Home = () => {
             </p>
           </div>
         </div>
+        <RecentInvoices />
         <div className="px-4 md:px-5 py-8 md:py-11 flex justify-center items-center border-b border-[#E2E8F0]">
           <div className="flex justify-center rounded-2xl max-w-3xl items-center px-4 py-6 md:py-10 w-full flex-col gap-3 md:gap-4 bg-[#F1F5F9]">
             <p className="md:max-w-2xl text-center font-semibold text-base md:text-3xl text-[#0F172A] px-2 md:p-4 text-balance">

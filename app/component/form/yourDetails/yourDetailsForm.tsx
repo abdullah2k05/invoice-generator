@@ -1,28 +1,59 @@
 import CustomTextInput from "@/app/component/ui/customTextInput";
 import CustomNumberInput from "@/app/component/ui/customNumberInput";
 import ImageInput from "@/app/component/ui/imageInput";
+import { BusinessProfilePanel } from "@/app/component/ui/BusinessProfilePanel";
+import { useFormContext } from "react-hook-form";
+import { useCallback, type FC } from "react";
+import type { BusinessProfile } from "@/lib/localData";
 
-export const YourDetailsForm = ({ compact }: { compact?: boolean }) => (
+export const YourDetailsForm: FC<{ compact?: boolean }> = ({ compact }) => {
+  const { setValue } = useFormContext();
+
+  const handleLoadProfile = useCallback((p: BusinessProfile) => {
+    const set = (key: string, val: string) => {
+      setValue(key, val);
+      localStorage.setItem(key, val);
+    };
+    set("yourName", p.yourName);
+    set("yourEmail", p.yourEmail);
+    set("yourAddress", p.yourAddress);
+    set("yourCity", p.yourCity);
+    set("yourState", p.yourState);
+    set("yourCountry", p.yourCountry);
+    set("yourZip", p.yourZip);
+    set("yourTaxId", p.yourTaxId);
+    set("yourLogo", p.yourLogo);
+  }, [setValue]);
+
+  return (
   <div>
     {!compact && (
       <>
         <p className="text-xl md:text-2xl font-semibold pb-3">Your Details (From)</p>
+        <BusinessProfilePanel onLoad={handleLoadProfile} />
+        <div className="mt-2">
         <CustomTextInput
           label="Email"
           placeholder="e.g. you@example.pk"
           variableName="yourEmail"
           inputMode="email"
         />
+        </div>
       </>
     )}
     <div className={compact ? "space-y-0" : ""}>
       {compact && (
+        <>
+        <BusinessProfilePanel onLoad={handleLoadProfile} />
+        <div className="mt-2">
         <CustomTextInput
           label="Email"
           placeholder="e.g. you@example.pk"
           variableName="yourEmail"
           inputMode="email"
         />
+        </div>
+        </>
       )}
       <CustomTextInput
         label={compact ? "Name" : "Your Name"}
@@ -62,4 +93,5 @@ export const YourDetailsForm = ({ compact }: { compact?: boolean }) => (
       />
     </div>
   </div>
-);
+  );
+};

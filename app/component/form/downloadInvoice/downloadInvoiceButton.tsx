@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { currencyList } from "@/lib/currency";
 import { Capacitor } from "@capacitor/core";
+import { saveInvoice, incrementInvoiceCounter } from "@/lib/localData";
 
 export const DownloadInvoiceButton = () => {
   const [status, setStatus] = useState<
@@ -116,6 +117,32 @@ export const DownloadInvoiceButton = () => {
 
             setStatus("downloaded");
             setToast("Invoice.pdf downloaded successfully");
+            saveInvoice({
+              id: Date.now().toString(),
+              invoiceNumber: invoiceTerms.invoiceNumber || "INV-000",
+              date: invoiceTerms.issueDate || new Date().toISOString(),
+              client: companyDetails.companyName || "Unknown",
+              total: (() => {
+                const items = invoiceDetails.items || [];
+                const subtotal = items.reduce((t: number, i: Item) => t + ((i.qty || 1) * (i.amount || 0)), 0);
+                const discount = invoiceDetails.discount ? +invoiceDetails.discount : 0;
+                const taxRate = invoiceDetails.taxRate ? +invoiceDetails.taxRate : 0;
+                const afterDiscount = subtotal - discount;
+                return afterDiscount + (afterDiscount * taxRate / 100);
+              })(),
+              currency: invoiceDetails.currency || "USD",
+              data: Object.fromEntries(
+                Object.entries({
+                  ...yourDetails,
+                  ...companyDetails,
+                  ...paymentDetails,
+                  ...invoiceTerms,
+                }).filter(([_, v]) => typeof v === "string")
+              ),
+              items: invoiceDetails.items || [],
+              templateId,
+            });
+            incrementInvoiceCounter();
           } catch (e) {
             console.error("Download failed:", e);
             setStatus("not-downloaded");

@@ -2,8 +2,10 @@
 import CustomTextInput from "@/app/component/ui/customTextInput";
 import DateInput from "@/app/component/ui/dateInput";
 import { getInitialValue } from "@/lib/getInitialValue";
-import { Controller } from "react-hook-form";
-import { CalendarIcon } from "lucide-react";
+import { Controller, useFormContext } from "react-hook-form";
+import { CalendarIcon, Hash } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { getInvoiceCounter, incrementInvoiceCounter, resetInvoiceCounter } from "@/lib/localData";
 
 const MobileDateField = ({ label, variableName }: { label: string; variableName: string }) => (
   <Controller
@@ -29,7 +31,24 @@ const MobileDateField = ({ label, variableName }: { label: string; variableName:
   />
 );
 
-export const InvoiceTermsForm = ({ compact }: { compact?: boolean }) => (
+export const InvoiceTermsForm = ({ compact }: { compact?: boolean }) => {
+  const { setValue } = useFormContext();
+  const initialized = useRef(false);
+
+  useEffect(() => {
+    if (initialized.current) return;
+    initialized.current = true;
+    const existing = localStorage.getItem("invoiceNo");
+    if (!existing) {
+      const next = incrementInvoiceCounter();
+      const padded = String(next).padStart(3, "0");
+      const val = `INV-${padded}`;
+      setValue("invoiceNo", val);
+      localStorage.setItem("invoiceNo", val);
+    }
+  }, [setValue]);
+
+  return (
   <div>
     {!compact && <p className="text-xl md:text-2xl font-semibold pb-3">Invoice terms</p>}
 
@@ -40,6 +59,21 @@ export const InvoiceTermsForm = ({ compact }: { compact?: boolean }) => (
         placeholder="INVOICE-01"
         variableName="invoiceNo"
       />
+      <button
+        type="button"
+        onClick={() => {
+          const next = getInvoiceCounter() + 1;
+          const padded = String(next).padStart(3, "0");
+          const val = `INV-${padded}`;
+          setValue("invoiceNo", val);
+          localStorage.setItem("invoiceNo", val);
+          localStorage.setItem("invoice_counter", String(next));
+        }}
+        className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-[#4F46E5] mt-1 mb-2 transition-colors"
+      >
+        <Hash className="w-3 h-3" />
+        Next: INV-{String(getInvoiceCounter() + 1).padStart(3, "0")}
+      </button>
       <MobileDateField label="Issue date" variableName="issueDate" />
       <MobileDateField label="Due date" variableName="dueDate" />
     </div>
@@ -51,8 +85,24 @@ export const InvoiceTermsForm = ({ compact }: { compact?: boolean }) => (
         placeholder="INVOICE-01"
         variableName="invoiceNo"
       />
+      <button
+        type="button"
+        onClick={() => {
+          const next = getInvoiceCounter() + 1;
+          const padded = String(next).padStart(3, "0");
+          const val = `INV-${padded}`;
+          setValue("invoiceNo", val);
+          localStorage.setItem("invoiceNo", val);
+          localStorage.setItem("invoice_counter", String(next));
+        }}
+        className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-[#4F46E5] mt-1 mb-2 transition-colors"
+      >
+        <Hash className="w-3 h-3" />
+        Next: INV-{String(getInvoiceCounter() + 1).padStart(3, "0")}
+      </button>
       <DateInput label="Issue date" variableName="issueDate" />
       <DateInput label="Due date" variableName="dueDate" />
     </div>
   </div>
-);
+  );
+};
