@@ -1,4 +1,4 @@
-import { View } from "@react-pdf/renderer";
+import { View, Text, Link } from "@react-pdf/renderer";
 import { YourDetailsPDF } from "./yourDetails/yourDetailsPdf";
 import { InvoiceTermsPdf } from "./invoiceTerms/InvoiceTermsPdf";
 import { CompanyDetailsPdf } from "./companyDetails/companyDetailsPdf";
@@ -53,6 +53,32 @@ export const PdfDetails = ({
           showPayableIn={showPayableIn}
           template={template}
         />
+      </View>
+      <View
+        style={{
+          borderTop: `1px solid ${template.colors.border || "#e5e7eb"}`,
+          marginHorizontal: 40,
+          paddingTop: 6,
+          paddingBottom: 10,
+          marginTop: 20,
+        }}
+      >
+        <Text
+          style={{
+            fontSize: 8,
+            color: "#9ca3af",
+            textAlign: "center",
+          }}
+        >
+          Generated with{" "}
+          <Link
+            src="https://invoice-generator.mabdullah.top"
+            style={{ color: "#9ca3af", textDecoration: "none" }}
+          >
+            Invoice Maker
+          </Link>{" "}
+          • invoice-generator.mabdullah.top
+        </Text>
       </View>
     </View>
   );

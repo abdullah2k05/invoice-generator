@@ -164,6 +164,36 @@ const InnerPreview = ({
           </div>
         </div>
       </div>
+      <div
+        className="mx-4 md:mx-10"
+        style={{
+          borderTop: `1px solid ${tc?.border || "#e5e7eb"}`,
+          marginTop: 20,
+          padding: "6px 0 10px",
+          textAlign: "center",
+        }}
+      >
+        <span
+          style={{
+            fontSize: 10,
+            color: "#9ca3af",
+          }}
+        >
+          Generated with{" "}
+          <a
+            href="https://invoice-generator.mabdullah.top"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: "#9ca3af",
+              textDecoration: "none",
+            }}
+          >
+            Invoice Maker
+          </a>{" "}
+          • invoice-generator.mabdullah.top
+        </span>
+      </div>
     </div>
   );
 };
