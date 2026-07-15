@@ -109,20 +109,6 @@ export const InvoiceTermsPreview: React.FC<
           }}
         >
           <div>
-            <span
-              style={{
-                backgroundColor: tc?.secondary || "#ffedd5",
-                color: tc?.accent || "#ea580c",
-                padding: "4px 8px",
-                borderRadius: 4,
-                fontSize: 10,
-                fontWeight: 700,
-                letterSpacing: "0.05em",
-                textTransform: "uppercase",
-              }}
-            >
-              DRAFT INVOICE
-            </span>
             <h1
               style={{
                 fontSize: "24px",

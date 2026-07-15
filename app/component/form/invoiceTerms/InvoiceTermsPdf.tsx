@@ -46,23 +46,9 @@ export const InvoiceTermsPdf: React.FC<InvoiceTerms & { template?: PdfTemplate }
   }
 
   if (isTokyo) {
-    const badgeStyle: any = {
-      backgroundColor: tc?.secondary || "#ffedd5",
-      color: tc?.accent || "#ea580c",
-      padding: "3px 8px",
-      fontSize: 8,
-      fontWeight: "bold",
-      letterSpacing: "0.05em",
-      alignSelf: "flex-start",
-      marginBottom: 8,
-    };
-
     return (
       <View style={{ ...pdfContainers.invoiceTerms, flexDirection: "row", justifyContent: "space-between" }}>
         <View style={{ flex: 1 }}>
-          <View style={badgeStyle}>
-            <Text>DRAFT INVOICE</Text>
-          </View>
           <Text style={{ fontSize: 24, fontWeight: "black", letterSpacing: "-0.04em", marginTop: 8, color: tc?.subtitle || "#1c1917" }}>
             {invoiceNumber || "Tokyo Digital Lab"}
           </Text>
