@@ -16,19 +16,19 @@ export const CompanyDetailsPdf: React.FC<CompanyDetails & { template?: PdfTempla
   template,
 }) => {
   const tc = template?.colors;
-  const isSwiss = template?.id === "swiss";
+  const isExecutive = template?.id === "executive";
 
   const headerStyle: any = {
     ...pdfTypography.title,
     color: tc?.title || pdfTypography.title.color,
     fontSize: template?.fontSizes.title ?? 10,
-    fontWeight: isSwiss ? 800 : 600,
+    fontWeight: isExecutive ? 700 : 600,
     marginBottom: 14,
   };
 
   return (
     <View style={pdfContainers.CompanyDetails}>
-      <Text style={headerStyle}>To</Text>
+      <Text style={headerStyle}>{isExecutive ? "Billed To" : "To"}</Text>
       <View style={pdfContainers.imageContainer}>
         {companyLogo && <Image src={companyLogo} style={{ height: 40, borderRadius: 6 }} />}
       </View>

@@ -18,22 +18,25 @@ export const CompanyDetailsPreview: React.FC<CompanyDetails & { template?: PdfTe
 }) => {
   const tc = template?.colors;
   const isEditorial = template?.id === "editorial";
-  const isSwiss = template?.id === "swiss";
+  const isExecutive = template?.id === "executive";
+  const isTokyo = template?.id === "tokyo";
 
   const headerStyle: React.CSSProperties = {
     color: tc?.title || "#a1a1aa",
     fontSize: template?.fontSizes.title ?? 10,
     fontFamily: isEditorial ? "Georgia, serif" : undefined,
     fontStyle: isEditorial ? "italic" : undefined,
-    letterSpacing: isSwiss ? "-0.02em" : "0.05em",
-    fontWeight: isSwiss ? 800 : 600,
+    letterSpacing: isExecutive ? "0.02em" : "0.05em",
+    fontWeight: isExecutive ? 700 : 600,
     textTransform: "uppercase",
   };
+
+  const titleColor = tc?.subtitle || "#111827";
 
   return (
     <div>
       <p style={headerStyle} className="text-xs md:text-[11px] font-semibold uppercase pb-2 md:pb-3.5 tracking-wider">
-        To
+        {isExecutive ? "Billed To" : "To"}
       </p>
       <div className="h-8 md:h-10 mb-2 md:mb-3">
         {companyLogo ? (
@@ -43,7 +46,7 @@ export const CompanyDetailsPreview: React.FC<CompanyDetails & { template?: PdfTe
         )}
       </div>
       {companyName ? (
-        <p className="text-xl md:text-2xl font-medium truncate">{companyName}</p>
+        <p className="text-xl md:text-2xl font-medium truncate" style={{ color: titleColor }}>{companyName}</p>
       ) : (
         <p className="text-neutral-300 text-sm italic mb-4">&mdash;</p>
       )}

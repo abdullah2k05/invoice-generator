@@ -8,6 +8,7 @@ export interface TemplateColors {
   border: string;
   accent: string;
   bg?: string;
+  secondary?: string;
   totalBlockBg?: string;
   totalBlockText?: string;
 }
@@ -22,8 +23,7 @@ export interface PdfTemplate {
   borderStyle: BorderStyle;
   showSectionBorders: boolean;
   showRowBorders: boolean;
-  sectionHeaderStyle: "uppercase-muted" | "serif-italic" | "bold-condensed";
-  headerAccent: "none" | "top-bar" | "full-background";
+  sectionHeaderStyle: "uppercase-muted" | "serif-italic" | "minimal-badge";
   fontSizes: {
     title: number;
     subtitle: number;
@@ -37,9 +37,10 @@ export interface PdfTemplate {
     itemRowPadding: number;
   };
   hasDarkTotalBlock: boolean;
-  hasDoubleBorderFrame: boolean;
-  showVerticalGridLines: boolean;
-  numberFontFamily: "Geist" | "Courier";
+  hasLeftAccentBar: boolean;
+  hasSolidHeaderBand: boolean;
+  useDashedDividers: boolean;
+  hasCompactLayout: boolean;
   themeClass: string;
 }
 
@@ -62,7 +63,6 @@ export const pdfTemplates: PdfTemplate[] = [
     showSectionBorders: false,
     showRowBorders: true,
     sectionHeaderStyle: "uppercase-muted",
-    headerAccent: "none",
     fontSizes: {
       title: 10,
       subtitle: 13,
@@ -76,9 +76,10 @@ export const pdfTemplates: PdfTemplate[] = [
       itemRowPadding: 12,
     },
     hasDarkTotalBlock: false,
-    hasDoubleBorderFrame: false,
-    showVerticalGridLines: false,
-    numberFontFamily: "Courier",
+    hasLeftAccentBar: false,
+    hasSolidHeaderBand: false,
+    useDashedDividers: false,
+    hasCompactLayout: false,
     themeClass: "theme-stripe",
   },
   {
@@ -102,7 +103,6 @@ export const pdfTemplates: PdfTemplate[] = [
     showSectionBorders: false,
     showRowBorders: false,
     sectionHeaderStyle: "serif-italic",
-    headerAccent: "none",
     fontSizes: {
       title: 11,
       subtitle: 14,
@@ -116,35 +116,76 @@ export const pdfTemplates: PdfTemplate[] = [
       itemRowPadding: 14,
     },
     hasDarkTotalBlock: true,
-    hasDoubleBorderFrame: false,
-    showVerticalGridLines: false,
-    numberFontFamily: "Geist",
+    hasLeftAccentBar: false,
+    hasSolidHeaderBand: false,
+    useDashedDividers: false,
+    hasCompactLayout: false,
     themeClass: "theme-editorial",
   },
   {
-    id: "swiss",
-    name: "Swiss Neo-Grid",
-    description: "Architectural, geometric, precision B2B",
+    id: "executive",
+    name: "The Modern Executive",
+    description: "High-trust corporate with deep indigo accent bar",
     colors: {
-      title: "#a1a1aa",
-      subtitle: "#09090b",
-      description: "#52525b",
-      itemDescription: "#27272a",
-      amount: "#09090b",
-      paymentTitle: "#52525b",
-      border: "#09090b",
-      accent: "#000000",
+      title: "#94a3b8",
+      subtitle: "#0f172a",
+      description: "#475569",
+      itemDescription: "#334155",
+      amount: "#312e81",
+      paymentTitle: "#64748b",
+      border: "#e0e7ff",
+      accent: "#312e81",
+      bg: "#ffffff",
+      secondary: "#e0e7ff",
     },
     borderStyle: "solid",
     showSectionBorders: true,
     showRowBorders: true,
-    sectionHeaderStyle: "bold-condensed",
-    headerAccent: "none",
+    sectionHeaderStyle: "uppercase-muted",
     fontSizes: {
-      title: 11,
-      subtitle: 13,
-      sectionHeader: 11,
+      title: 10,
+      subtitle: 12,
+      sectionHeader: 10,
       itemText: 11,
+      amount: 16,
+    },
+    layout: {
+      sectionPadding: 16,
+      headerPadding: 20,
+      itemRowPadding: 12,
+    },
+    hasDarkTotalBlock: false,
+    hasLeftAccentBar: true,
+    hasSolidHeaderBand: true,
+    useDashedDividers: false,
+    hasCompactLayout: false,
+    themeClass: "theme-executive",
+  },
+  {
+    id: "tokyo",
+    name: "The Tokyo Indie",
+    description: "Hyper-modern, warm sand, neon orange dashes",
+    colors: {
+      title: "#78716c",
+      subtitle: "#1c1917",
+      description: "#57534e",
+      itemDescription: "#292524",
+      amount: "#1c1917",
+      paymentTitle: "#57534e",
+      border: "#e7e5e4",
+      accent: "#ea580c",
+      bg: "#fafaf9",
+      secondary: "#ffedd5",
+    },
+    borderStyle: "dashed",
+    showSectionBorders: false,
+    showRowBorders: true,
+    sectionHeaderStyle: "minimal-badge",
+    fontSizes: {
+      title: 10,
+      subtitle: 13,
+      sectionHeader: 10,
+      itemText: 12,
       amount: 17,
     },
     layout: {
@@ -153,10 +194,11 @@ export const pdfTemplates: PdfTemplate[] = [
       itemRowPadding: 14,
     },
     hasDarkTotalBlock: false,
-    hasDoubleBorderFrame: true,
-    showVerticalGridLines: true,
-    numberFontFamily: "Courier",
-    themeClass: "theme-swiss",
+    hasLeftAccentBar: false,
+    hasSolidHeaderBand: false,
+    useDashedDividers: true,
+    hasCompactLayout: true,
+    themeClass: "theme-tokyo",
   },
 ];
 

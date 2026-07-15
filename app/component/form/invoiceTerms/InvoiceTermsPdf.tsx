@@ -12,15 +12,75 @@ export const InvoiceTermsPdf: React.FC<InvoiceTerms & { template?: PdfTemplate }
 }) => {
   const tc = template?.colors;
   const isEditorial = template?.id === "editorial";
-  const isSwiss = template?.id === "swiss";
+  const isExecutive = template?.id === "executive";
+  const isTokyo = template?.id === "tokyo";
 
   const titleStyle: any = {
     ...pdfTypography.title,
     color: tc?.title || pdfTypography.title.color,
     fontSize: template?.fontSizes.title ?? 10,
-    fontFamily: isEditorial ? "Geist" : "Geist",
-    fontWeight: isSwiss ? 800 : 600,
+    fontWeight: 600,
   };
+
+  if (isExecutive) {
+    return (
+      <View style={{ ...pdfContainers.invoiceTerms, borderBottom: `1px solid ${tc?.secondary || "#e0e7ff"}`, paddingBottom: 20 }}>
+        <View style={{ flex: 1 }}>
+          <Text style={{ fontSize: 20, fontWeight: "bold", color: tc?.accent || "#312e81" }}>
+            {invoiceNumber || "Executive Advisory Group"}
+          </Text>
+          <Text style={{ fontSize: 10, color: tc?.description || "#64748b", marginTop: 2 }}>
+            INV-{invoiceNumber || "001"}
+          </Text>
+        </View>
+        <View style={{ flex: 1, alignItems: "flex-end" }}>
+          <Text style={{ fontSize: 28, fontWeight: 300, letterSpacing: "-0.02em", color: tc?.subtitle || "#0f172a" }}>
+            Invoice
+          </Text>
+          <Text style={{ fontSize: 10, color: tc?.description || "#64748b", marginTop: 2 }}>
+            {issueDate ? format(issueDate, "do MMM yyyy") : "—"}
+          </Text>
+        </View>
+      </View>
+    );
+  }
+
+  if (isTokyo) {
+    const badgeStyle: any = {
+      backgroundColor: tc?.secondary || "#ffedd5",
+      color: tc?.accent || "#ea580c",
+      padding: "3px 8px",
+      fontSize: 8,
+      fontWeight: "bold",
+      letterSpacing: "0.05em",
+      alignSelf: "flex-start",
+      marginBottom: 8,
+    };
+
+    return (
+      <View style={{ ...pdfContainers.invoiceTerms, flexDirection: "row", justifyContent: "space-between" }}>
+        <View style={{ flex: 1 }}>
+          <View style={badgeStyle}>
+            <Text>DRAFT INVOICE</Text>
+          </View>
+          <Text style={{ fontSize: 24, fontWeight: "black", letterSpacing: "-0.04em", marginTop: 8, color: tc?.subtitle || "#1c1917" }}>
+            {invoiceNumber || "Tokyo Digital Lab"}
+          </Text>
+          <Text style={{ fontSize: 10, color: "#57534e" }}>
+            INV-{invoiceNumber || "001"}
+          </Text>
+        </View>
+        <View style={{ flex: 1, alignItems: "flex-end" }}>
+          <Text style={{ fontSize: 9, fontWeight: "bold", color: "#78716c", marginBottom: 2 }}>
+            INVOICE ID
+          </Text>
+          <Text style={{ fontSize: 11, fontWeight: "bold", color: tc?.subtitle || "#1c1917" }}>
+            {invoiceNumber || "—"}
+          </Text>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <View style={pdfContainers.invoiceTerms}>

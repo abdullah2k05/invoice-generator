@@ -24,7 +24,7 @@ export const PaymentDetailsPreview: React.FC<
   const hasBankDetails = bankName || accountNumber || accountName || swiftCode || routingCode || ifscCode;
   const tc = template?.colors;
   const isEditorial = template?.id === "editorial";
-  const isSwiss = template?.id === "swiss";
+  const isTokyo = template?.id === "tokyo";
   const isStripe = template?.id === "stripe";
 
   const headerStyle: React.CSSProperties = {
@@ -32,8 +32,8 @@ export const PaymentDetailsPreview: React.FC<
     fontSize: template?.fontSizes.title ?? 10,
     fontFamily: isEditorial ? "Georgia, serif" : undefined,
     fontStyle: isEditorial ? "italic" : undefined,
-    letterSpacing: isSwiss ? "-0.02em" : "0.05em",
-    fontWeight: isSwiss ? 800 : 600,
+    letterSpacing: "0.05em",
+    fontWeight: 600,
   };
 
   const borderColor = tc?.border || (isStripe ? "#f4f4f5" : "#e4e4e7");
@@ -42,7 +42,9 @@ export const PaymentDetailsPreview: React.FC<
     <div
       className="grid grid-cols-2 group cursor-pointer relative"
       onClick={() => onClick && onClick("4")}
-      style={{ borderTop: isStripe ? `1px solid #f4f4f5` : `1px solid ${borderColor}` }}
+      style={{
+        borderTop: isTokyo ? `1.5px dashed ${borderColor}` : `1px solid ${borderColor}`,
+      }}
     >
       {!!onClick && (
         <>

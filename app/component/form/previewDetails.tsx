@@ -27,44 +27,37 @@ export const PreviewDetails = ({
 }) => {
   const t = template;
   const tc = t?.colors;
-  const isEditorial = t?.id === "editorial";
-  const isSwiss = t?.id === "swiss";
-  const isStripe = t?.id === "stripe";
+  const isExecutive = t?.id === "executive";
+  const isTokyo = t?.id === "tokyo";
 
-  const outerStyle: React.CSSProperties = {
-    backgroundColor: tc?.bg || "#ffffff",
-    border: isSwiss ? "4px solid #09090b" : `1px solid ${tc?.border || "#e4e4e7"}`,
-    padding: isSwiss ? 32 : 0,
-  };
+  const accentBarColor = tc?.accent || "#312e81";
 
-  const innerStyle: React.CSSProperties = isSwiss
-    ? { border: "2px solid #09090b", padding: 0 }
-    : {};
-
-  const borderColor = tc?.border || "#e4e4e7";
+  const outerBg = tc?.bg || "#ffffff";
 
   return (
     <div className="w-full flex justify-center">
       <div
         id="invoice-preview"
-        className="w-full max-w-[595px] bg-white shadow-sm mx-2 md:mx-0 overflow-hidden"
-        style={outerStyle}
+        className="w-full max-w-[595px] shadow-sm mx-2 md:mx-0 overflow-hidden"
+        style={{
+          backgroundColor: outerBg,
+          border: `1px solid ${tc?.border || "#e4e4e7"}`,
+          position: "relative",
+        }}
       >
-        {isSwiss ? (
-          <div style={innerStyle}>
-            <InnerPreview
-              yourDetails={yourDetails}
-              companyDetails={companyDetails}
-              invoiceDetails={invoiceDetails}
-              paymentDetails={paymentDetails}
-              invoiceTerms={invoiceTerms}
-              onClick={onClick}
-              showPayableIn={showPayableIn}
-              template={t}
-              borderColor={borderColor}
-            />
-          </div>
-        ) : (
+        {isExecutive && (
+          <div
+            style={{
+              position: "absolute",
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: 12,
+              backgroundColor: accentBarColor,
+            }}
+          />
+        )}
+        <div style={isExecutive ? { paddingLeft: 60 } : undefined}>
           <InnerPreview
             yourDetails={yourDetails}
             companyDetails={companyDetails}
@@ -74,9 +67,8 @@ export const PreviewDetails = ({
             onClick={onClick}
             showPayableIn={showPayableIn}
             template={t}
-            borderColor={borderColor}
           />
-        )}
+        </div>
       </div>
     </div>
   );
@@ -91,7 +83,6 @@ const InnerPreview = ({
   onClick,
   showPayableIn,
   template,
-  borderColor,
 }: {
   yourDetails: YourDetails;
   companyDetails: CompanyDetails;
@@ -101,24 +92,35 @@ const InnerPreview = ({
   onClick?: (step: string) => void;
   showPayableIn: boolean;
   template?: PdfTemplate;
-  borderColor: string;
 }) => {
   const t = template;
   const tc = t?.colors;
-  const isSwiss = t?.id === "swiss";
+  const isTokyo = t?.id === "tokyo";
+  const isExecutive = t?.id === "executive";
+
+  const dashedDivider: React.CSSProperties = isTokyo
+    ? { borderBottom: `2px dashed ${tc?.border || "#e7e5e4"}`, margin: "0 0" }
+    : {};
 
   return (
     <div>
-      <InvoiceTermsPreview {...invoiceTerms} onClick={onClick} template={t} />
-      {isSwiss ? (
-        <div className="grid grid-cols-2">
-          <div className="py-3 px-4 md:py-4 md:px-10 cursor-pointer relative group" onClick={() => onClick && onClick("1")}>
+      <div style={isTokyo ? { ...dashedDivider, margin: 0 } : undefined}>
+        <InvoiceTermsPreview {...invoiceTerms} onClick={onClick} template={t} />
+      </div>
+      {isExecutive ? (
+        <div
+          className="grid grid-cols-2"
+          style={{ borderBottom: `1px solid ${tc?.border || "#e4e4e7"}` }}
+        >
+          <div
+            className="py-3 px-4 md:py-4 md:px-10 cursor-pointer relative group"
+            onClick={() => onClick && onClick("1")}
+          >
             {!!onClick && chevrons}
             <YourDetailsPreview {...yourDetails} template={t} />
           </div>
           <div
             className="py-3 px-4 md:py-4 md:px-10 cursor-pointer relative group"
-            style={{ borderLeft: "2px solid #09090b" }}
             onClick={() => onClick && onClick("2")}
           >
             {!!onClick && chevrons}
@@ -127,22 +129,39 @@ const InnerPreview = ({
         </div>
       ) : (
         <div className="grid grid-cols-2">
-          <div className="py-3 px-4 md:py-4 md:px-10 cursor-pointer relative group" onClick={() => onClick && onClick("1")}>
+          <div
+            className="py-3 px-4 md:py-4 md:px-10 cursor-pointer relative group"
+            onClick={() => onClick && onClick("1")}
+          >
             {!!onClick && chevrons}
             <YourDetailsPreview {...yourDetails} template={t} />
           </div>
-          <div className="py-3 px-4 md:py-4 md:px-10 cursor-pointer relative group" onClick={() => onClick && onClick("2")}>
+          <div
+            className="py-3 px-4 md:py-4 md:px-10 cursor-pointer relative group"
+            onClick={() => onClick && onClick("2")}
+          >
             {!!onClick && chevrons}
             <CompanyDetailsPreview {...companyDetails} template={t} />
           </div>
         </div>
       )}
-      <div className="flex flex-col">
-        <div>
-          <InvoiceDetailsPreview {...invoiceDetails} onClick={onClick} template={t} />
-        </div>
-        <div>
-          <PaymentDetailsPreview {...paymentDetails} onClick={onClick} showPayableIn={showPayableIn} template={t} />
+      <div style={isTokyo ? dashedDivider : undefined}>
+        <div className="flex flex-col">
+          <div>
+            <InvoiceDetailsPreview
+              {...invoiceDetails}
+              onClick={onClick}
+              template={t}
+            />
+          </div>
+          <div>
+            <PaymentDetailsPreview
+              {...paymentDetails}
+              onClick={onClick}
+              showPayableIn={showPayableIn}
+              template={t}
+            />
+          </div>
         </div>
       </div>
     </div>

@@ -30,6 +30,7 @@ export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps & { template?: P
   const hasBankDetails = bankName || accountNumber || accountName || swiftCode || routingCode || ifscCode;
   const tc = template?.colors;
   const isStripe = template?.id === "stripe";
+  const isTokyo = template?.id === "tokyo";
 
   const titleStyle: any = {
     ...pdfTypography.title,
@@ -47,8 +48,16 @@ export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps & { template?: P
     fontSize: template?.fontSizes.itemText ?? 12,
   };
 
+  const borderTopStr = isStripe ? "1px solid #f4f4f5" : `1px solid ${tc?.border || "#e4e4e7"}`;
+
   return (
-    <View style={{ display: "flex", flexDirection: "row", borderTop: isStripe ? "1px solid #f4f4f5" : `1px solid ${tc?.border || "#e4e4e7"}` }}>
+    <View
+      style={
+        isTokyo
+          ? { display: "flex", flexDirection: "row", borderTopWidth: 1.5, borderTopStyle: "dashed", borderTopColor: tc?.border || "#e7e5e4" }
+          : { display: "flex", flexDirection: "row", borderTop: borderTopStr }
+      }
+    >
       {hasBankDetails && (
         <View style={{ flex: 1, paddingLeft: 40, paddingRight: 12, paddingVertical: 16, flexDirection: "column" }}>
           <Text style={{ paddingBottom: 12, ...titleStyle }}>Bank Details</Text>
