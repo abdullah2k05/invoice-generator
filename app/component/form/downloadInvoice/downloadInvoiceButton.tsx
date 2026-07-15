@@ -100,18 +100,16 @@ export const DownloadInvoiceButton = () => {
                 reader.readAsDataURL(blob);
               });
 
-              const { Filesystem, Directory } = await import(
-                "@capacitor/filesystem"
+              const { FileSaver } = await import(
+                "@/app/component/form/downloadInvoice/fileSaverPlugin"
               );
-
-              // Directory.External = getExternalFilesDir(null)
-              // No permissions needed, works on all Android versions,
-              // file is accessible via Files app.
-              await Filesystem.writeFile({
-                path: "Invoice.pdf",
+              const result = await FileSaver.saveToDownloads({
                 data: base64,
-                directory: Directory.External,
+                fileName: "Invoice.pdf",
               });
+              if (!result.success) {
+                throw new Error("Save failed");
+              }
             } else {
               saveAs(blob, "invoice.pdf");
             }
