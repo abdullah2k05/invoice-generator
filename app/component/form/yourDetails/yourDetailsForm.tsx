@@ -1,10 +1,11 @@
+import { Building2 } from "lucide-react";
 import CustomTextInput from "@/app/component/ui/customTextInput";
 import CustomNumberInput from "@/app/component/ui/customNumberInput";
 import ImageInput from "@/app/component/ui/imageInput";
 import { BusinessProfilePanel } from "@/app/component/ui/BusinessProfilePanel";
 import { useFormContext } from "react-hook-form";
 import { useCallback, type FC } from "react";
-import type { BusinessProfile } from "@/lib/localData";
+import { saveBusinessProfile, type BusinessProfile } from "@/lib/localData";
 
 export const YourDetailsForm: FC<{ compact?: boolean }> = ({ compact }) => {
   const { setValue } = useFormContext();
@@ -24,6 +25,21 @@ export const YourDetailsForm: FC<{ compact?: boolean }> = ({ compact }) => {
     set("yourTaxId", p.yourTaxId);
     set("yourLogo", p.yourLogo);
   }, [setValue]);
+
+  const handleSaveProfile = useCallback(() => {
+    const p: BusinessProfile = {
+      yourName: localStorage.getItem("yourName") || "",
+      yourEmail: localStorage.getItem("yourEmail") || "",
+      yourAddress: localStorage.getItem("yourAddress") || "",
+      yourCity: localStorage.getItem("yourCity") || "",
+      yourState: localStorage.getItem("yourState") || "",
+      yourCountry: localStorage.getItem("yourCountry") || "",
+      yourZip: localStorage.getItem("yourZip") || "",
+      yourTaxId: localStorage.getItem("yourTaxId") || "",
+      yourLogo: localStorage.getItem("yourLogo") || "",
+    };
+    saveBusinessProfile(p);
+  }, []);
 
   return (
   <div>
@@ -91,6 +107,14 @@ export const YourDetailsForm: FC<{ compact?: boolean }> = ({ compact }) => {
         placeholder="NTN 1234567"
         variableName="yourTaxId"
       />
+      <button
+        type="button"
+        onClick={handleSaveProfile}
+        className="w-full mt-3 flex items-center justify-center gap-2 text-sm font-medium text-white bg-[#4F46E5] hover:bg-[#4338CA] py-2.5 px-4 rounded-lg transition-colors shadow-sm"
+      >
+        <Building2 className="w-4 h-4" />
+        Save as Profile
+      </button>
     </div>
   </div>
   );
