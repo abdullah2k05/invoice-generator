@@ -94,10 +94,10 @@ export function BusinessProfilePanel({
           <button
             type="button"
             onClick={handleSaveCurrent}
-            className="flex items-center gap-2 text-xs text-gray-600 hover:text-[#4F46E5] py-1.5 px-1 transition-colors"
+            className="w-full flex items-center justify-center gap-2 text-sm font-medium text-white bg-[#4F46E5] hover:bg-[#4338CA] py-2.5 px-4 rounded-lg transition-colors shadow-sm"
           >
-            <Upload className="w-3 h-3" />
-            Save current as profile
+            <Upload className="w-4 h-4" />
+            Save as Profile
           </button>
 
           <div className="border-t border-gray-100 pt-2 mt-1">
