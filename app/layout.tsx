@@ -219,9 +219,22 @@ export default function RootLayout({
             </div>
 
             <div className="mt-8 pt-6 border-t border-[#E2E8F0] flex flex-col md:flex-row justify-between items-center gap-4">
-              <p className="text-sm text-[#94A3B8]">
-                © {new Date().getFullYear()} Invoice Generator. All rights reserved.
-              </p>
+              <div className="flex flex-col items-center md:items-start gap-1">
+                <p className="text-sm text-[#94A3B8]">
+                  © {new Date().getFullYear()} Invoice Generator. All rights reserved.
+                </p>
+                <p className="text-xs text-[#94A3B8]">
+                  Developed by{" "}
+                  <a
+                    href="https://mabdullah.top"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#64748B] hover:text-[#0F172A] transition-colors underline underline-offset-2"
+                  >
+                    Muhammad Abdullah
+                  </a>
+                </p>
+              </div>
               <div className="flex flex-wrap gap-4 text-xs">
                 {footerBottomLinks.map((link) => (
                     <Link
