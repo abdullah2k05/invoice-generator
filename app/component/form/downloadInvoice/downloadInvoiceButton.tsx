@@ -105,31 +105,44 @@ export const DownloadInvoiceButton = () => {
               );
               const { Share } = await import("@capacitor/share");
 
-              try {
-                await Filesystem.writeFile({
-                  path: "Invoice.pdf",
-                  data: base64,
-                  directory: Directory.Documents,
-                });
-              } catch {
+              const perm = await Filesystem.requestPermissions();
+              const hasPerm = perm.publicStorage === "granted";
+
+              let wroteTo = "";
+
+              if (hasPerm) {
                 try {
                   await Filesystem.writeFile({
                     path: "Download/Invoice.pdf",
                     data: base64,
                     directory: Directory.ExternalStorage,
                   });
+                  wroteTo = "Downloads";
                 } catch {
-                  const saved = await Filesystem.writeFile({
-                    path: "invoice.pdf",
-                    data: base64,
-                    directory: Directory.Cache,
-                  });
-                  await Share.share({
-                    title: "Invoice",
-                    files: [saved.uri],
-                    dialogTitle: "Save Invoice",
-                  });
+                  try {
+                    await Filesystem.writeFile({
+                      path: "Invoice.pdf",
+                      data: base64,
+                      directory: Directory.Documents,
+                    });
+                    wroteTo = "Documents";
+                  } catch {
+                    // fall through to Data+Share below
+                  }
                 }
+              }
+
+              if (!wroteTo) {
+                const r = await Filesystem.writeFile({
+                  path: "Invoice.pdf",
+                  data: base64,
+                  directory: Directory.Data,
+                });
+                await Share.share({
+                  title: "Invoice",
+                  files: [r.uri],
+                  dialogTitle: "Save Invoice",
+                });
               }
             } else {
               saveAs(blob, "invoice.pdf");
