@@ -103,47 +103,15 @@ export const DownloadInvoiceButton = () => {
               const { Filesystem, Directory } = await import(
                 "@capacitor/filesystem"
               );
-              const { Share } = await import("@capacitor/share");
 
-              const perm = await Filesystem.requestPermissions();
-              const hasPerm = perm.publicStorage === "granted";
-
-              let wroteTo = "";
-
-              if (hasPerm) {
-                try {
-                  await Filesystem.writeFile({
-                    path: "Download/Invoice.pdf",
-                    data: base64,
-                    directory: Directory.ExternalStorage,
-                  });
-                  wroteTo = "Downloads";
-                } catch {
-                  try {
-                    await Filesystem.writeFile({
-                      path: "Invoice.pdf",
-                      data: base64,
-                      directory: Directory.Documents,
-                    });
-                    wroteTo = "Documents";
-                  } catch {
-                    // fall through to Data+Share below
-                  }
-                }
-              }
-
-              if (!wroteTo) {
-                const r = await Filesystem.writeFile({
-                  path: "Invoice.pdf",
-                  data: base64,
-                  directory: Directory.Data,
-                });
-                await Share.share({
-                  title: "Invoice",
-                  files: [r.uri],
-                  dialogTitle: "Save Invoice",
-                });
-              }
+              // Directory.External = getExternalFilesDir(null)
+              // No permissions needed, works on all Android versions,
+              // file is accessible via Files app.
+              await Filesystem.writeFile({
+                path: "Invoice.pdf",
+                data: base64,
+                directory: Directory.External,
+              });
             } else {
               saveAs(blob, "invoice.pdf");
             }
