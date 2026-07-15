@@ -57,6 +57,17 @@ export const InvoiceTermsPreview: React.FC<
           >
             INV-{invoiceNumber || "001"}
           </p>
+          <p style={{ fontSize: 9, color: "#9ca3af", marginTop: 8 }}>
+            Generated with{" "}
+            <a
+              href="https://invoice-generator.mabdullah.top"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ color: "#dc2626", textDecoration: "none" }}
+            >
+              Invoice Maker
+            </a>
+          </p>
         </div>
         <div style={{ textAlign: "right" }}>
           <h1
@@ -128,6 +139,17 @@ export const InvoiceTermsPreview: React.FC<
             >
               INV-{invoiceNumber || "001"}
             </p>
+            <p style={{ fontSize: 9, color: "#9ca3af", marginTop: 8 }}>
+              Generated with{" "}
+              <a
+                href="https://invoice-generator.mabdullah.top"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ color: "#dc2626", textDecoration: "none" }}
+              >
+                Invoice Maker
+              </a>
+            </p>
           </div>
           <div style={{ textAlign: "right" }}>
             <p
@@ -173,6 +195,17 @@ export const InvoiceTermsPreview: React.FC<
           Invoice NO
         </p>
         <p className="font-semibold text-xs md:text-xs text-gray-800">{invoiceNumber || <span className="text-neutral-300 italic">&mdash;</span>}</p>
+        <p className="text-[9px] mt-1" style={{ color: "#9ca3af" }}>
+          Generated with{" "}
+          <a
+            href="https://invoice-generator.mabdullah.top"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#dc2626", textDecoration: "none" }}
+          >
+            Invoice Maker
+          </a>
+        </p>
       </div>
       <div className="flex items-center justify-between pl-4 md:pl-10">
         <div>
