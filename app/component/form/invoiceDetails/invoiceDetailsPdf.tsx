@@ -183,8 +183,8 @@ export const InvoiceDetailsPdf: React.FC<InvoiceItemDetails & { template?: PdfTe
               </View>
             )}
             <View style={{ borderTopWidth: 1.5, borderTopStyle: "dashed", borderTopColor: tc?.border || "#e7e5e4", marginTop: 8, paddingTop: 12, ...pdfUtils.flexRowBetween }}>
-              <Text style={{ fontSize: 13, fontWeight: "black", color: tc?.subtitle || "#1c1917" }}>NET AMOUNT</Text>
-              <Text style={{ fontSize: 15, fontWeight: "black", color: tc?.accent || "#ea580c" }}>{currencyDetails?.currencySymbol}{addCommasToNumber(totalAmount)}</Text>
+              <Text style={{ fontSize: 13, fontWeight: "ultrabold", color: tc?.subtitle || "#1c1917" }}>NET AMOUNT</Text>
+              <Text style={{ fontSize: 15, fontWeight: "ultrabold", color: tc?.accent || "#ea580c" }}>{currencyDetails?.currencySymbol}{addCommasToNumber(totalAmount)}</Text>
             </View>
           </View>
         ) : (

@@ -34,7 +34,7 @@ export const InvoiceTermsPdf: React.FC<InvoiceTerms & { template?: PdfTemplate }
           </Text>
         </View>
         <View style={{ flex: 1, alignItems: "flex-end" }}>
-          <Text style={{ fontSize: 28, fontWeight: 300, letterSpacing: "-0.02em", color: tc?.subtitle || "#0f172a" }}>
+          <Text style={{ fontSize: 28, fontWeight: 300, color: tc?.subtitle || "#0f172a" }}>
             Invoice
           </Text>
           <Text style={{ fontSize: 10, color: tc?.description || "#64748b", marginTop: 2 }}>
@@ -49,7 +49,7 @@ export const InvoiceTermsPdf: React.FC<InvoiceTerms & { template?: PdfTemplate }
     return (
       <View style={{ ...pdfContainers.invoiceTerms, flexDirection: "row", justifyContent: "space-between" }}>
         <View style={{ flex: 1 }}>
-          <Text style={{ fontSize: 24, fontWeight: "black", letterSpacing: "-0.04em", marginTop: 8, color: tc?.subtitle || "#1c1917" }}>
+          <Text style={{ fontSize: 24, fontWeight: "ultrabold", color: tc?.subtitle || "#1c1917" }}>
             {invoiceNumber || "Tokyo Digital Lab"}
           </Text>
           <Text style={{ fontSize: 10, color: "#57534e" }}>
