@@ -106,7 +106,7 @@ export const PaymentDetailsPdf: React.FC<PaymentDetailsPdfProps & { template?: P
           <Text style={{ ...titleStyle, paddingBottom: 12 }}>Payable in</Text>
           {currencyDetails && (
             <View style={{ ...pdfUtils.flexRowItemCenter, gap: 8 }}>
-              <Image src={countryImageUrl} style={{ width: 30, height: 30, flexShrink: 0, borderRadius: "100%", objectFit: "cover" }} />
+              {countryImageUrl && <Image src={countryImageUrl} style={{ width: 30, height: 30, flexShrink: 0, borderRadius: "100%", objectFit: "cover" }} />}
               <View>
                 <Text style={{ fontSize: 14, fontWeight: "medium" }}>{currencyDetails.currencyName}</Text>
                 <Text style={titleStyle}>{currencyDetails.currencySymbol} {currencyDetails.currencyShortForm}</Text>

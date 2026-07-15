@@ -49,16 +49,17 @@ export const ShareInvoiceButton = () => {
             (cd) => cd.value.toLowerCase() === "USD".toLowerCase()
           )?.details;
 
-          const res = await fetch(
-            `/flag/1x1/${
-              currencyDetails?.iconName || defaultCurrency?.iconName
-            }.svg`
-          );
-          const svgFlag = await res.text();
-          const countryImageUrl = await svgToDataUri(svgFlag);
-          if (!countryImageUrl) {
-            setStatus("not-shared");
-            return;
+          let countryImageUrl = "";
+          try {
+            const res = await fetch(
+              `/flag/1x1/${
+                currencyDetails?.iconName || defaultCurrency?.iconName
+              }.svg`
+            );
+            const svgFlag = await res.text();
+            countryImageUrl = svgToDataUri(svgFlag);
+          } catch {
+            // flag optional, continue
           }
 
           const blob = await pdf(
