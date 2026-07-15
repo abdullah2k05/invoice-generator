@@ -18,6 +18,7 @@ export const DownloadInvoiceButton = () => {
   const [status, setStatus] = useState<
     "downloaded" | "downloading" | "not-downloaded"
   >("not-downloaded");
+  const [toast, setToast] = useState<string | null>(null);
   const { watch } = useFormContext();
   const templateId = watch("invoiceTemplate", "classic");
   const {
@@ -35,122 +36,140 @@ export const DownloadInvoiceButton = () => {
     }
   }, [status]);
 
+  useEffect(() => {
+    if (toast) {
+      const t = setTimeout(() => setToast(null), 3000);
+      return () => clearTimeout(t);
+    }
+  }, [toast]);
+
   return (
-    <Button
-      disabled={status === "downloading"}
-      onClick={async () => {
-        try {
-          setStatus("downloading");
-
-          const currencyDetails = currencyList.find(
-            (cd) =>
-              cd.value.toLowerCase() === invoiceDetails.currency.toLowerCase()
-          )?.details;
-          const defaultCurrency = currencyList.find(
-            (cd) => cd.value.toLowerCase() === "USD".toLowerCase()
-          )?.details;
-
-          let countryImageUrl = "";
+    <>
+      <Button
+        disabled={status === "downloading"}
+        onClick={async () => {
           try {
-            const res = await fetch(
-              `/flag/1x1/${
-                currencyDetails?.iconName || defaultCurrency?.iconName
-              }.svg`
-            );
-            const svgFlag = await res.text();
-            countryImageUrl = svgToDataUri(svgFlag);
-          } catch {
-            // flag optional, continue
-          }
+            setStatus("downloading");
 
-          const blob = await pdf(
-            <Document>
-              <Page size="A4" style={pdfContainers.page}>
-                <PdfDetails
-                  companyDetails={companyDetails}
-                  invoiceDetails={invoiceDetails}
-                  invoiceTerms={invoiceTerms}
-                  paymentDetails={paymentDetails}
-                  yourDetails={yourDetails}
-                  countryImageUrl={countryImageUrl}
-                  showPayableIn={showPayableIn}
-                  templateId={templateId}
-                />
-              </Page>
-            </Document>
-          ).toBlob();
+            const currencyDetails = currencyList.find(
+              (cd) =>
+                cd.value.toLowerCase() === invoiceDetails.currency.toLowerCase()
+            )?.details;
+            const defaultCurrency = currencyList.find(
+              (cd) => cd.value.toLowerCase() === "USD".toLowerCase()
+            )?.details;
 
-          if (Capacitor.isNativePlatform()) {
-            const reader = new FileReader();
-            const base64 = await new Promise<string>((resolve, reject) => {
-              reader.onload = () => {
-                const result = reader.result as string;
-                resolve(result.split(",")[1]);
-              };
-              reader.onerror = reject;
-              reader.readAsDataURL(blob);
-            });
-
-            const { Filesystem, Directory } = await import(
-              "@capacitor/filesystem"
-            );
-            const { Share } = await import("@capacitor/share");
-
+            let countryImageUrl = "";
             try {
-              await Filesystem.writeFile({
-                path: "Invoice.pdf",
-                data: base64,
-                directory: Directory.Documents,
-              });
+              const res = await fetch(
+                `/flag/1x1/${
+                  currencyDetails?.iconName || defaultCurrency?.iconName
+                }.svg`
+              );
+              const svgFlag = await res.text();
+              countryImageUrl = svgToDataUri(svgFlag);
             } catch {
+              // flag optional, continue
+            }
+
+            const blob = await pdf(
+              <Document>
+                <Page size="A4" style={pdfContainers.page}>
+                  <PdfDetails
+                    companyDetails={companyDetails}
+                    invoiceDetails={invoiceDetails}
+                    invoiceTerms={invoiceTerms}
+                    paymentDetails={paymentDetails}
+                    yourDetails={yourDetails}
+                    countryImageUrl={countryImageUrl}
+                    showPayableIn={showPayableIn}
+                    templateId={templateId}
+                  />
+                </Page>
+              </Document>
+            ).toBlob();
+
+            if (Capacitor.isNativePlatform()) {
+              const reader = new FileReader();
+              const base64 = await new Promise<string>((resolve, reject) => {
+                reader.onload = () => {
+                  const result = reader.result as string;
+                  resolve(result.split(",")[1]);
+                };
+                reader.onerror = reject;
+                reader.readAsDataURL(blob);
+              });
+
+              const { Filesystem, Directory } = await import(
+                "@capacitor/filesystem"
+              );
+              const { Share } = await import("@capacitor/share");
+
               try {
                 await Filesystem.writeFile({
-                  path: "Download/Invoice.pdf",
+                  path: "Invoice.pdf",
                   data: base64,
-                  directory: Directory.ExternalStorage,
+                  directory: Directory.Documents,
                 });
               } catch {
-                const saved = await Filesystem.writeFile({
-                  path: "invoice.pdf",
-                  data: base64,
-                  directory: Directory.Cache,
-                });
-                await Share.share({
-                  title: "Invoice",
-                  files: [saved.uri],
-                  dialogTitle: "Save Invoice",
-                });
+                try {
+                  await Filesystem.writeFile({
+                    path: "Download/Invoice.pdf",
+                    data: base64,
+                    directory: Directory.ExternalStorage,
+                  });
+                } catch {
+                  const saved = await Filesystem.writeFile({
+                    path: "invoice.pdf",
+                    data: base64,
+                    directory: Directory.Cache,
+                  });
+                  await Share.share({
+                    title: "Invoice",
+                    files: [saved.uri],
+                    dialogTitle: "Save Invoice",
+                  });
+                }
               }
+            } else {
+              saveAs(blob, "invoice.pdf");
             }
-          } else {
-            saveAs(blob, "invoice.pdf");
-          }
 
-          setStatus("downloaded");
-        } catch (e) {
-          console.error("Download failed:", e);
-          setStatus("not-downloaded");
-        }
-      }}
-      type="button"
-      className="w-full h-10 text-sm"
-    >
-      {status === "not-downloaded" && (
-        <>
-          <Download className="mr-2 h-4 w-4" /> Download Invoice
-        </>
+            setStatus("downloaded");
+            setToast("Invoice.pdf downloaded successfully");
+          } catch (e) {
+            console.error("Download failed:", e);
+            setStatus("not-downloaded");
+          }
+        }}
+        type="button"
+        className="w-full h-10 text-sm"
+      >
+        {status === "not-downloaded" && (
+          <>
+            <Download className="mr-2 h-4 w-4" /> Download Invoice
+          </>
+        )}
+        {status === "downloading" && (
+          <>
+            <LoaderIcon className="mr-2 h-4 w-4 animate-spin" /> Generating...
+          </>
+        )}
+        {status === "downloaded" && (
+          <>
+            <CheckCircle2 className="mr-2 h-4 w-4" /> Downloaded Successfully ✓
+          </>
+        )}
+      </Button>
+      {toast && (
+        <div className="fixed top-4 right-4 z-50 max-w-xs animate-in slide-in-from-right-2 fade-in">
+          <div className="bg-[#0F172A] text-white text-sm px-4 py-3 rounded-lg shadow-lg flex items-center gap-2">
+            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            <span>{toast}</span>
+          </div>
+        </div>
       )}
-      {status === "downloading" && (
-        <>
-          <LoaderIcon className="mr-2 h-4 w-4 animate-spin" /> Generating...
-        </>
-      )}
-      {status === "downloaded" && (
-        <>
-          <CheckCircle2 className="mr-2 h-4 w-4" /> Downloaded Successfully ✓
-        </>
-      )}
-    </Button>
+    </>
   );
 };
 
