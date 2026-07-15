@@ -73,11 +73,10 @@ export const PdfDetails = ({
           Generated with{" "}
           <Link
             src="https://invoice-generator.mabdullah.top"
-            style={{ color: "#9ca3af", textDecoration: "none" }}
+            style={{ color: "#dc2626", textDecoration: "none" }}
           >
             Invoice Maker
-          </Link>{" "}
-          • invoice-generator.mabdullah.top
+          </Link>
         </Text>
       </View>
     </View>

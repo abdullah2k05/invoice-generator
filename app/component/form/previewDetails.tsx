@@ -185,13 +185,12 @@ const InnerPreview = ({
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              color: "#9ca3af",
+              color: "#dc2626",
               textDecoration: "none",
             }}
           >
             Invoice Maker
-          </a>{" "}
-          • invoice-generator.mabdullah.top
+          </a>
         </span>
       </div>
     </div>
