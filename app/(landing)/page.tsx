@@ -14,7 +14,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import DemoPreview from "./components/demoPreview";
-import { AdBanner } from "@/components/AdBanner";
+import { SeoNativeAd } from "@/components/SeoNativeAd";
 import { RecentInvoices } from "@/app/component/RecentInvoices";
 
 const Home = () => {
@@ -76,6 +76,7 @@ const Home = () => {
         <div className="px-2 md:px-0 mb-6 md:mb-10">
           <DemoPreview />
         </div>
+        <SeoNativeAd adUnitId="ca-app-pub-6235199437488383/4973586076" />
         <p className="font-medium text-lg md:text-3xl border-t border-[#E2E8F0] border-b py-4 md:py-6 px-4 md:px-7 text-[#64748B] text-center">
           Here&apos;s why you&apos;ll love our Free Invoice Generator
         </p>
@@ -150,7 +151,7 @@ const Home = () => {
             </Link>
           </div>
         </div>
-        <AdBanner adSlot="0000000000" format="horizontal" className="py-4 md:py-6 border-b border-[#E2E8F0]" />
+        <SeoNativeAd adUnitId="ca-app-pub-6235199437488383/2648328140" />
       </div>
     </div>
   );

@@ -1,19 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Document, Font, Page } from "@react-pdf/renderer";
+import { Font } from "@react-pdf/renderer";
 import { CheckCircle2, Download, LoaderIcon } from "lucide-react";
-import { PdfDetails } from "../pdfDetails";
 import { useData } from "@/app/hooks/useData";
-import { pdfContainers } from "@/lib/pdfStyles";
-import { saveAs } from "file-saver";
-import { pdf } from "@react-pdf/renderer";
-import { svgToDataUri } from "@/lib/svgToDataUri";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { currencyList } from "@/lib/currency";
-import { Capacitor } from "@capacitor/core";
-import { saveInvoice, incrementInvoiceCounter } from "@/lib/localData";
+import { downloadInvoice } from "./downloadUtils";
 
 export const DownloadInvoiceButton = () => {
   const [status, setStatus] = useState<
@@ -51,100 +44,24 @@ export const DownloadInvoiceButton = () => {
         onClick={async () => {
           try {
             setStatus("downloading");
-
-            const currencyDetails = currencyList.find(
-              (cd) =>
-                cd.value.toLowerCase() === invoiceDetails.currency.toLowerCase()
-            )?.details;
-            const defaultCurrency = currencyList.find(
-              (cd) => cd.value.toLowerCase() === "USD".toLowerCase()
-            )?.details;
-
-            let countryImageUrl = "";
-            try {
-              const res = await fetch(
-                `/flag/1x1/${
-                  currencyDetails?.iconName || defaultCurrency?.iconName
-                }.svg`
-              );
-              const svgFlag = await res.text();
-              countryImageUrl = svgToDataUri(svgFlag);
-            } catch {
-              // flag optional, continue
-            }
-
-            const blob = await pdf(
-              <Document>
-                <Page size="A4" style={pdfContainers.page}>
-                  <PdfDetails
-                    companyDetails={companyDetails}
-                    invoiceDetails={invoiceDetails}
-                    invoiceTerms={invoiceTerms}
-                    paymentDetails={paymentDetails}
-                    yourDetails={yourDetails}
-                    countryImageUrl={countryImageUrl}
-                    showPayableIn={showPayableIn}
-                    templateId={templateId}
-                  />
-                </Page>
-              </Document>
-            ).toBlob();
-
-            if (Capacitor.isNativePlatform()) {
-              const reader = new FileReader();
-              const base64 = await new Promise<string>((resolve, reject) => {
-                reader.onload = () => {
-                  const result = reader.result as string;
-                  resolve(result.split(",")[1]);
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(blob);
-              });
-
-              const { FileSaver } = await import(
-                "@/app/component/form/downloadInvoice/fileSaverPlugin"
-              );
-              const result = await FileSaver.saveToDownloads({
-                data: base64,
-                fileName: "Invoice.pdf",
-              });
-              if (!result.success) {
-                throw new Error("Save failed");
-              }
-            } else {
-              saveAs(blob, "invoice.pdf");
-            }
-
-            setStatus("downloaded");
-            setToast("Invoice.pdf downloaded successfully");
-            saveInvoice({
-              id: Date.now().toString(),
-              invoiceNumber: invoiceTerms.invoiceNumber || "INV-000",
-              date: invoiceTerms.issueDate || new Date().toISOString(),
-              client: companyDetails.companyName || "Unknown",
-              total: (() => {
-                const items = invoiceDetails.items || [];
-                const subtotal = items.reduce((t: number, i: Item) => t + ((i.qty || 1) * (i.amount || 0)), 0);
-                const discount = invoiceDetails.discount ? +invoiceDetails.discount : 0;
-                const taxRate = invoiceDetails.taxRate ? +invoiceDetails.taxRate : 0;
-                const afterDiscount = subtotal - discount;
-                return afterDiscount + (afterDiscount * taxRate / 100);
-              })(),
-              currency: invoiceDetails.currency || "USD",
-              data: Object.fromEntries(
-                Object.entries({
-                  ...yourDetails,
-                  ...companyDetails,
-                  ...paymentDetails,
-                  ...invoiceTerms,
-                }).filter(([_, v]) => typeof v === "string")
-              ),
-              items: invoiceDetails.items || [],
+            const ok = await downloadInvoice({
+              companyDetails,
+              invoiceDetails,
+              invoiceTerms,
+              paymentDetails,
+              yourDetails,
+              showPayableIn,
               templateId,
             });
-            incrementInvoiceCounter();
-          } catch (e) {
-            console.error("Download failed:", e);
+            if (ok) {
+              setStatus("downloaded");
+              setToast("Invoice.pdf downloaded successfully");
+            } else {
+              setToast("Download failed — please try again");
+              setStatus("not-downloaded");
+            }
+          } catch {
+            setToast("Something went wrong — try again");
             setStatus("not-downloaded");
           }
         }}

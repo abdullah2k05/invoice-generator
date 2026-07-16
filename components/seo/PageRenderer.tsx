@@ -4,6 +4,9 @@ import { useEffect } from "react";
 import Link from "next/link";
 import type { PageData } from "@/lib/seo-pages";
 import { getRelatedPages } from "@/lib/seo-pages";
+import { AdBanner } from "@/components/AdBanner";
+import { SeoNativeAd } from "@/components/SeoNativeAd";
+import { Capacitor } from "@capacitor/core";
 
 function ListSection({ items }: { items: string[] }) {
   return (
@@ -92,8 +95,24 @@ export default function PageRenderer({ pageData, siteUrl }: { pageData: PageData
     injectJsonLd(pageData, siteUrl);
   }, [pageData, siteUrl]);
 
+  useEffect(() => {
+    if (Capacitor.isNativePlatform()) {
+      import("@/app/component/seo/interstitialAdPlugin").then(
+        ({ InterstitialAd }) => {
+          InterstitialAd.showAd({ adUnitId: "ca-app-pub-6235199437488383/1783336018" }).catch((e: unknown) => {
+            console.error("InterstitialAd failed:", e);
+          });
+        }
+      ).catch((e: unknown) => {
+        console.error("InterstitialAd import failed:", e);
+      });
+    }
+  }, []);
+
   return (
     <div className="bg-[#F8F9FA] min-h-screen">
+      {/* Real slot: 3591241703 */}
+      <AdBanner adSlot="9214589741" format="horizontal" className="border-b border-[#E2E8F0]" />
       <div className="max-w-3xl mx-auto px-4 py-12 border-l border-r border-[#E2E8F0] min-h-screen">
         <nav className="mb-8 text-sm text-[#64748B] flex items-center gap-2 flex-wrap">
           <Link href="/" className="hover:text-[#0F172A] transition-colors underline underline-offset-2">
@@ -104,6 +123,7 @@ export default function PageRenderer({ pageData, siteUrl }: { pageData: PageData
             {pageData.title.split(" |")[0].replace(/ – .*$/, "")}
           </span>
         </nav>
+        <SeoNativeAd />
 
         {pageData.sections.map((section, i) => {
           switch (section.type) {

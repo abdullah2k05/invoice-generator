@@ -6,7 +6,6 @@ import { PaymentDetailsForm } from "@/app/component/form/paymentDetails/paymentD
 import { CompanyDetailsForm } from "@/app/component/form/companyDetails/companyDetailsForm";
 import { YourDetailsForm } from "@/app/component/form/yourDetails/yourDetailsForm";
 import CurrencyInput from "@/app/component/ui/currencyInput";
-import { AdBanner } from "@/components/AdBanner";
 
 export const UserInputForm = ({ section }: { section?: string }) => {
   if (section === "identity") {
@@ -32,7 +31,6 @@ export const UserInputForm = ({ section }: { section?: string }) => {
     return (
       <div>
         <InvoiceDetailsForm compact />
-        <AdBanner adSlot="0000000000" format="horizontal" className="mt-6" />
       </div>
     );
   }
@@ -41,7 +39,6 @@ export const UserInputForm = ({ section }: { section?: string }) => {
     return (
       <div>
         <PaymentDetailsForm compact />
-        <AdBanner adSlot="0000000000" format="horizontal" className="mt-6" />
       </div>
     );
   }

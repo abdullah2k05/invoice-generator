@@ -6,6 +6,8 @@ import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useEffect, useState, useCallback } from "react";
 import { RotateCcw, ChevronDown, Eye, FileText, User, Briefcase, Receipt, CreditCard, LayoutTemplate } from "lucide-react";
 import dynamic from "next/dynamic";
+import { SeoNativeAd } from "@/components/SeoNativeAd";
+import { Capacitor } from "@capacitor/core";
 
 const DownloadInvoiceButton = dynamic(
   () => import("@/app/component/form/downloadInvoice/downloadInvoiceButton").then((mod) => mod.DownloadInvoiceButton),
@@ -260,6 +262,15 @@ export const NewInvoiceForm = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+    import("@/app/component/seo/interstitialAdPlugin").then(
+      ({ InterstitialAd }) => {
+        InterstitialAd.showAd({ adUnitId: "ca-app-pub-6235199437488383/4966415437" }).catch(() => {});
+      }
+    ).catch(() => {});
+  }, []);
+
   const handleReset = useCallback(() => {
     clearFormOnly();
   }, []);
@@ -288,7 +299,7 @@ export const NewInvoiceForm = () => {
           </div>
 
           {/* Mobile: View mode */}
-          <div className={cn("md:hidden flex-1 overflow-y-auto bg-[#F4F5F6] p-4 pb-24", mobileMode === "edit" && "hidden")}>
+          <div className={cn("md:hidden flex-1 overflow-y-auto bg-[#F4F5F6] p-4 pb-40", mobileMode === "edit" && "hidden")}>
             <div className="max-w-[500px] mx-auto space-y-4">
               <UserDataPreview onSectionChange={handleSectionFromPreview} />
               <div className="flex flex-col gap-2">
@@ -304,15 +315,24 @@ export const NewInvoiceForm = () => {
           </div>
 
           {/* Desktop Artboard */}
-          <div className="hidden md:flex flex-1 bg-[#F4F5F6] items-start justify-center p-8 overflow-y-auto">
+          <div className="hidden md:flex flex-1 bg-[#F4F5F6] items-start justify-center p-8 pb-40 overflow-y-auto">
             <div className="w-full max-w-[500px]">
               <UserDataPreview onSectionChange={handleSectionFromPreview} />
+              <div className="flex flex-col gap-2 mt-6">
+                <DownloadInvoiceButton />
+                <ShareInvoiceButton />
+              </div>
             </div>
           </div>
         </div>
 
+        {/* Native ad placement */}
+        <div className="px-4 pb-4 md:px-8">
+          <SeoNativeAd adUnitId="ca-app-pub-6235199437488383/1410313801" />
+        </div>
+
         {/* Mobile: Floating View button in edit mode */}
-        <div className="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-40">
+        <div className="md:hidden fixed bottom-28 left-1/2 -translate-x-1/2 z-40">
           <button
             onClick={() => setMobileMode(mobileMode === "edit" ? "view" : "edit")}
             className="bg-[#0F172A] text-white text-sm font-medium px-5 py-3 rounded-xl flex items-center gap-2 shadow-lg active:scale-95 transition-all duration-150"

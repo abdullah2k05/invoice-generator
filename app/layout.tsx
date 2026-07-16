@@ -5,6 +5,7 @@ import Script from "next/script";
 import Link from "next/link";
 import { BackButtonHandler } from "@/components/BackButtonHandler";
 import { AppInit } from "@/components/AppInit";
+import { NativeBanner } from "@/components/NativeBanner";
 
 export const viewport: Viewport = {
   themeColor: "#f97316",
@@ -173,14 +174,15 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${GeistSans.className} flex flex-col min-h-screen`}>
+      <body className={`${GeistSans.className} flex flex-col min-h-screen pb-32`}>
         <AppInit />
         <BackButtonHandler />
+        <NativeBanner />
         {/* Navbar */}
         <nav className="border-b border-[#E2E8F0] bg-white sticky top-0 z-50">
           <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between border-l border-r border-[#E2E8F0]">
             <Link href="/" className="font-bold text-lg text-[#0F172A] hover:text-[#4F46E5] transition-colors">
-              Invoice Generator
+              Invoice Maker
             </Link>
             <div className="flex items-center gap-4 text-sm">
               <Link href="/new" className="text-[#64748B] hover:text-[#0F172A] transition-colors">Create</Link>
@@ -221,7 +223,7 @@ export default function RootLayout({
             <div className="mt-8 pt-6 border-t border-[#E2E8F0] flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex flex-col items-center md:items-start gap-1">
                 <p className="text-sm text-[#94A3B8]">
-                  © {new Date().getFullYear()} Invoice Generator. All rights reserved.
+                  © {new Date().getFullYear()} Invoice Maker. All rights reserved.
                 </p>
                 <p className="text-xs text-[#94A3B8]">
                   Developed by{" "}

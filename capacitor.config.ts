@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.mabdullah.invoice',
-  appName: 'Invoice Generator',
+  appName: 'Invoice Maker',
   webDir: 'out',
   plugins: {
     SplashScreen: {
