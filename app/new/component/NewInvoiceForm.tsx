@@ -4,7 +4,7 @@ import { UserDataPreview } from "@/app/new/component/userDataPreview";
 import { useForm, FormProvider } from "react-hook-form";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { useEffect, useState, useCallback } from "react";
-import { RotateCcw, ChevronDown, Eye, FileText, User, Briefcase, Receipt, CreditCard, LayoutTemplate } from "lucide-react";
+import { RotateCcw, ChevronDown, Eye, FileText, User, Briefcase, Receipt, CreditCard, LayoutTemplate, Printer } from "lucide-react";
 import dynamic from "next/dynamic";
 import { SeoNativeAd } from "@/components/SeoNativeAd";
 import { Capacitor } from "@capacitor/core";
@@ -320,7 +320,13 @@ export const NewInvoiceForm = () => {
               <UserDataPreview onSectionChange={handleSectionFromPreview} />
               <div className="flex flex-col gap-2 mt-6">
                 <DownloadInvoiceButton />
-                <ShareInvoiceButton />
+                <button
+                  onClick={() => window.print()}
+                  className="inline-flex items-center justify-center rounded-lg border border-[#E2E8F0] bg-white text-[#0F172A] hover:bg-[#F1F5F9] px-4 py-2.5 text-sm font-medium transition-colors gap-2"
+                >
+                  <Printer className="w-4 h-4" />
+                  Print
+                </button>
               </div>
             </div>
           </div>
