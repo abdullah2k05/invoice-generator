@@ -29,11 +29,11 @@ async function showAdWithTimeout(timeoutMs = 4000): Promise<void> {
 }
 
 async function generateBlob(params: GeneratePdfParams) {
-  const { pdf, Document, Page } = await import("@react-pdf/renderer");
-  const { pdfContainers } = await import("@/lib/pdfStyles");
-  const { PdfDetails } = await import("../pdfDetails");
-  const { svgToDataUri } = await import("@/lib/svgToDataUri");
-  const { currencyList } = await import("@/lib/currency");
+  const { pdf, Document, Page } = await import("@react-pdf/renderer").catch(e => { console.error("react-pdf import failed", e); throw e; });
+  const { pdfContainers } = await import("@/lib/pdfStyles").catch(e => { console.error("pdfStyles import failed", e); throw e; });
+  const { PdfDetails } = await import("../pdfDetails").catch(e => { console.error("pdfDetails import failed", e); throw e; });
+  const { svgToDataUri } = await import("@/lib/svgToDataUri").catch(e => { console.error("svgToDataUri import failed", e); throw e; });
+  const { currencyList } = await import("@/lib/currency").catch(e => { console.error("currency import failed", e); throw e; });
 
   const currency = params.invoiceDetails.currency || "USD";
   const currencyDetails = (currencyList as Array<{value: string; details?: {iconName?: string}}>).find(
@@ -73,9 +73,21 @@ async function generateBlob(params: GeneratePdfParams) {
 
 async function saveToDevice(blob: Blob): Promise<boolean> {
   if (!Capacitor.isNativePlatform()) {
-    const { saveAs } = await import("file-saver");
-    saveAs(blob, "invoice.pdf");
-    return true;
+    try {
+      const { saveAs } = await import("file-saver");
+      saveAs(blob, "invoice.pdf");
+      return true;
+    } catch {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "invoice.pdf";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+      return true;
+    }
   }
 
   try {
@@ -157,6 +169,7 @@ export async function downloadInvoice(
     if (saved) saveHistory(params);
     return saved;
   } catch {
+    console.error("downloadInvoice failed");
     return false;
   }
 }
@@ -204,6 +217,7 @@ export async function downloadAndShare(
     saveHistory(params);
     return true;
   } catch {
+    console.error("downloadAndShare failed");
     return false;
   }
 }
