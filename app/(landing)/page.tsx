@@ -9,6 +9,7 @@ import {
   NotebookText,
   Receipt,
   Rocket,
+  Smartphone,
   Users,
 } from "lucide-react";
 import Image from "next/image";
@@ -40,16 +41,20 @@ const Home = () => {
               </span>
             </h1>
           </div>
-          <div className="pt-6 pb-4 md:pt-10 md:pb-4 flex flex-col md:flex-row gap-4 items-center mx-auto border-[#E2E8F0] border-b w-full justify-center relative">
+          <div className="pt-6 pb-6 md:pt-10 md:pb-8 flex flex-col md:flex-row gap-3 md:gap-4 items-center justify-center mx-auto border-[#E2E8F0] border-b w-full">
             <Link
               href="/new"
-              className="inline-flex items-center justify-center whitespace-nowrap rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring font-medium disabled:pointer-events-none disabled:opacity-50 bg-[#0F172A] text-white hover:bg-[#1E293B] px-4 md:px-6 py-2 text-sm md:text-lg"
+              className="inline-flex items-center justify-center whitespace-nowrap rounded-lg transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring font-semibold disabled:pointer-events-none disabled:opacity-50 bg-[#0F172A] text-white hover:bg-[#1E293B] px-5 md:px-7 py-2.5 md:py-3 text-sm md:text-lg shadow-md"
             >
               Generate Invoice
             </Link>
-          </div>
-          <div className="pb-6 md:pb-8 flex justify-center border-b border-[#E2E8F0]">
-            <AppStoreBadges premium />
+            <Link
+              href="/download"
+              className="inline-flex items-center justify-center whitespace-nowrap rounded-lg border-2 border-[#CBD5E1] bg-white text-[#475569] hover:border-[#0F172A] hover:text-[#0F172A] transition-all px-5 md:px-7 py-2.5 md:py-3 text-sm md:text-lg font-medium gap-2 shadow-sm"
+            >
+              <Smartphone className="w-4 h-4 md:w-5 md:h-5" />
+              Download APK
+            </Link>
           </div>
           <div className="border-b text-balance text-center w-full font-semibold border-[#E2E8F0]">
             <div className="grid grid-cols-2 px-4 relative py-4 md:py-6 text-2xl md:text-7xl max-w-lg mx-auto">
