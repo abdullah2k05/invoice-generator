@@ -28,6 +28,12 @@ public class RewardedAdPlugin extends Plugin {
         Log.d(TAG, "=== showAd() called ===");
         Log.d(TAG, "Activity: " + (getActivity() != null ? "present" : "NULL"));
 
+        if (getActivity() == null) {
+            Log.e(TAG, "Activity is null, cannot show rewarded ad");
+            call.reject("Activity is null");
+            return;
+        }
+
         Log.d(TAG, "Calling MobileAds.initialize()");
         MobileAds.initialize(getContext(), status -> {
             Log.d(TAG, "MobileAds initialized. Adapter status map size: " +
@@ -35,7 +41,7 @@ public class RewardedAdPlugin extends Plugin {
             status.getAdapterStatusMap().forEach((key, val) -> {
                 Log.d(TAG, "  Adapter " + key + ": " + val.getInitializationState());
             });
-            loadAndShow(call);
+            getActivity().runOnUiThread(() -> loadAndShow(call));
         });
     }
 

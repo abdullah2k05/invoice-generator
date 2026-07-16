@@ -218,6 +218,28 @@ export default function PageRenderer({ pageData, siteUrl }: { pageData: PageData
           </div>
         )}
 
+        <div className="mt-12 pt-8 border-t border-[#E2E8F0] text-center">
+          <p className="text-sm text-[#64748B] mb-3">
+            Prefer using your phone? Download Invoice Maker for Android.
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <a
+              href="https://www.amazon.com/dp/B0H8ZT83M2"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center rounded-lg border border-[#E2E8F0] bg-white px-4 py-2 text-sm font-medium text-[#0F172A] hover:bg-[#F1F5F9] transition-colors"
+            >
+              Amazon Appstore
+            </a>
+            <Link
+              href="/download"
+              className="inline-flex items-center justify-center rounded-lg border border-[#E2E8F0] bg-white px-4 py-2 text-sm font-medium text-[#0F172A] hover:bg-[#F1F5F9] transition-colors"
+            >
+              Download APK
+            </Link>
+          </div>
+        </div>
+
         <div className="mt-8 pt-8 border-t border-[#E2E8F0]">
           <Link
             href="/new"

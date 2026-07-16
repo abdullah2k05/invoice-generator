@@ -6,6 +6,7 @@ import Link from "next/link";
 import { BackButtonHandler } from "@/components/BackButtonHandler";
 import { AppInit } from "@/components/AppInit";
 import { NativeBanner } from "@/components/NativeBanner";
+import { AppStoreBadges } from "@/components/AppStoreBadges";
 
 export const viewport: Viewport = {
   themeColor: "#f97316",
@@ -115,6 +116,12 @@ const footerColumns = [
       { label: "About", href: "/about" },
       { label: "Contact", href: "/contact" },
       { label: "Blog", href: "/blog/how-to-create-an-invoice" },
+    ],
+  },
+  {
+    heading: "Download",
+    links: [
+      { label: "Android App", href: "/download" },
     ],
   },
   {
@@ -237,6 +244,7 @@ export default function RootLayout({
                   </a>
                 </p>
               </div>
+              <AppStoreBadges showHeading={false} />
               <div className="flex flex-wrap gap-4 text-xs">
                 {footerBottomLinks.map((link) => (
                     <Link
