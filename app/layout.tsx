@@ -244,7 +244,7 @@ export default function RootLayout({
                   </a>
                 </p>
               </div>
-              <AppStoreBadges showHeading={false} />
+              <AppStoreBadges showHeading={false} premium={false} />
               <div className="flex flex-wrap gap-4 text-xs">
                 {footerBottomLinks.map((link) => (
                     <Link
