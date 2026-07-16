@@ -317,11 +317,37 @@ export const NewInvoiceForm = () => {
           {/* Desktop Artboard */}
           <div className="hidden md:flex flex-1 bg-[#F4F5F6] items-start justify-center p-8 pb-40 overflow-y-auto">
             <div className="w-full max-w-[500px]">
-              <UserDataPreview onSectionChange={handleSectionFromPreview} />
+              <div id="invoice-print-area">
+                <UserDataPreview onSectionChange={handleSectionFromPreview} />
+              </div>
               <div className="flex flex-col gap-2 mt-6">
                 <DownloadInvoiceButton />
                 <button
-                  onClick={() => window.print()}
+                  onClick={() => {
+                    const el = document.getElementById("invoice-print-area");
+                    if (!el) return;
+                    const iframe = document.createElement("iframe");
+                    iframe.style.position = "fixed";
+                    iframe.style.top = "-9999px";
+                    iframe.style.width = "800px";
+                    iframe.style.height = "1100px";
+                    document.body.appendChild(iframe);
+                    const doc = iframe.contentWindow!.document;
+                    doc.open();
+                    doc.write(`<html><head><title>Invoice</title>`);
+                    Array.from(document.styleSheets).forEach((sheet) => {
+                      if (sheet.href) {
+                        doc.write(`<link rel="stylesheet" href="${sheet.href}">`);
+                      }
+                    });
+                    doc.write(`<style>body { padding: 40px; } @page { margin: 15mm; }</style>`);
+                    doc.write(`</head><body>${el.innerHTML}</body></html>`);
+                    doc.close();
+                    setTimeout(() => {
+                      iframe.contentWindow!.print();
+                      setTimeout(() => document.body.removeChild(iframe), 1000);
+                    }, 500);
+                  }}
                   className="inline-flex items-center justify-center rounded-lg border border-[#E2E8F0] bg-white text-[#0F172A] hover:bg-[#F1F5F9] px-4 py-2.5 text-sm font-medium transition-colors gap-2"
                 >
                   <Printer className="w-4 h-4" />
