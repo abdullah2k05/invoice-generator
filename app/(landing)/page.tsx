@@ -2,165 +2,151 @@
 "use client";
 
 import {
-  CodeXml,
-  Download,
-  Hourglass,
+  ArrowRight,
+  CheckCircle2,
+  Clock,
+  FileText,
   Infinity,
-  NotebookText,
-  Receipt,
   Rocket,
   Smartphone,
-  Users,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import DemoPreview from "./components/demoPreview";
 import { SeoNativeAd } from "@/components/SeoNativeAd";
 import { RecentInvoices } from "@/app/component/RecentInvoices";
-import { AppStoreBadges } from "@/components/AppStoreBadges";
+
+const features = [
+  {
+    icon: Rocket,
+    title: "Create in seconds",
+    description: "Fill in the blanks, pick a template, and download. No signup, no complexity.",
+  },
+  {
+    icon: Infinity,
+    title: "Free forever",
+    description: "Unlimited invoices, unlimited clients. No credit card, no trials, no catches.",
+  },
+  {
+    icon: FileText,
+    title: "Professional templates",
+    description: "Four carefully designed templates that make your invoices look polished and credible.",
+  },
+  {
+    icon: Clock,
+    title: "Get paid faster",
+    description: "Clear payment details and professional formatting mean fewer delays.",
+  },
+];
 
 const Home = () => {
   return (
-    <div className="bg-[#F8F9FA] flex justify-center items-center overflow-x-hidden">
-      <div className="border-l border-r max-w-4xl w-full mx-auto h-full flex justify-center flex-col border-[#E2E8F0]">
-        <div className="justify-center items-center h-full flex flex-col my-6 md:my-10">
-          <div className="border-t border-[#E2E8F0] w-full mx-auto py-6 md:py-10 flex justify-center items-center relative">
-            <Image
-              src="/logo.png"
-              width={80}
-              height={80}
-              className="rounded-lg md:w-[100px] md:h-[100px]"
-              alt="logo"
-            />
-          </div>
-          <div className="relative group">
-            <h1 className="font-semibold text-2xl md:text-7xl text-center w-full border-t border-b py-4 md:py-6 text-balance px-4 text-[#0F172A] border-[#E2E8F0]">
-              Free Invoice Generator –{' '}
-              <span className="text-[#4F46E5]">
-                No Signup Required
-              </span>
+    <div className="min-h-screen bg-surface">
+      {/* Hero Section */}
+      <section className="relative overflow-hidden">
+        <div className="max-w-5xl mx-auto px-5 pt-12 md:pt-20 pb-10 md:pb-16">
+          <div className="text-center max-w-2xl mx-auto">
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-light text-accent text-label-sm mb-6 animate-fade-in">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              No signup required
+            </div>
+
+            <h1 className="text-display-lg text-text-primary mb-4 animate-fade-in" style={{ animationDelay: '50ms' }}>
+              Professional invoices
+              <br />
+              <span className="text-accent">in seconds</span>
             </h1>
-          </div>
-          <div className="pt-6 pb-6 md:pt-10 md:pb-8 flex flex-col md:flex-row gap-3 md:gap-4 items-center justify-center mx-auto border-[#E2E8F0] border-b w-full">
-            <Link
-              href="/new"
-              className="inline-flex items-center justify-center whitespace-nowrap rounded-lg transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring font-semibold disabled:pointer-events-none disabled:opacity-50 bg-[#0F172A] text-white hover:bg-[#1E293B] px-5 md:px-7 py-2.5 md:py-3 text-sm md:text-lg shadow-md"
-            >
-              Generate Invoice
-            </Link>
-            <Link
-              href="/download"
-              className="inline-flex items-center justify-center whitespace-nowrap rounded-lg border-2 border-[#CBD5E1] bg-white text-[#475569] hover:border-[#0F172A] hover:text-[#0F172A] transition-all px-5 md:px-7 py-2.5 md:py-3 text-sm md:text-lg font-medium gap-2 shadow-sm"
-            >
-              <Smartphone className="w-4 h-4 md:w-5 md:h-5" />
-              Download APK
-            </Link>
-          </div>
-          <div className="border-b text-balance text-center w-full font-semibold border-[#E2E8F0]">
-            <div className="grid grid-cols-2 px-4 relative py-4 md:py-6 text-2xl md:text-7xl max-w-lg mx-auto">
-              <div className="flex flex-col border-r border-[#E2E8F0]">
-                <div className="flex justify-center items-center gap-1 md:gap-2">
-                  <Users className="w-3 h-3 md:w-4 md:h-4" />
-                  <span className="text-[10px] md:text-xs">No Signup</span>
-                </div>
-                <span className="text-[#4F46E5] text-3xl md:text-7xl">
-                  100%
-                </span>
-                <span className="text-[10px] md:text-xs">Free</span>
-              </div>
-              <div className="flex flex-col">
-                <div className="flex justify-center items-center gap-1 md:gap-2">
-                  <Download className="w-3 h-3 md:w-4 md:h-4" />
-                  <span className="text-[10px] md:text-xs">Unlimited</span>
-                </div>
-                <span className="text-[#4F46E5] text-3xl md:text-7xl">
-                  ∞
-                </span>
-                <span className="text-[10px] md:text-xs">Invoices</span>
-              </div>
+
+            <p className="text-body-lg text-text-secondary max-w-lg mx-auto mb-8 animate-fade-in" style={{ animationDelay: '100ms' }}>
+              Create, download, and send polished invoices in minutes.
+              Free forever, no account needed.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 animate-fade-in" style={{ animationDelay: '150ms' }}>
+              <Link href="/new" className="btn-primary px-7 py-3 text-[15px]">
+                Create Invoice
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <Link href="/download" className="btn-secondary px-7 py-3 text-[15px]">
+                <Smartphone className="w-4 h-4" />
+                Download App
+              </Link>
             </div>
           </div>
         </div>
-        <div className="px-2 md:px-0 mb-6 md:mb-10">
-          <DemoPreview />
+      </section>
+
+      {/* Demo Preview */}
+      <section className="max-w-5xl mx-auto px-5 mb-16 md:mb-24">
+        <div className="relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-surface pointer-events-none z-10" />
+          <div className="bg-white rounded-card shadow-soft-lg border border-border p-2 md:p-3 overflow-hidden">
+            <div className="rounded-[8px] overflow-hidden bg-white">
+              <DemoPreview />
+            </div>
+          </div>
+          <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-[80%] h-8 bg-black/5 blur-xl rounded-full" />
         </div>
-        <SeoNativeAd adUnitId="ca-app-pub-6235199437488383/4973586076" />
-        <p className="font-medium text-lg md:text-3xl border-t border-[#E2E8F0] border-b py-4 md:py-6 px-4 md:px-7 text-[#64748B] text-center">
-          Here&apos;s why you&apos;ll love our Free Invoice Generator
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2">
-          <div className="border-b sm:border-r border-[#E2E8F0] p-5 md:p-7 flex justify-center flex-col items-center">
-            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-[#E2E8F0] bg-[#F1F5F9]">
-              <Rocket className="w-4 h-4 md:w-6 md:h-6 text-[#4F46E5]" />
-            </p>
-            <p className="font-bold text-base md:text-xl text-[#0F172A]">Fast & Easy</p>
-            <p className="text-[#64748B] mt-1 text-center text-xs md:text-base">
-              Simply fill in the blanks and generate professional invoices in seconds
-            </p>
-          </div>
-          <div className="border-b border-[#E2E8F0] p-5 md:p-7 flex justify-center flex-col items-center">
-            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-[#E2E8F0] bg-[#F1F5F9]">
-              <Infinity className="w-4 h-4 md:w-6 md:h-6 text-[#4F46E5]" />
-            </p>
-            <p className="font-bold text-base md:text-xl text-[#0F172A]">Free for Lifetime</p>
-            <p className="text-[#64748B] mt-1 text-center text-xs md:text-base">
-              No credit card required, no signup needed. Create unlimited invoices free for lifetime.
-            </p>
-          </div>
-          <div className="border-b sm:border-r border-[#E2E8F0] p-5 md:p-7 flex justify-center flex-col items-center">
-            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-[#E2E8F0] bg-[#F1F5F9]">
-              <NotebookText className="w-4 h-4 md:w-6 md:h-6 text-[#4F46E5]" />
-            </p>
-            <p className="font-bold text-base md:text-xl text-[#0F172A]">Beautiful Templates</p>
-            <p className="text-[#64748B] mt-1 text-center text-xs md:text-base">
-              Choose from a variety of modern and customizable invoice templates.
-            </p>
-          </div>
-          <div className="border-b border-[#E2E8F0] p-5 md:p-7 flex justify-center flex-col items-center">
-            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-[#E2E8F0] bg-[#F1F5F9]">
-              <Receipt className="w-4 h-4 md:w-6 md:h-6 text-[#4F46E5]" />
-            </p>
-            <p className="font-bold text-base md:text-xl text-[#0F172A]">Get Paid Faster</p>
-            <p className="text-[#64748B] mt-1 text-center text-xs md:text-base">
-              Send invoices electronically with secure payment links for faster client payments.
-            </p>
-          </div>
-          <div className="border-b sm:border-r border-[#E2E8F0] p-5 md:p-7 flex justify-center flex-col items-center">
-            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-[#E2E8F0] bg-[#F1F5F9]">
-              <Hourglass className="w-4 h-4 md:w-6 md:h-6 text-[#4F46E5]" />
-            </p>
-            <p className="font-bold text-base md:text-xl text-[#0F172A]">Save Time & Money</p>
-            <p className="text-[#64748B] mt-1 text-center text-xs md:text-base">
-              Ditch the spreadsheets and expensive invoicing software.
-            </p>
-          </div>
-          <div className="border-b border-[#E2E8F0] p-5 md:p-7 flex justify-center flex-col items-center">
-            <p className="border flex justify-center items-center w-9 h-9 md:w-11 md:h-11 rounded-lg text-lg md:text-2xl mb-3 md:mb-5 border-[#E2E8F0] bg-[#F1F5F9]">
-              <CodeXml className="w-4 h-4 md:w-6 md:h-6 text-[#4F46E5]" />
-            </p>
-            <p className="font-bold text-base md:text-xl text-[#0F172A]">Free for Lifetime</p>
-            <p className="text-[#64748B] mt-1 text-center text-xs md:text-base">
-              Free for lifetime, with no hidden charges. Use it forever at zero cost.
-            </p>
-          </div>
+      </section>
+
+      <SeoNativeAd adUnitId="ca-app-pub-6235199437488383/4973586076" />
+
+      {/* Features */}
+      <section className="max-w-5xl mx-auto px-5 py-16 md:py-24">
+        <div className="text-center mb-12">
+          <h2 className="text-display-sm text-text-primary mb-3">
+            Why Invoice Maker?
+          </h2>
+          <p className="text-body-lg text-text-secondary max-w-md mx-auto">
+            Everything you need to create professional invoices, nothing you don&apos;t.
+          </p>
         </div>
-        <RecentInvoices />
-        <div className="px-4 md:px-5 py-8 md:py-11 flex justify-center items-center border-b border-[#E2E8F0]">
-          <div className="flex justify-center rounded-2xl max-w-3xl items-center px-4 py-6 md:py-10 w-full flex-col gap-3 md:gap-4 bg-[#F1F5F9]">
-            <p className="md:max-w-2xl text-center font-semibold text-base md:text-3xl text-[#0F172A] px-2 md:p-4 text-balance">
-              Free invoice generator – no signup required, no credit card needed.
-              Start creating invoices now.
-            </p>
-            <Link
-              href="/new"
-              className="inline-flex items-center justify-center whitespace-nowrap rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring font-medium disabled:pointer-events-none disabled:opacity-50 bg-[#0F172A] text-white hover:bg-[#1E293B] px-5 md:px-6 py-2 text-sm md:text-lg"
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {features.map((feature) => (
+            <div
+              key={feature.title}
+              className="group p-6 rounded-card border border-border bg-white hover:shadow-soft-md hover:border-accent/20 transition-all duration-200"
             >
-              Generate Today!
+              <div className="w-10 h-10 rounded-lg bg-accent-light flex items-center justify-center mb-4 group-hover:bg-accent/10 transition-colors">
+                <feature.icon className="w-5 h-5 text-accent" />
+              </div>
+              <h3 className="text-label-lg text-text-primary mb-1.5">
+                {feature.title}
+              </h3>
+              <p className="text-body-sm text-text-secondary leading-relaxed">
+                {feature.description}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Recent Invoices */}
+      <RecentInvoices />
+
+      {/* CTA */}
+      <section className="max-w-5xl mx-auto px-5 py-16 md:py-20">
+        <div className="relative rounded-card bg-text-primary p-8 md:p-12 text-center overflow-hidden">
+          <div className="absolute inset-0 opacity-[0.03]" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }} />
+          <div className="relative z-10">
+            <h2 className="text-display-sm text-white mb-3">
+              Start creating invoices now
+            </h2>
+            <p className="text-body-lg text-white/60 mb-6 max-w-md mx-auto">
+              No signup. No credit card. Just professional invoices.
+            </p>
+            <Link href="/new" className="btn-primary bg-white text-text-primary hover:bg-surface-muted px-7 py-3 text-[15px]">
+              Create Your First Invoice
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         </div>
-        <SeoNativeAd adUnitId="ca-app-pub-6235199437488383/2648328140" />
-      </div>
+      </section>
+
+      <SeoNativeAd adUnitId="ca-app-pub-6235199437488383/2648328140" />
     </div>
   );
 };

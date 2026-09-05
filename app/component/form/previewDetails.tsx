@@ -38,11 +38,12 @@ export const PreviewDetails = ({
     <div className="w-full flex justify-center">
       <div
         id="invoice-preview"
-        className="w-full max-w-[595px] shadow-sm mx-2 md:mx-0 overflow-hidden"
+        className="w-full max-w-[595px] mx-2 md:mx-0 overflow-hidden"
         style={{
           backgroundColor: outerBg,
           border: `1px solid ${tc?.border || "#e4e4e7"}`,
           position: "relative",
+          boxShadow: "0 1px 3px rgba(28, 25, 23, 0.04), 0 4px 12px rgba(28, 25, 23, 0.06)",
         }}
       >
         {isExecutive && (

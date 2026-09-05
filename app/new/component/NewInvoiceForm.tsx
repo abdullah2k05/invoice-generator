@@ -55,29 +55,42 @@ const AccordionSection = ({
   onToggle: () => void;
   children: React.ReactNode;
 }) => (
-  <div className="border-b border-[#E2E8F0] last:border-b-0">
+  <div className="border-b border-border last:border-b-0">
     <button
       onClick={onToggle}
-      className="w-full flex items-center justify-between py-3 px-5 hover:bg-[#F1F5F9] transition-colors duration-150"
+      className={cn(
+        "w-full flex items-center justify-between py-3.5 px-5 transition-all duration-150",
+        isOpen ? "bg-surface-muted" : "hover:bg-surface-muted/50"
+      )}
     >
-      <div className="flex items-center gap-2">
-        {icon && <span className="text-[#64748B]">{icon}</span>}
-        <span className="text-sm font-semibold text-[#0F172A]">{title}</span>
+      <div className="flex items-center gap-2.5">
+        <span className={cn(
+          "transition-colors duration-150",
+          isOpen ? "text-accent" : "text-text-muted"
+        )}>
+          {icon}
+        </span>
+        <span className={cn(
+          "text-[13px] font-medium transition-colors duration-150",
+          isOpen ? "text-text-primary" : "text-text-secondary"
+        )}>
+          {title}
+        </span>
       </div>
       <ChevronDown
         className={cn(
-          "w-4 h-4 text-[#94A3B8] transition-transform duration-200",
+          "w-4 h-4 text-text-muted transition-transform duration-200",
           isOpen && "rotate-180"
         )}
       />
     </button>
     <div
       className={cn(
-        "overflow-hidden transition-all duration-200",
+        "accordion-content",
         isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
       )}
     >
-      <div className="px-5 pb-5 pt-1 space-y-3">
+      <div className="px-5 pb-5 pt-2 space-y-4">
         {children}
       </div>
     </div>
@@ -85,18 +98,20 @@ const AccordionSection = ({
 );
 
 const Header = ({ onReset }: { onReset: () => void }) => (
-  <header className="h-12 bg-white border-b border-[#E2E8F0] flex items-center justify-between px-5 shrink-0">
-    <div className="flex items-center gap-3">
-      <div className="flex items-center gap-2">
-        <FileText className="w-4 h-4 text-[#0F172A]" />
-        <span className="text-sm font-semibold text-[#0F172A]">Invoice Suite</span>
+  <header className="h-14 bg-white border-b border-border flex items-center justify-between px-5 shrink-0">
+    <div className="flex items-center gap-2.5">
+      <div className="w-7 h-7 rounded-lg bg-accent/10 flex items-center justify-center">
+        <FileText className="w-3.5 h-3.5 text-accent" />
       </div>
-      <span className="text-[#94A3B8] text-sm">/</span>
-      <span className="text-sm text-[#64748B]">New Invoice</span>
+      <div className="flex items-center gap-1.5 text-[13px]">
+        <span className="text-text-primary font-medium">Invoice Suite</span>
+        <span className="text-text-muted">/</span>
+        <span className="text-text-secondary">New Invoice</span>
+      </div>
     </div>
     <button
       onClick={onReset}
-      className="flex items-center gap-1.5 text-xs text-[#94A3B8] hover:text-[#0F172A] transition-colors"
+      className="btn-ghost text-[13px] text-text-muted hover:text-destructive"
     >
       <RotateCcw className="w-3.5 h-3.5" />
       Reset
@@ -120,10 +135,10 @@ const Sidebar = ({
   onOpenSection: (s: string) => void;
 }) => {
   return (
-    <aside className="w-full md:w-[400px] bg-[#F8F9FA] border-r border-[#E2E8F0] overflow-y-auto">
+    <aside className="w-full md:w-[380px] bg-white border-r border-border overflow-y-auto custom-scrollbar">
       <AccordionSection
         title="Invoice Details"
-        icon={<FileText className="w-3.5 h-3.5" />}
+        icon={<FileText className="w-4 h-4" />}
         isOpen={openSection === "identity"}
         onToggle={() => onOpenSection(openSection === "identity" ? "" : "identity")}
       >
@@ -131,7 +146,7 @@ const Sidebar = ({
       </AccordionSection>
       <AccordionSection
         title="From"
-        icon={<User className="w-3.5 h-3.5" />}
+        icon={<User className="w-4 h-4" />}
         isOpen={openSection === "from"}
         onToggle={() => onOpenSection(openSection === "from" ? "" : "from")}
       >
@@ -139,7 +154,7 @@ const Sidebar = ({
       </AccordionSection>
       <AccordionSection
         title="To"
-        icon={<Briefcase className="w-3.5 h-3.5" />}
+        icon={<Briefcase className="w-4 h-4" />}
         isOpen={openSection === "to"}
         onToggle={() => onOpenSection(openSection === "to" ? "" : "to")}
       >
@@ -147,7 +162,7 @@ const Sidebar = ({
       </AccordionSection>
       <AccordionSection
         title="Items & Pricing"
-        icon={<Receipt className="w-3.5 h-3.5" />}
+        icon={<Receipt className="w-4 h-4" />}
         isOpen={openSection === "financials"}
         onToggle={() => onOpenSection(openSection === "financials" ? "" : "financials")}
       >
@@ -155,7 +170,7 @@ const Sidebar = ({
       </AccordionSection>
       <AccordionSection
         title="Payment Info"
-        icon={<CreditCard className="w-3.5 h-3.5" />}
+        icon={<CreditCard className="w-4 h-4" />}
         isOpen={openSection === "remittance"}
         onToggle={() => onOpenSection(openSection === "remittance" ? "" : "remittance")}
       >
@@ -163,7 +178,7 @@ const Sidebar = ({
       </AccordionSection>
       <AccordionSection
         title="Template"
-        icon={<LayoutTemplate className="w-3.5 h-3.5" />}
+        icon={<LayoutTemplate className="w-4 h-4" />}
         isOpen={openSection === "template"}
         onToggle={() => onOpenSection(openSection === "template" ? "" : "template")}
       >
@@ -171,20 +186,20 @@ const Sidebar = ({
       </AccordionSection>
       <AccordionSection
         title="Download"
-        icon={<FileText className="w-3.5 h-3.5" />}
+        icon={<FileText className="w-4 h-4" />}
         isOpen={openSection === "download"}
         onToggle={() => onOpenSection(openSection === "download" ? "" : "download")}
       >
-          <div className="text-center py-2">
-            <p className="text-sm font-semibold text-[#0F172A]">Your invoice is ready</p>
-            <p className="text-xs text-[#64748B] mt-1 mb-4">Please review the details carefully before downloading or sharing your invoice.</p>
-            <div className="flex flex-col gap-2">
-              <DownloadInvoiceButton />
-              <ShareInvoiceButton />
-            </div>
+        <div className="space-y-3">
+          <p className="text-body-sm text-text-secondary">
+            Review your invoice carefully before downloading or sharing.
+          </p>
+          <div className="flex flex-col gap-2">
+            <DownloadInvoiceButton />
+            <ShareInvoiceButton />
           </div>
+        </div>
       </AccordionSection>
-
     </aside>
   );
 };
@@ -198,18 +213,20 @@ const MobileToggleHeader = ({
   onModeChange: (m: "edit" | "view") => void;
   onReset: () => void;
 }) => (
-  <div className="h-12 bg-white border-b border-[#E2E8F0] flex items-center justify-between px-4 shrink-0">
-    <div className="flex items-center gap-2">
-      <FileText className="w-4 h-4 text-[#0F172A]" />
-      <span className="text-sm font-semibold text-[#0F172A]">Invoice</span>
+  <div className="h-14 bg-white border-b border-border flex items-center justify-between px-4 shrink-0">
+    <div className="flex items-center gap-2.5">
+      <div className="w-7 h-7 rounded-lg bg-accent/10 flex items-center justify-center">
+        <FileText className="w-3.5 h-3.5 text-accent" />
+      </div>
+      <span className="text-[13px] font-medium text-text-primary">Invoice</span>
     </div>
-    <div className="flex items-center gap-3">
-      <div className="bg-[#F1F5F9] rounded-lg p-0.5 flex">
+    <div className="flex items-center gap-2">
+      <div className="bg-surface-muted rounded-button p-0.5 flex">
         <button
           onClick={() => onModeChange("edit")}
           className={cn(
-            "px-3 py-1 text-xs font-medium rounded-md transition-all duration-150",
-            mode === "edit" ? "bg-white text-[#0F172A] shadow-sm" : "text-[#64748B]"
+            "px-3 py-1.5 text-[12px] font-medium rounded-[6px] transition-all duration-150",
+            mode === "edit" ? "bg-white text-text-primary shadow-soft" : "text-text-secondary"
           )}
         >
           Edit
@@ -217,8 +234,8 @@ const MobileToggleHeader = ({
         <button
           onClick={() => onModeChange("view")}
           className={cn(
-            "px-3 py-1 text-xs font-medium rounded-md transition-all duration-150",
-            mode === "view" ? "bg-white text-[#0F172A] shadow-sm" : "text-[#64748B]"
+            "px-3 py-1.5 text-[12px] font-medium rounded-[6px] transition-all duration-150",
+            mode === "view" ? "bg-white text-text-primary shadow-soft" : "text-text-secondary"
           )}
         >
           View
@@ -226,9 +243,9 @@ const MobileToggleHeader = ({
       </div>
       <button
         onClick={onReset}
-        className="flex items-center gap-1 text-xs text-[#94A3B8] hover:text-[#0F172A] transition-colors"
+        className="btn-ghost p-2 text-text-muted"
       >
-        <RotateCcw className="w-3 h-3" />
+        <RotateCcw className="w-3.5 h-3.5" />
       </button>
     </div>
   </div>
@@ -280,7 +297,7 @@ export const NewInvoiceForm = () => {
   return (
     <ErrorBoundary>
       <FormProvider {...methods}>
-      <div className="w-full min-h-dvh bg-[#F8F9FA] flex flex-col">
+      <div className="w-full min-h-dvh bg-surface flex flex-col">
         {/* Desktop Header */}
         <div className="hidden md:block">
           <Header onReset={handleReset} />
@@ -299,9 +316,11 @@ export const NewInvoiceForm = () => {
           </div>
 
           {/* Mobile: View mode */}
-          <div className={cn("md:hidden flex-1 overflow-y-auto bg-[#F4F5F6] p-4 pb-40", mobileMode === "edit" && "hidden")}>
+          <div className={cn("md:hidden flex-1 overflow-y-auto bg-surface-muted p-4 pb-40", mobileMode === "edit" && "hidden")}>
             <div className="max-w-[500px] mx-auto space-y-4">
-              <UserDataPreview onSectionChange={handleSectionFromPreview} />
+              <div className="invoice-paper rounded-card shadow-soft-lg border border-border overflow-hidden">
+                <UserDataPreview onSectionChange={handleSectionFromPreview} />
+              </div>
               <div className="flex flex-col gap-2">
                 <DownloadInvoiceButton />
                 <ShareInvoiceButton />
@@ -314,13 +333,13 @@ export const NewInvoiceForm = () => {
             <Sidebar openSection={openSection} onOpenSection={setOpenSection} />
           </div>
 
-          {/* Desktop Artboard */}
-          <div className="hidden md:flex flex-1 bg-[#F4F5F6] items-start justify-center p-8 pb-40 overflow-y-auto">
+          {/* Desktop Preview */}
+          <div className="hidden md:flex flex-1 bg-surface-muted items-start justify-center p-8 pb-40 overflow-y-auto custom-scrollbar">
             <div className="w-full max-w-[500px]">
-              <div id="invoice-print-area">
+              <div className="invoice-paper rounded-card shadow-soft-lg border border-border overflow-hidden" id="invoice-print-area">
                 <UserDataPreview onSectionChange={handleSectionFromPreview} />
               </div>
-              <div className="flex flex-col gap-2 mt-6">
+              <div className="flex items-center gap-2 mt-4">
                 <DownloadInvoiceButton />
                 <button
                   onClick={() => {
@@ -351,7 +370,7 @@ export const NewInvoiceForm = () => {
                       setTimeout(() => document.body.removeChild(iframe), 1000);
                     }, 500);
                   }}
-                  className="inline-flex items-center justify-center rounded-lg border border-[#E2E8F0] bg-white text-[#0F172A] hover:bg-[#F1F5F9] px-4 py-2.5 text-sm font-medium transition-colors gap-2"
+                  className="btn-secondary text-[13px]"
                 >
                   <Printer className="w-4 h-4" />
                   Print
@@ -370,7 +389,7 @@ export const NewInvoiceForm = () => {
         <div className="md:hidden fixed bottom-28 left-1/2 -translate-x-1/2 z-40">
           <button
             onClick={() => setMobileMode(mobileMode === "edit" ? "view" : "edit")}
-            className="bg-[#0F172A] text-white text-sm font-medium px-5 py-3 rounded-xl flex items-center gap-2 shadow-lg active:scale-95 transition-all duration-150"
+            className="bg-text-primary text-white text-[13px] font-medium px-5 py-3 rounded-pill flex items-center gap-2 shadow-soft-lg active:scale-[0.96] transition-all duration-150"
           >
             {mobileMode === "edit" ? (
               <>

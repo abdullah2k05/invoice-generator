@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { FileText, Trash2, Copy, Clock, ExternalLink } from "lucide-react";
+import { FileText, Trash2, Copy, Clock } from "lucide-react";
 import { getInvoiceHistory, deleteInvoice, type StoredInvoice } from "@/lib/localData";
 import { useRouter } from "next/navigation";
 
@@ -42,35 +42,44 @@ export function RecentInvoices() {
     }
   };
 
+  const formatCurrency = (currency: string) => {
+    const symbols: Record<string, string> = {
+      USD: "$", PKR: "₨", EUR: "€", GBP: "£", CAD: "C$", AUD: "A$",
+    };
+    return symbols[currency] || "$";
+  };
+
   return (
-    <div className="border-t border-[#E2E8F0] w-full max-w-4xl mx-auto px-4 md:px-7 py-6 md:py-8">
-      <div className="flex items-center gap-2 mb-4">
-        <Clock className="w-4 h-4 text-[#64748B]" />
-        <h2 className="text-base md:text-lg font-semibold text-[#0F172A]">
+    <div className="max-w-5xl mx-auto px-5 py-12 md:py-16">
+      <div className="flex items-center gap-2 mb-5">
+        <Clock className="w-4 h-4 text-text-muted" />
+        <h2 className="text-label-lg text-text-primary">
           Recent Invoices
         </h2>
-        <span className="text-xs text-[#94A3B8]">({invoices.length})</span>
+        <span className="badge">{invoices.length}</span>
       </div>
       <div className="space-y-2">
         {invoices.map((inv) => (
           <div
             key={inv.id}
-            className="flex items-center justify-between px-4 py-3 bg-white border border-[#E2E8F0] rounded-lg hover:border-[#4F46E5]/30 transition-colors group"
+            className="group flex items-center justify-between p-4 bg-white rounded-card border border-border hover:shadow-soft hover:border-accent/20 transition-all duration-150"
           >
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
-                <FileText className="w-4 h-4 text-[#4F46E5] shrink-0" />
-                <p className="text-sm font-medium text-[#0F172A] truncate">
+                <div className="w-7 h-7 rounded-md bg-accent/10 flex items-center justify-center shrink-0">
+                  <FileText className="w-3.5 h-3.5 text-accent" />
+                </div>
+                <p className="text-[13px] font-medium text-text-primary truncate">
                   {inv.invoiceNumber}
                 </p>
               </div>
-              <div className="flex items-center gap-2 mt-0.5 text-xs text-[#64748B]">
+              <div className="flex items-center gap-2 mt-1 ml-9 text-[12px] text-text-secondary">
                 <span>{inv.client}</span>
-                <span>•</span>
+                <span className="text-text-muted">·</span>
                 <span>{formatDate(inv.date)}</span>
-                <span>•</span>
-                <span className="font-medium">
-                  {inv.currency === "USD" ? "$" : inv.currency === "PKR" ? "₨" : inv.currency === "EUR" ? "€" : inv.currency === "GBP" ? "£" : "$"}
+                <span className="text-text-muted">·</span>
+                <span className="font-medium text-text-primary">
+                  {formatCurrency(inv.currency)}
                   {typeof inv.total === "number" ? inv.total.toFixed(2) : inv.total}
                 </span>
               </div>
@@ -79,16 +88,16 @@ export function RecentInvoices() {
               <button
                 onClick={() => handleDuplicate(inv)}
                 title="Duplicate invoice"
-                className="p-2 hover:bg-[#F1F5F9] rounded-lg transition-colors"
+                className="p-2 hover:bg-surface-muted rounded-button transition-colors"
               >
-                <Copy className="w-4 h-4 text-[#64748B]" />
+                <Copy className="w-3.5 h-3.5 text-text-secondary" />
               </button>
               <button
                 onClick={() => handleDelete(inv.id)}
                 title="Delete"
-                className="p-2 hover:bg-red-50 rounded-lg transition-colors"
+                className="p-2 hover:bg-destructive-light rounded-button transition-colors"
               >
-                <Trash2 className="w-4 h-4 text-red-400" />
+                <Trash2 className="w-3.5 h-3.5 text-destructive" />
               </button>
             </div>
           </div>

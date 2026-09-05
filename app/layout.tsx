@@ -9,7 +9,7 @@ import { NativeBanner } from "@/components/NativeBanner";
 import { AppStoreBadges } from "@/components/AppStoreBadges";
 
 export const viewport: Viewport = {
-  themeColor: "#f97316",
+  themeColor: "#059669",
   width: "device-width",
   initialScale: 1,
 };
@@ -46,11 +46,20 @@ export const metadata: Metadata = {
 const adsenseId = process.env.NEXT_PUBLIC_ADSENSE_ID || "ca-pub-0000000000000000";
 const gaId = process.env.NEXT_PUBLIC_GA_ID || "G-2KHJ1FLV47";
 
-const footerColumns = [
+const footerSections = [
+  {
+    heading: "Product",
+    links: [
+      { label: "Create Invoice", href: "/new" },
+      { label: "Templates", href: "/invoice-template" },
+      { label: "Examples", href: "/invoice-example" },
+      { label: "Download App", href: "/download" },
+      { label: "FAQ", href: "/faq" },
+    ],
+  },
   {
     heading: "Templates",
     links: [
-      { label: "All Templates", href: "/invoice-template" },
       { label: "PDF Template", href: "/invoice-template-pdf" },
       { label: "Word Template", href: "/invoice-template-word" },
       { label: "Excel Template", href: "/invoice-template-excel" },
@@ -59,27 +68,7 @@ const footerColumns = [
     ],
   },
   {
-    heading: "Examples",
-    links: [
-      { label: "Invoice Example", href: "/invoice-example" },
-      { label: "Freelance", href: "/freelance-invoice-example" },
-      { label: "Web Design", href: "/web-design-invoice-example" },
-      { label: "Consulting", href: "/consulting-invoice-example" },
-      { label: "Dev Project", href: "/software-development-invoice-example" },
-    ],
-  },
-  {
-    heading: "Countries",
-    links: [
-      { label: "US", href: "/invoice-generator-us" },
-      { label: "UK", href: "/invoice-generator-uk" },
-      { label: "Pakistan", href: "/invoice-generator-pakistan" },
-      { label: "India", href: "/invoice-generator-india" },
-      { label: "Canada", href: "/invoice-generator-canada" },
-    ],
-  },
-  {
-    heading: "By Industry",
+    heading: "Use Cases",
     links: [
       { label: "Freelancers", href: "/invoice-generator-for-freelancers" },
       { label: "Designers", href: "/invoice-generator-for-designers" },
@@ -89,25 +78,12 @@ const footerColumns = [
     ],
   },
   {
-    heading: "Features",
-    links: [
-      { label: "Invoice Generator", href: "/invoice-generator" },
-      { label: "PDF Generator", href: "/invoice-pdf-generator" },
-      { label: "Invoice Maker", href: "/invoice-maker" },
-      { label: "Tax Calculator", href: "/tax-calculator" },
-      { label: "GST Generator", href: "/gst-invoice-generator" },
-      { label: "VAT Generator", href: "/vat-invoice-generator" },
-    ],
-  },
-  {
     heading: "Resources",
     links: [
       { label: "How to Create an Invoice", href: "/blog/how-to-create-an-invoice" },
       { label: "Invoice vs Receipt", href: "/blog/invoice-vs-receipt" },
       { label: "Payment Terms Guide", href: "/blog/how-to-write-payment-terms" },
       { label: "Tax Guide", href: "/blog/how-to-calculate-invoice-tax" },
-      { label: "Late Fee Guide", href: "/blog/late-payment-fee-guide" },
-      { label: "FAQ", href: "/faq" },
     ],
   },
   {
@@ -115,35 +91,10 @@ const footerColumns = [
     links: [
       { label: "About", href: "/about" },
       { label: "Contact", href: "/contact" },
-      { label: "Blog", href: "/blog/how-to-create-an-invoice" },
-    ],
-  },
-  {
-    heading: "Download",
-    links: [
-      { label: "Android App", href: "/download" },
-    ],
-  },
-  {
-    heading: "Legal",
-    links: [
       { label: "Privacy Policy", href: "/privacy-policy" },
       { label: "Terms of Service", href: "/terms-of-service" },
-      { label: "Cookie Policy", href: "/cookie-policy" },
-      { label: "Disclaimer", href: "/disclaimer" },
-      { label: "DMCA", href: "/dmca" },
     ],
   },
-];
-
-const footerBottomLinks = [
-  { label: "Privacy Policy", href: "/privacy-policy" },
-  { label: "Terms of Service", href: "/terms-of-service" },
-  { label: "Cookie Policy", href: "/cookie-policy" },
-  { label: "Disclaimer", href: "/disclaimer" },
-  { label: "Contact", href: "/contact" },
-  { label: "About", href: "/about" },
-
 ];
 
 export default function RootLayout({
@@ -158,9 +109,9 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
         <link rel="manifest" href="/site.webmanifest" />
-        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#f97316" />
-        <meta name="msapplication-TileColor" content="#f97316" />
-        <meta name="theme-color" content="#f97316" />
+        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#059669" />
+        <meta name="msapplication-TileColor" content="#059669" />
+        <meta name="theme-color" content="#059669" />
         <Script
           async
           src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseId}`}
@@ -181,21 +132,34 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${GeistSans.className} flex flex-col min-h-screen pb-32`}>
+      <body className={`${GeistSans.className} flex flex-col min-h-screen bg-surface pb-32`}>
         <AppInit />
         <BackButtonHandler />
         <NativeBanner />
+
         {/* Navbar */}
-        <nav className="border-b border-[#E2E8F0] bg-white sticky top-0 z-50">
-          <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between border-l border-r border-[#E2E8F0]">
-            <Link href="/" className="font-bold text-lg text-[#0F172A] hover:text-[#4F46E5] transition-colors">
-              Invoice Maker
+        <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-border">
+          <div className="max-w-5xl mx-auto px-5 h-14 flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2.5 group">
+              <div className="w-7 h-7 rounded-lg bg-accent flex items-center justify-center">
+                <span className="text-white text-xs font-bold">IN</span>
+              </div>
+              <span className="font-semibold text-text-primary text-[15px] group-hover:text-accent transition-colors">
+                Invoice Maker
+              </span>
             </Link>
-            <div className="flex items-center gap-4 text-sm">
-              <Link href="/new" className="text-[#64748B] hover:text-[#0F172A] transition-colors">Create</Link>
-              <Link href="/invoice-template" className="text-[#64748B] hover:text-[#0F172A] transition-colors">Templates</Link>
-              <Link href="/invoice-example" className="text-[#64748B] hover:text-[#0F172A] transition-colors">Examples</Link>
-              <Link href="/faq" className="text-[#64748B] hover:text-[#0F172A] transition-colors">FAQ</Link>
+
+            <div className="hidden md:flex items-center gap-1">
+              <Link href="/new" className="btn-ghost text-[13px]">Create Invoice</Link>
+              <Link href="/invoice-template" className="btn-ghost text-[13px]">Templates</Link>
+              <Link href="/invoice-example" className="btn-ghost text-[13px]">Examples</Link>
+              <Link href="/faq" className="btn-ghost text-[13px]">FAQ</Link>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <Link href="/new" className="btn-primary text-[13px] px-4 py-2">
+                New Invoice
+              </Link>
             </div>
           </div>
         </nav>
@@ -203,20 +167,20 @@ export default function RootLayout({
         {children}
 
         {/* Footer */}
-        <footer className="border-t border-[#E2E8F0] bg-white">
-          <div className="max-w-4xl mx-auto px-4 py-12 border-l border-r border-[#E2E8F0]">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {footerColumns.map((col) => (
-                <div key={col.heading}>
-                  <h3 className="font-semibold text-[#0F172A] text-sm mb-3 uppercase tracking-wider">
-                    {col.heading}
+        <footer className="border-t border-border bg-white mt-auto">
+          <div className="max-w-5xl mx-auto px-5 py-12 md:py-16">
+            <div className="grid grid-cols-2 md:grid-cols-5 gap-8 md:gap-6">
+              {footerSections.map((section) => (
+                <div key={section.heading}>
+                  <h3 className="text-label-md text-text-primary font-semibold mb-3">
+                    {section.heading}
                   </h3>
                   <ul className="space-y-2">
-                    {col.links.map((link) => (
+                    {section.links.map((link) => (
                       <li key={link.href}>
                         <Link
                           href={link.href}
-                          className="text-[#64748B] hover:text-[#0F172A] transition-colors text-sm"
+                          className="text-body-sm text-text-secondary hover:text-text-primary transition-colors duration-150"
                         >
                           {link.label}
                         </Link>
@@ -227,35 +191,29 @@ export default function RootLayout({
               ))}
             </div>
 
-            <div className="mt-8 pt-6 border-t border-[#E2E8F0] flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="mt-10 pt-6 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex flex-col items-center md:items-start gap-1">
-                <p className="text-sm text-[#94A3B8]">
-                  © {new Date().getFullYear()} Invoice Maker. All rights reserved.
-                </p>
-                <p className="text-xs text-[#94A3B8]">
-                  Developed by{" "}
+                <div className="flex items-center gap-2">
+                  <div className="w-5 h-5 rounded bg-accent flex items-center justify-center">
+                    <span className="text-white text-[8px] font-bold">IN</span>
+                  </div>
+                  <p className="text-body-sm text-text-secondary">
+                    &copy; {new Date().getFullYear()} Invoice Maker
+                  </p>
+                </div>
+                <p className="text-xs text-text-muted">
+                  Built by{" "}
                   <a
                     href="https://mabdullah.top"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#64748B] hover:text-[#0F172A] transition-colors underline underline-offset-2"
+                    className="text-text-secondary hover:text-text-primary transition-colors underline underline-offset-2"
                   >
                     Muhammad Abdullah
                   </a>
                 </p>
               </div>
               <AppStoreBadges showHeading={false} variant="subtle" />
-              <div className="flex flex-wrap gap-4 text-xs">
-                {footerBottomLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      className="text-[#94A3B8] hover:text-[#0F172A] transition-colors"
-                    >
-                      {link.label}
-                    </Link>
-                ))}
-              </div>
             </div>
           </div>
         </footer>

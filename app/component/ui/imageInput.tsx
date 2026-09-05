@@ -28,17 +28,24 @@ export const ImageInput = ({ label, variableName }: CustomNumberProps) => {
     <Controller
       render={({ field: { onChange, value } }) => (
         <div
-          className="relative w-full bg-white border-b-2 border-[#E2E8F0] transition-all duration-200 cursor-pointer focus-within:border-[#0F172A] pt-5 pb-1.5"
+          className="input-wrapper pt-4 pb-1.5 cursor-pointer"
           onClick={handleButtonClick}
         >
           {label && (
-            <label className="block text-[11px] font-medium text-[#94A3B8] uppercase tracking-wider leading-none mb-0.5">
+            <label className="input-label pointer-events-none">
               {label}
             </label>
           )}
           {value ? (
-            <div className="flex items-center gap-1 mt-0.5">
-              <span className="text-sm font-medium text-[#0F172A]">File uploaded</span>
+            <div className="flex items-center gap-2 mt-0.5">
+              <img
+                src={value}
+                width={32}
+                height={32}
+                className="h-8 w-auto rounded-md border border-border"
+                alt="logo"
+              />
+              <span className="text-sm font-medium text-text-primary">File uploaded</span>
               <button
                 type="button"
                 onClick={(e) => {
@@ -46,28 +53,18 @@ export const ImageInput = ({ label, variableName }: CustomNumberProps) => {
                   onChange("");
                   localStorage.setItem(variableName, "");
                 }}
-                className="text-red-400 hover:text-red-600 p-0.5 rounded-full hover:bg-red-50 ml-auto"
+                className="text-destructive hover:text-destructive-hover p-1 rounded-md hover:bg-destructive-light ml-auto"
                 title="Remove logo"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
-              <img
-                src={value}
-                width={32}
-                height={32}
-                className="h-8 w-auto rounded-md"
-                alt="company logo"
-              />
             </div>
           ) : (
-            <div className="flex items-center gap-1 mt-0.5">
-              <button
-                type="button"
-                className="text-[#94A3B8] border border-[#E2E8F0] rounded-md p-1.5 hover:bg-[#F8F9FA]"
-              >
-                <Plus className="w-4 h-4" />
-              </button>
-              <span className="text-sm text-[#94A3B8]">Upload logo</span>
+            <div className="flex items-center gap-2 mt-0.5">
+              <div className="w-8 h-8 rounded-md border border-dashed border-border flex items-center justify-center bg-surface-muted">
+                <Plus className="w-4 h-4 text-text-muted" />
+              </div>
+              <span className="text-sm text-text-muted">Upload logo</span>
             </div>
           )}
           <input
