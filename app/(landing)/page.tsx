@@ -24,8 +24,8 @@ const features = [
   },
   {
     icon: Infinity,
-    title: "Free forever",
-    description: "Unlimited invoices, unlimited clients. No credit card, no trials, no catches.",
+    title: "No limits",
+    description: "Create as many invoices as you need. No credit card, no trials, no catches.",
   },
   {
     icon: FileText,
@@ -34,8 +34,8 @@ const features = [
   },
   {
     icon: Clock,
-    title: "Get paid faster",
-    description: "Clear payment details and professional formatting mean fewer delays.",
+    title: "Fast and simple",
+    description: "Fill in the blanks, pick a template, and download your invoice in minutes.",
   },
 ];
 
@@ -48,7 +48,7 @@ const Home = () => {
           <div className="text-center max-w-2xl mx-auto">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-accent-light text-accent text-label-sm mb-6 animate-fade-in">
               <CheckCircle2 className="w-3.5 h-3.5" />
-              No signup required
+              Free to use
             </div>
 
             <h1 className="text-display-lg text-text-primary mb-4 animate-fade-in" style={{ animationDelay: '50ms' }}>
@@ -81,7 +81,10 @@ const Home = () => {
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-surface pointer-events-none z-10" />
           <div className="bg-white rounded-card shadow-soft-lg border border-border p-2 md:p-3 overflow-hidden">
-            <div className="rounded-[8px] overflow-hidden bg-white">
+            <div className="rounded-[8px] overflow-hidden bg-white relative">
+              <div className="absolute top-3 right-3 z-20 badge bg-surface-muted/90 backdrop-blur-sm">
+                Sample Invoice
+              </div>
               <DemoPreview />
             </div>
           </div>

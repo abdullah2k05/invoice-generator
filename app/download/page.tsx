@@ -89,7 +89,7 @@ export default function DownloadPage() {
         <div className="rounded-card bg-surface-muted p-6 text-center">
           <h3 className="text-label-lg text-text-primary mb-1">Free Invoice Generator</h3>
           <p className="text-body-sm text-text-secondary mb-4">
-            No signup required. No credit card needed. Create unlimited invoices forever.
+            No signup required. No credit card needed. Create as many invoices as you want.
           </p>
           <Link href="/new" className="btn-primary">
             Generate Invoice Now

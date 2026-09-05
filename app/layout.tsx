@@ -20,9 +20,9 @@ export const metadata: Metadata = {
     canonical: "/",
     languages: { "en-US": "/en-US" },
   },
-  title: "Free Invoice Generator: Create & Send Professional Invoices in Minutes",
+  title: "Free Invoice Generator: Create & Download Professional Invoices",
   description:
-    "Get paid on time with our free invoice maker. Create professional invoices & get them to clients instantly.",
+    "Create professional invoices with our free invoice maker. No signup required, no credit card needed. Download as PDF instantly.",
   keywords: [
     "invoice generator",
     "free invoice template",
@@ -33,9 +33,9 @@ export const metadata: Metadata = {
   robots: "index, follow",
   openGraph: {
     title:
-      "Free Invoice Generator: Create & Send Professional Invoices in Minutes",
+      "Free Invoice Generator: Create & Download Professional Invoices",
     description:
-      "Get paid on time with our free invoice maker. Create professional invoices & get them to clients instantly.",
+      "Create professional invoices with our free invoice maker. No signup required, no credit card needed. Download as PDF instantly.",
     url: "https://invoice-generator.mabdullah.top",
     type: "website",
     images: "/og-image.jpeg",
