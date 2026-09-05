@@ -1,7 +1,5 @@
 package com.mabdullah.invoice;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 import com.getcapacitor.JSObject;
@@ -15,93 +13,87 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
-import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
+import com.google.android.gms.ads.rewarded.RewardedAd;
+import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 
 @CapacitorPlugin(name = "RewardedAd")
 public class RewardedAdPlugin extends Plugin {
 
-    private static final String TAG = "RewardedAdPlugin";
+    private RewardedAd rewardedAd;
+    private boolean userEarnedReward = false;
 
     @PluginMethod
     public void showAd(PluginCall call) {
-        Log.d(TAG, "=== showAd() called ===");
-        Log.d(TAG, "Activity: " + (getActivity() != null ? "present" : "NULL"));
-
         if (getActivity() == null) {
-            Log.e(TAG, "Activity is null, cannot show rewarded ad");
             call.reject("Activity is null");
             return;
         }
 
-        Log.d(TAG, "Calling MobileAds.initialize()");
+        if (rewardedAd != null) {
+            getActivity().runOnUiThread(() -> showLoadedAd(call));
+            return;
+        }
+
         MobileAds.initialize(getContext(), status -> {
-            Log.d(TAG, "MobileAds initialized. Adapter status map size: " +
-                status.getAdapterStatusMap().size());
-            status.getAdapterStatusMap().forEach((key, val) -> {
-                Log.d(TAG, "  Adapter " + key + ": " + val.getInitializationState());
-            });
             getActivity().runOnUiThread(() -> loadAndShow(call));
         });
     }
 
     private void loadAndShow(PluginCall call) {
-        String adUnitId = "ca-app-pub-6235199437488383/8731887749";
-        Log.d(TAG, "Loading rewarded ad. Unit ID: " + adUnitId);
+        String adUnitId = call.getString("adUnitId", "ca-app-pub-6235199437488383/8731887749");
 
         AdRequest adRequest = new AdRequest.Builder().build();
-        RewardedInterstitialAd.load(getContext(), adUnitId,
-            adRequest, new RewardedInterstitialAdLoadCallback() {
+        RewardedAd.load(getContext(), adUnitId,
+            adRequest, new RewardedAdLoadCallback() {
                 @Override
-                public void onAdLoaded(@NonNull RewardedInterstitialAd ad) {
-                    Log.d(TAG, "=== Rewarded onAdLoaded ===");
-                    showLoadedAd(call, ad);
+                public void onAdLoaded(@NonNull RewardedAd ad) {
+                    rewardedAd = ad;
+                    showLoadedAd(call);
                 }
 
                 @Override
                 public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                    Log.e(TAG, "=== Rewarded onAdFailedToLoad ===");
-                    Log.e(TAG, "Code: " + loadAdError.getCode());
-                    Log.e(TAG, "Message: " + loadAdError.getMessage());
-                    Log.e(TAG, "Domain: " + loadAdError.getDomain());
-                    if (loadAdError.getResponseInfo() != null) {
-                        Log.e(TAG, "Response info: " + loadAdError.getResponseInfo().toString());
-                    }
                     call.reject("Ad failed: " + loadAdError.getMessage());
                 }
             });
     }
 
-    private void showLoadedAd(PluginCall call, RewardedInterstitialAd ad) {
-        Log.d(TAG, "Showing rewarded ad");
-        ad.setFullScreenContentCallback(new FullScreenContentCallback() {
+    private void showLoadedAd(PluginCall call) {
+        if (rewardedAd == null) {
+            call.reject("No ad loaded");
+            return;
+        }
+
+        if (getActivity() == null) {
+            call.reject("Activity is null");
+            return;
+        }
+
+        userEarnedReward = false;
+
+        rewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
             @Override
             public void onAdDismissedFullScreenContent() {
-                Log.d(TAG, "Rewarded ad dismissed");
+                rewardedAd = null;
                 JSObject ret = new JSObject();
-                ret.put("rewarded", true);
+                ret.put("rewarded", userEarnedReward);
                 call.resolve(ret);
             }
 
             @Override
             public void onAdFailedToShowFullScreenContent(AdError adError) {
-                Log.e(TAG, "Rewarded failed to show: " + adError.getMessage());
+                rewardedAd = null;
                 call.reject("Ad failed: " + adError.getMessage());
             }
 
             @Override
             public void onAdShowedFullScreenContent() {
-                Log.d(TAG, "Rewarded ad showed full screen");
-            }
-
-            @Override
-            public void onAdImpression() {
-                Log.d(TAG, "Rewarded ad impression");
+                // ad showed
             }
         });
 
-        ad.show(getActivity(), rewardItem -> {
-            Log.d(TAG, "Rewarded: " + rewardItem.getAmount() + " " + rewardItem.getType());
+        rewardedAd.show(getActivity(), rewardItem -> {
+            userEarnedReward = true;
         });
     }
 }

@@ -1,6 +1,5 @@
 package com.mabdullah.invoice;
 
-import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -22,14 +21,11 @@ import java.util.Map;
 public class BannerAdPlugin extends Plugin {
 
     private final Map<String, AdView> adViews = new HashMap<>();
-    private static final String TAG = "BannerAdPlugin";
 
     @PluginMethod
     public void showAd(PluginCall call) {
         String adUnitId = call.getString("adUnitId", "ca-app-pub-6235199437488383/3591241703");
         String position = call.getString("position", "bottom");
-
-        Log.d(TAG, "showAd() position=" + position + " unitId=" + adUnitId);
 
         if (getActivity() == null) {
             call.reject("Activity is null");
@@ -66,13 +62,11 @@ public class BannerAdPlugin extends Plugin {
                             if (root != null) {
                                 root.addView(adView, params);
                                 adViews.put(position, adView);
-                                Log.d(TAG, "AdView added for position: " + position);
                             }
 
                             adView.loadAd(new AdRequest.Builder().build());
                             call.resolve();
                         } catch (Exception e) {
-                            Log.e(TAG, "Error creating ad", e);
                             call.reject(e.getMessage());
                         }
                     });
@@ -91,5 +85,14 @@ public class BannerAdPlugin extends Plugin {
             av.setVisibility(ViewGroup.GONE);
         }
         call.resolve();
+    }
+
+    @Override
+    protected void handleOnDestroy() {
+        for (AdView av : adViews.values()) {
+            av.destroy();
+        }
+        adViews.clear();
+        super.handleOnDestroy();
     }
 }

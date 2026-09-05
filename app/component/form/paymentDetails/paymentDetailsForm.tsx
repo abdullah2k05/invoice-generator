@@ -1,6 +1,5 @@
 "use client";
 import CustomTextInput from "@/app/component/ui/customTextInput";
-import CustomNumberInput from "@/app/component/ui/customNumberInput";
 import { Controller, useFormContext } from "react-hook-form";
 import { getInitialValue } from "@/lib/getInitialValue";
 import { ChevronDown } from "lucide-react";
@@ -37,7 +36,7 @@ export const PaymentDetailsForm = ({ compact }: { compact?: boolean }) => {
             <CustomTextInput label="Account Name" placeholder="Muhammad Abdullah" variableName="accountName" />
             <CustomTextInput label="IFSC code" placeholder="HBL1234567" variableName="ifscCode" />
             <CustomTextInput label="Routing number" placeholder="123456789" variableName="routingCode" />
-            <CustomNumberInput label="Swift code" placeholder="HBLPPKKA" variableName="swiftCode" />
+            <CustomTextInput label="Swift code" placeholder="HBLPPKKA" variableName="swiftCode" />
           </div>
         )}
       </div>
@@ -49,7 +48,7 @@ export const PaymentDetailsForm = ({ compact }: { compact?: boolean }) => {
         <CustomTextInput label="Account Name" placeholder="Muhammad Abdullah" variableName="accountName" />
         <CustomTextInput label="IFSC code" placeholder="HBL1234567" variableName="ifscCode" />
         <CustomTextInput label="Routing number" placeholder="123456789" variableName="routingCode" />
-        <CustomNumberInput label="Swift code" placeholder="HBLPPKKA" variableName="swiftCode" />
+        <CustomTextInput label="Swift code" placeholder="HBLPPKKA" variableName="swiftCode" />
       </div>
 
       <div className="pt-6">

@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Font } from "@react-pdf/renderer";
-import { CheckCircle2, Download, LoaderIcon } from "lucide-react";
+import { CheckCircle2, Download, LoaderIcon, AlertCircle } from "lucide-react";
 import { useData } from "@/app/hooks/useData";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -26,7 +26,8 @@ export const DownloadInvoiceButton = () => {
 
   useEffect(() => {
     if (status === "downloaded") {
-      setTimeout(() => setStatus("not-downloaded"), 2000);
+      const t = setTimeout(() => setStatus("not-downloaded"), 2000);
+      return () => clearTimeout(t);
     }
   }, [status]);
 
@@ -36,6 +37,8 @@ export const DownloadInvoiceButton = () => {
       return () => clearTimeout(t);
     }
   }, [toast]);
+
+  const isError = toast?.includes("failed") || toast?.includes("wrong");
 
   return (
     <>
@@ -87,7 +90,11 @@ export const DownloadInvoiceButton = () => {
       {toast && (
         <div className="fixed top-4 right-4 z-50 max-w-xs animate-in slide-in-from-right-2 fade-in">
           <div className="bg-[#0F172A] text-white text-sm px-4 py-3 rounded-lg shadow-lg flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            {isError ? (
+              <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+            ) : (
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            )}
             <span>{toast}</span>
           </div>
         </div>

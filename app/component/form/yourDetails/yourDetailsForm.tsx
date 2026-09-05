@@ -26,7 +26,7 @@ export const YourDetailsForm: FC<{ compact?: boolean }> = ({ compact }) => {
     set("yourLogo", p.yourLogo);
   }, [setValue]);
 
-  const handleSaveProfile = useCallback(() => {
+  const handleSaveProfile = useCallback(async () => {
     const p: BusinessProfile = {
       yourName: localStorage.getItem("yourName") || "",
       yourEmail: localStorage.getItem("yourEmail") || "",
@@ -38,7 +38,7 @@ export const YourDetailsForm: FC<{ compact?: boolean }> = ({ compact }) => {
       yourTaxId: localStorage.getItem("yourTaxId") || "",
       yourLogo: localStorage.getItem("yourLogo") || "",
     };
-    saveBusinessProfile(p);
+    await saveBusinessProfile(p);
   }, []);
 
   return (

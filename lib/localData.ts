@@ -1,5 +1,7 @@
 "use client";
 
+import { getStorageItem, setStorageItem } from "@/lib/storage";
+
 export interface SavedClient {
   id: string;
   companyName: string;
@@ -51,110 +53,117 @@ const KEYS = {
   INVOICE_COUNTER: "invoice_counter",
 };
 
-function get<T>(key: string, fallback: T): T {
+async function get<T>(key: string, fallback: T): Promise<T> {
   try {
-    const raw = localStorage.getItem(key);
+    const raw = await getStorageItem(key);
     return raw ? JSON.parse(raw) : fallback;
   } catch {
     return fallback;
   }
 }
 
-function set<T>(key: string, value: T) {
+async function set<T>(key: string, value: T): Promise<void> {
   try {
-    localStorage.setItem(key, JSON.stringify(value));
-  } catch {}
+    await setStorageItem(key, JSON.stringify(value));
+  } catch {
+    // storage not available
+  }
 }
 
-export function getBusinessProfile(): BusinessProfile {
+export async function getBusinessProfile(): Promise<BusinessProfile> {
   return get<BusinessProfile>(KEYS.PROFILE, {
     yourName: "", yourEmail: "", yourAddress: "", yourCity: "",
     yourState: "", yourCountry: "", yourZip: "", yourTaxId: "", yourLogo: "",
   });
 }
 
-export function saveBusinessProfile(profile: BusinessProfile) {
-  set(KEYS.PROFILE, profile);
+export async function saveBusinessProfile(profile: BusinessProfile): Promise<void> {
+  await set(KEYS.PROFILE, profile);
 }
 
-export function getClients(): SavedClient[] {
+export async function getClients(): Promise<SavedClient[]> {
   return get<SavedClient[]>(KEYS.CLIENTS, []);
 }
 
-export function saveClient(client: SavedClient) {
-  const clients = getClients().filter((c) => c.id !== client.id);
-  clients.unshift(client);
-  set(KEYS.CLIENTS, clients);
+export async function saveClient(client: SavedClient): Promise<void> {
+  const clients = await getClients();
+  const filtered = clients.filter((c) => c.id !== client.id);
+  filtered.unshift(client);
+  await set(KEYS.CLIENTS, filtered);
 }
 
-export function deleteClient(id: string) {
-  set(KEYS.CLIENTS, getClients().filter((c) => c.id !== id));
+export async function deleteClient(id: string): Promise<void> {
+  const clients = await getClients();
+  await set(KEYS.CLIENTS, clients.filter((c) => c.id !== id));
 }
 
-export function getProducts(): SavedProduct[] {
+export async function getProducts(): Promise<SavedProduct[]> {
   return get<SavedProduct[]>(KEYS.PRODUCTS, []);
 }
 
-export function saveProduct(product: SavedProduct) {
-  const products = getProducts().filter((p) => p.id !== product.id);
-  products.unshift(product);
-  set(KEYS.PRODUCTS, products);
+export async function saveProduct(product: SavedProduct): Promise<void> {
+  const products = await getProducts();
+  const filtered = products.filter((p) => p.id !== product.id);
+  filtered.unshift(product);
+  await set(KEYS.PRODUCTS, filtered);
 }
 
-export function deleteProduct(id: string) {
-  set(KEYS.PRODUCTS, getProducts().filter((p) => p.id !== id));
+export async function deleteProduct(id: string): Promise<void> {
+  const products = await getProducts();
+  await set(KEYS.PRODUCTS, products.filter((p) => p.id !== id));
 }
 
-export function getInvoiceHistory(): StoredInvoice[] {
+export async function getInvoiceHistory(): Promise<StoredInvoice[]> {
   return get<StoredInvoice[]>(KEYS.INVOICES, []);
 }
 
-export function saveInvoice(invoice: StoredInvoice) {
-  const history = getInvoiceHistory();
+export async function saveInvoice(invoice: StoredInvoice): Promise<void> {
+  const history = await getInvoiceHistory();
   history.unshift(invoice);
   if (history.length > 50) history.length = 50;
-  set(KEYS.INVOICES, history);
+  await set(KEYS.INVOICES, history);
 }
 
-export function deleteInvoice(id: string) {
-  set(KEYS.INVOICES, getInvoiceHistory().filter((i) => i.id !== id));
+export async function deleteInvoice(id: string): Promise<void> {
+  const history = await getInvoiceHistory();
+  await set(KEYS.INVOICES, history.filter((i) => i.id !== id));
 }
 
-export function getInvoiceCounter(): number {
+export async function getInvoiceCounter(): Promise<number> {
   return get<number>(KEYS.INVOICE_COUNTER, 0);
 }
 
-export function incrementInvoiceCounter(): number {
-  const next = getInvoiceCounter() + 1;
-  set(KEYS.INVOICE_COUNTER, next);
+export async function incrementInvoiceCounter(): Promise<number> {
+  const next = (await getInvoiceCounter()) + 1;
+  await set(KEYS.INVOICE_COUNTER, next);
   return next;
 }
 
-export function resetInvoiceCounter() {
-  set(KEYS.INVOICE_COUNTER, 0);
+export async function resetInvoiceCounter(): Promise<void> {
+  await set(KEYS.INVOICE_COUNTER, 0);
 }
 
-export function exportAllData(): string {
+export async function exportAllData(): Promise<string> {
   return JSON.stringify({
     version: 1,
     exportedAt: new Date().toISOString(),
-    profile: getBusinessProfile(),
-    clients: getClients(),
-    products: getProducts(),
-    invoices: getInvoiceHistory(),
-    counter: getInvoiceCounter(),
+    profile: await getBusinessProfile(),
+    clients: await getClients(),
+    products: await getProducts(),
+    invoices: await getInvoiceHistory(),
+    counter: await getInvoiceCounter(),
   }, null, 2);
 }
 
-export function importAllData(json: string): boolean {
+export async function importAllData(json: string): Promise<boolean> {
   try {
     const data = JSON.parse(json);
-    if (!data.version) return false;
-    if (data.profile) set(KEYS.PROFILE, data.profile);
-    if (data.clients) set(KEYS.CLIENTS, data.clients);
-    if (data.products) set(KEYS.PRODUCTS, data.products);
-    if (data.invoices) set(KEYS.INVOICES, data.invoices);
-    if (typeof data.counter === "number") set(KEYS.INVOICE_COUNTER, data.counter);
+    if (!data.version || typeof data.version !== "number") return false;
+    if (data.profile && typeof data.profile === "object") await set(KEYS.PROFILE, data.profile);
+    if (Array.isArray(data.clients)) await set(KEYS.CLIENTS, data.clients);
+    if (Array.isArray(data.products)) await set(KEYS.PRODUCTS, data.products);
+    if (Array.isArray(data.invoices)) await set(KEYS.INVOICES, data.invoices);
+    if (typeof data.counter === "number") await set(KEYS.INVOICE_COUNTER, data.counter);
     return true;
   } catch {
     return false;

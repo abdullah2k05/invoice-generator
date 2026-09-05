@@ -4,7 +4,7 @@ import DateInput from "@/app/component/ui/dateInput";
 import { getInitialValue } from "@/lib/getInitialValue";
 import { Controller, useFormContext } from "react-hook-form";
 import { CalendarIcon, Hash } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getInvoiceCounter, incrementInvoiceCounter, resetInvoiceCounter } from "@/lib/localData";
 
 const MobileDateField = ({ label, variableName }: { label: string; variableName: string }) => (
@@ -18,8 +18,8 @@ const MobileDateField = ({ label, variableName }: { label: string; variableName:
           onChange={(e) => {
             if (e.target.value) {
               const d = new Date(e.target.value + "T00:00:00");
-              onChange(d.toString());
-              localStorage.setItem(variableName, d.toString());
+              onChange(d.toISOString());
+              localStorage.setItem(variableName, d.toISOString());
             }
           }}
           className="w-full bg-transparent text-sm font-medium text-[#0F172A] border-0 p-0 focus:outline-none [color-scheme:light]"
@@ -34,19 +34,37 @@ const MobileDateField = ({ label, variableName }: { label: string; variableName:
 export const InvoiceTermsForm = ({ compact }: { compact?: boolean }) => {
   const { setValue } = useFormContext();
   const initialized = useRef(false);
+  const [nextInvoiceNo, setNextInvoiceNo] = useState("");
 
   useEffect(() => {
     if (initialized.current) return;
     initialized.current = true;
-    const existing = localStorage.getItem("invoiceNo");
-    if (!existing) {
-      const next = incrementInvoiceCounter();
-      const padded = String(next).padStart(3, "0");
-      const val = `INV-${padded}`;
-      setValue("invoiceNo", val);
-      localStorage.setItem("invoiceNo", val);
-    }
+    getInvoiceCounter().then((counter) => {
+      const existing = localStorage.getItem("invoiceNo");
+      if (!existing) {
+        const next = counter + 1;
+        const padded = String(next).padStart(3, "0");
+        const val = `INV-${padded}`;
+        setValue("invoiceNo", val);
+        localStorage.setItem("invoiceNo", val);
+        incrementInvoiceCounter();
+      }
+      getInvoiceCounter().then((c) => {
+        setNextInvoiceNo(String(c + 1).padStart(3, "0"));
+      });
+    });
   }, [setValue]);
+
+  const handleNextInvoice = async () => {
+    const next = await getInvoiceCounter();
+    const nextVal = next + 1;
+    const padded = String(nextVal).padStart(3, "0");
+    const val = `INV-${padded}`;
+    setValue("invoiceNo", val);
+    localStorage.setItem("invoiceNo", val);
+    await incrementInvoiceCounter();
+    setNextInvoiceNo(String(nextVal + 1).padStart(3, "0"));
+  };
 
   return (
   <div>
@@ -61,18 +79,11 @@ export const InvoiceTermsForm = ({ compact }: { compact?: boolean }) => {
       />
       <button
         type="button"
-        onClick={() => {
-          const next = getInvoiceCounter() + 1;
-          const padded = String(next).padStart(3, "0");
-          const val = `INV-${padded}`;
-          setValue("invoiceNo", val);
-          localStorage.setItem("invoiceNo", val);
-          localStorage.setItem("invoice_counter", String(next));
-        }}
+        onClick={handleNextInvoice}
         className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-[#4F46E5] mt-1 mb-2 transition-colors"
       >
         <Hash className="w-3 h-3" />
-        Next: INV-{String(getInvoiceCounter() + 1).padStart(3, "0")}
+        Next: INV-{nextInvoiceNo}
       </button>
       <MobileDateField label="Issue date" variableName="issueDate" />
       <MobileDateField label="Due date" variableName="dueDate" />
@@ -87,18 +98,11 @@ export const InvoiceTermsForm = ({ compact }: { compact?: boolean }) => {
       />
       <button
         type="button"
-        onClick={() => {
-          const next = getInvoiceCounter() + 1;
-          const padded = String(next).padStart(3, "0");
-          const val = `INV-${padded}`;
-          setValue("invoiceNo", val);
-          localStorage.setItem("invoiceNo", val);
-          localStorage.setItem("invoice_counter", String(next));
-        }}
+        onClick={handleNextInvoice}
         className="flex items-center gap-1.5 text-xs text-gray-500 hover:text-[#4F46E5] mt-1 mb-2 transition-colors"
       >
         <Hash className="w-3 h-3" />
-        Next: INV-{String(getInvoiceCounter() + 1).padStart(3, "0")}
+        Next: INV-{nextInvoiceNo}
       </button>
       <DateInput label="Issue date" variableName="issueDate" />
       <DateInput label="Due date" variableName="dueDate" />

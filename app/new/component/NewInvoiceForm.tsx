@@ -255,7 +255,7 @@ export const NewInvoiceForm = () => {
       setIsClient(true);
       try {
         const s = localStorage.getItem("step");
-        if (!(s && typeof +s === "number")) localStorage.setItem("step", "1");
+        if (!(s && !isNaN(+s) && +s >= 1 && +s <= 5)) localStorage.setItem("step", "1");
       } catch {
         localStorage.setItem("step", "1");
       }
@@ -332,7 +332,8 @@ export const NewInvoiceForm = () => {
                     iframe.style.width = "800px";
                     iframe.style.height = "1100px";
                     document.body.appendChild(iframe);
-                    const doc = iframe.contentWindow!.document;
+                    const doc = iframe.contentWindow?.document;
+                    if (!doc) { document.body.removeChild(iframe); return; }
                     doc.open();
                     doc.write(`<html><head><title>Invoice</title>`);
                     Array.from(document.styleSheets).forEach((sheet) => {
@@ -341,10 +342,12 @@ export const NewInvoiceForm = () => {
                       }
                     });
                     doc.write(`<style>body { padding: 40px; } @page { margin: 15mm; }</style>`);
-                    doc.write(`</head><body>${el.innerHTML}</body></html>`);
+                    doc.write(`</head><body></body></html>`);
+                    const trusted = doc.importNode(el, true);
+                    doc.body.appendChild(trusted);
                     doc.close();
                     setTimeout(() => {
-                      iframe.contentWindow!.print();
+                      iframe.contentWindow?.print();
                       setTimeout(() => document.body.removeChild(iframe), 1000);
                     }, 500);
                   }}

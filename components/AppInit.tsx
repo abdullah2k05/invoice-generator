@@ -5,7 +5,11 @@ import { migrateStorage } from "@/lib/storage";
 
 export const AppInit = () => {
   useEffect(() => {
-    migrateStorage();
+    try {
+      migrateStorage();
+    } catch {
+      // storage migration failed silently
+    }
   }, []);
 
   return null;

@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { CheckCircle2, LoaderIcon, Share2 } from "lucide-react";
+import { CheckCircle2, LoaderIcon, Share2, AlertCircle } from "lucide-react";
 import { useData } from "@/app/hooks/useData";
 import { useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -25,7 +25,8 @@ export const ShareInvoiceButton = () => {
 
   useEffect(() => {
     if (status === "shared") {
-      setTimeout(() => setStatus("not-shared"), 2000);
+      const t = setTimeout(() => setStatus("not-shared"), 2000);
+      return () => clearTimeout(t);
     }
   }, [status]);
 
@@ -35,6 +36,8 @@ export const ShareInvoiceButton = () => {
       return () => clearTimeout(t);
     }
   }, [toast]);
+
+  const isError = toast?.includes("wrong");
 
   return (
     <>
@@ -81,7 +84,11 @@ export const ShareInvoiceButton = () => {
       {toast && (
         <div className="fixed top-4 right-4 z-50 max-w-xs animate-in slide-in-from-right-2 fade-in">
           <div className="bg-[#0F172A] text-white text-sm px-4 py-3 rounded-lg shadow-lg flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            {isError ? (
+              <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+            ) : (
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+            )}
             <span>{toast}</span>
           </div>
         </div>

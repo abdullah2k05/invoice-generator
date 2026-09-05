@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus, Package, Trash2, X } from "lucide-react";
 import {
   getProducts,
@@ -18,26 +18,30 @@ export function SavedProductsPanel({
   const [showAdd, setShowAdd] = useState(false);
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [products, setProducts] = useState(getProducts);
+  const [products, setProducts] = useState<SavedProduct[]>([]);
 
-  const refresh = () => setProducts(getProducts());
+  useEffect(() => {
+    getProducts().then(setProducts);
+  }, []);
 
-  const handleAdd = () => {
+  const refresh = () => getProducts().then(setProducts);
+
+  const handleAdd = async () => {
     if (!name.trim()) return;
     const p: SavedProduct = {
       id: Date.now().toString(),
       name: name.trim(),
       price: parseFloat(price) || 0,
     };
-    saveProduct(p);
+    await saveProduct(p);
     setName("");
     setPrice("");
     setShowAdd(false);
     refresh();
   };
 
-  const handleDelete = (id: string) => {
-    deleteProduct(id);
+  const handleDelete = async (id: string) => {
+    await deleteProduct(id);
     refresh();
   };
 

@@ -16,7 +16,7 @@ export class ErrorBoundary extends Component<
   }
 
   async componentDidCatch(error: Error, info: ErrorInfo) {
-    // Firebase Crashlytics not available in this build
+    console.error("[ErrorBoundary]", error.message, info.componentStack);
   }
 
   render() {

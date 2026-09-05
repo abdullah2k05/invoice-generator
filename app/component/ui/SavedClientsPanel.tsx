@@ -1,7 +1,7 @@
 "use client";
 
-import { useState } from "react";
-import { Plus, Users, Trash2, X, Check } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Users, Trash2 } from "lucide-react";
 import {
   getClients,
   saveClient,
@@ -15,12 +15,16 @@ export function SavedClientsPanel({
   onSelect: (client: SavedClient) => void;
 }) {
   const [open, setOpen] = useState(false);
-  const [clients, setClients] = useState(getClients);
+  const [clients, setClients] = useState<SavedClient[]>([]);
 
-  const refresh = () => setClients(getClients());
+  useEffect(() => {
+    getClients().then(setClients);
+  }, []);
 
-  const handleDelete = (id: string) => {
-    deleteClient(id);
+  const refresh = () => getClients().then(setClients);
+
+  const handleDelete = async (id: string) => {
+    await deleteClient(id);
     refresh();
   };
 

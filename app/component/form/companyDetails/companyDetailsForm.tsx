@@ -26,7 +26,7 @@ export const CompanyDetailsForm: FC<{ compact?: boolean }> = ({ compact }) => {
     set("companyLogo", c.logo);
   }, [setValue]);
 
-  const handleSaveAsClient = useCallback(() => {
+  const handleSaveAsClient = useCallback(async () => {
     const client: SavedClient = {
       id: Date.now().toString(),
       companyName: watch("companyName") || "",
@@ -40,7 +40,7 @@ export const CompanyDetailsForm: FC<{ compact?: boolean }> = ({ compact }) => {
       logo: watch("companyLogo") || "",
     };
     if (client.companyName) {
-      saveClient(client);
+      await saveClient(client);
     }
   }, [watch]);
 

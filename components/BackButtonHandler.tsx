@@ -6,6 +6,8 @@ import { Capacitor } from "@capacitor/core";
 
 export const BackButtonHandler = () => {
   const lastBackPress = useRef(0);
+  const toastRef = useRef<HTMLDivElement | null>(null);
+  const toastTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) return;
@@ -19,13 +21,19 @@ export const BackButtonHandler = () => {
           App.minimizeApp();
         } else {
           lastBackPress.current = now;
+          if (toastRef.current) toastRef.current.remove();
+          if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+
           const el = document.createElement("div");
           el.className = "fixed bottom-10 left-1/2 -translate-x-1/2 z-50 bg-[#0F172A] text-white text-sm px-4 py-2 rounded-lg shadow-lg transition-opacity duration-300";
           el.textContent = "Press back again to exit";
           document.body.appendChild(el);
-          setTimeout(() => {
+          toastRef.current = el;
+
+          toastTimeoutRef.current = setTimeout(() => {
             el.style.opacity = "0";
-            setTimeout(() => el.remove(), 300);
+            const removeTimeout = setTimeout(() => el.remove(), 300);
+            toastTimeoutRef.current = removeTimeout;
           }, 1500);
         }
       }
@@ -33,6 +41,8 @@ export const BackButtonHandler = () => {
 
     return () => {
       handler.then((h) => h.remove());
+      if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+      if (toastRef.current) toastRef.current.remove();
     };
   }, []);
 

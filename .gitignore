@@ -37,3 +37,15 @@ next-env.d.ts
 
 # Sentry Config File
 .sentryclirc
+
+# Android secrets (NEVER commit these)
+android/keystore.properties
+android/*.keystore
+android/*.jks
+
+# Firebase config (store via CI/CD secrets)
+google-services.json
+
+# Build output
+android/app/build/
+android/.gradle/

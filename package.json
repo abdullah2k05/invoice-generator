@@ -1,13 +1,14 @@
 {
   "name": "invoice",
-  "version": "0.1.0",
+  "version": "1.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "build:apk": "next build && npx cap copy android && python3 android/register-plugins.py && cd android && ./gradlew assembleRelease"
+    "build:apk": "next build && npx cap copy android && python3 android/register-plugins.py && cd android && ./gradlew bundleRelease",
+    "build:apk-dev": "next build && npx cap copy android && python3 android/register-plugins.py && cd android && ./gradlew assembleRelease"
   },
   "dependencies": {
     "@capacitor/android": "^8.4.1",

@@ -75,7 +75,7 @@ export const InvoiceDetailsForm = ({ compact }: { compact?: boolean }) => {
                           inputMode="numeric"
                           onChange={(e) => {
                             const inputValue = e.target.value;
-                            if (/^-?\d*\.?\d*$/.test(inputValue) || inputValue === "") {
+                            if (/^\d*\.?\d*$/.test(inputValue) || inputValue === "") {
                               const updatedArray = [...value];
                               updatedArray[index] = { itemDescription, amount, qty: +inputValue };
                               localStorage.setItem("items", JSON.stringify(updatedArray));
@@ -93,7 +93,7 @@ export const InvoiceDetailsForm = ({ compact }: { compact?: boolean }) => {
                           inputMode="decimal"
                           onChange={(e) => {
                             const inputValue = e.target.value;
-                            if (/^-?\d*\.?\d*$/.test(inputValue) || inputValue === "") {
+                            if (/^\d*\.?\d*$/.test(inputValue) || inputValue === "") {
                               const updatedArray = [...value];
                               updatedArray[index] = { itemDescription, amount: +inputValue, qty };
                               localStorage.setItem("items", JSON.stringify(updatedArray));
@@ -160,7 +160,7 @@ export const InvoiceDetailsForm = ({ compact }: { compact?: boolean }) => {
                             inputMode="numeric"
                             onChange={(e) => {
                               const v = e.target.value;
-                              if (/^-?\d*\.?\d*$/.test(v) || v === "") {
+                              if (/^\d*\.?\d*$/.test(v) || v === "") {
                                 const arr = [...value];
                                 arr[index] = { itemDescription, amount, qty: +v };
                                 localStorage.setItem("items", JSON.stringify(arr));
@@ -182,7 +182,7 @@ export const InvoiceDetailsForm = ({ compact }: { compact?: boolean }) => {
                             inputMode="decimal"
                             onChange={(e) => {
                               const v = e.target.value;
-                              if (/^-?\d*\.?\d*$/.test(v) || v === "") {
+                              if (/^\d*\.?\d*$/.test(v) || v === "") {
                                 const arr = [...value];
                                 arr[index] = { itemDescription, amount: +v, qty };
                                 localStorage.setItem("items", JSON.stringify(arr));

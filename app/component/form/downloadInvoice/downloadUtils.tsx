@@ -17,12 +17,14 @@ async function showAdWithTimeout(timeoutMs = 4000): Promise<void> {
       "@/app/component/form/downloadInvoice/rewardedAdPlugin"
     ).catch(() => null);
     if (!mod) return;
+    let timeoutId: ReturnType<typeof setTimeout>;
+    const timeoutPromise = new Promise<never>((_, reject) => {
+      timeoutId = setTimeout(() => reject(new Error("timeout")), timeoutMs);
+    });
     await Promise.race([
       mod.RewardedAd.showAd(),
-      new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("timeout")), timeoutMs)
-      ),
-    ]);
+      timeoutPromise,
+    ]).finally(() => clearTimeout(timeoutId!));
   } catch {
     // ad failed — proceed without it
   }
@@ -144,18 +146,20 @@ async function saveHistory(params: GeneratePdfParams) {
       if (typeof v === "string") data[k] = v;
     });
 
-    saveInvoice({
+    const totalCents = Math.round((afterDiscount + (afterDiscount * taxRate) / 100) * 100);
+
+    await saveInvoice({
       id: Date.now().toString(),
       invoiceNumber: params.invoiceTerms.invoiceNumber || "INV-000",
       date: params.invoiceTerms.issueDate || new Date().toISOString(),
       client: params.companyDetails.companyName || "Unknown",
-      total: afterDiscount + (afterDiscount * taxRate) / 100,
+      total: totalCents / 100,
       currency: params.invoiceDetails.currency || "USD",
       data,
       items,
       templateId: params.templateId,
     });
-    incrementInvoiceCounter();
+    await incrementInvoiceCounter();
   } catch {}
 }
 

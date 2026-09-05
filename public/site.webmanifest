@@ -1,6 +1,6 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "Free Invoice Generator",
+    "short_name": "Invoice Gen",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",

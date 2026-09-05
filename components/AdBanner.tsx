@@ -84,7 +84,7 @@ export const AdBanner = ({ adSlot, format = "auto", className = "" }: AdBannerPr
         <ins
           className="adsbygoogle"
           style={{ display: "block" }}
-          data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID || "ca-pub-3940256099942544"}
+          data-ad-client={process.env.NEXT_PUBLIC_ADSENSE_ID}
           data-ad-slot={adSlot}
           data-ad-format={format}
           data-full-width-responsive="true"

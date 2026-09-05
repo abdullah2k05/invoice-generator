@@ -10,7 +10,7 @@ export function RecentInvoices() {
   const router = useRouter();
 
   useEffect(() => {
-    setInvoices(getInvoiceHistory());
+    getInvoiceHistory().then(setInvoices);
   }, []);
 
   if (invoices.length === 0) return null;
@@ -27,9 +27,9 @@ export function RecentInvoices() {
     router.push("/new");
   };
 
-  const handleDelete = (id: string) => {
-    deleteInvoice(id);
-    setInvoices(getInvoiceHistory());
+  const handleDelete = async (id: string) => {
+    await deleteInvoice(id);
+    getInvoiceHistory().then(setInvoices);
   };
 
   const formatDate = (d: string) => {

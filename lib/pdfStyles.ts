@@ -31,17 +31,17 @@ export const pdfTypography = StyleSheet.create({
         color: colors.gray600,
         fontSize: 12,
         fontWeight: "medium",
-        flexWrap: 'wrap'
+        flexShrink: 1,
     },
     amount: {
         fontSize: 16,
         fontWeight: "medium",
-        flexWrap: 'wrap'
+        flexShrink: 1,
     },
     paymentTitle: {
         fontSize: 12,
         fontWeight: "medium",
-        flexWrap: 'wrap',
+        flexShrink: 1,
         color: colors.gray500
     }
 

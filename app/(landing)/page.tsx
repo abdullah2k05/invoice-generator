@@ -61,20 +61,20 @@ const Home = () => {
               <div className="flex flex-col border-r border-[#E2E8F0]">
                 <div className="flex justify-center items-center gap-1 md:gap-2">
                   <Users className="w-3 h-3 md:w-4 md:h-4" />
-                  <span className="text-[10px] md:text-xs">Trusted by</span>
+                  <span className="text-[10px] md:text-xs">No Signup</span>
                 </div>
                 <span className="text-[#4F46E5] text-3xl md:text-7xl">
-                  200
+                  100%
                 </span>
-                <span className="text-[10px] md:text-xs">users</span>
+                <span className="text-[10px] md:text-xs">Free</span>
               </div>
               <div className="flex flex-col">
                 <div className="flex justify-center items-center gap-1 md:gap-2">
                   <Download className="w-3 h-3 md:w-4 md:h-4" />
-                  <span className="text-[10px] md:text-xs">Download</span>
+                  <span className="text-[10px] md:text-xs">Unlimited</span>
                 </div>
                 <span className="text-[#4F46E5] text-3xl md:text-7xl">
-                  400
+                  ∞
                 </span>
                 <span className="text-[10px] md:text-xs">Invoices</span>
               </div>

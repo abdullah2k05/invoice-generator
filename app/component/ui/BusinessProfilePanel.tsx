@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Building2, Check, Upload, Download } from "lucide-react";
 import {
   getBusinessProfile,
@@ -16,10 +16,17 @@ export function BusinessProfilePanel({
   onLoad: (profile: BusinessProfile) => void;
 }) {
   const [open, setOpen] = useState(false);
-  const profile = getBusinessProfile();
+  const [profile, setProfile] = useState<BusinessProfile>({
+    yourName: "", yourEmail: "", yourAddress: "", yourCity: "",
+    yourState: "", yourCountry: "", yourZip: "", yourTaxId: "", yourLogo: "",
+  });
   const hasProfile = !!profile.yourName;
 
-  const handleSaveCurrent = () => {
+  useEffect(() => {
+    getBusinessProfile().then(setProfile);
+  }, []);
+
+  const handleSaveCurrent = async () => {
     const p: BusinessProfile = {
       yourName: localStorage.getItem("yourName") || "",
       yourEmail: localStorage.getItem("yourEmail") || "",
@@ -31,7 +38,8 @@ export function BusinessProfilePanel({
       yourTaxId: localStorage.getItem("yourTaxId") || "",
       yourLogo: localStorage.getItem("yourLogo") || "",
     };
-    saveBusinessProfile(p);
+    await saveBusinessProfile(p);
+    setProfile(p);
     setOpen(false);
   };
 
@@ -43,8 +51,8 @@ export function BusinessProfilePanel({
       const file = (e.target as HTMLInputElement).files?.[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = () => {
-        const ok = importAllData(reader.result as string);
+      reader.onload = async () => {
+        const ok = await importAllData(reader.result as string);
         if (ok) alert("Backup restored successfully!");
         else alert("Invalid backup file.");
       };
@@ -53,8 +61,8 @@ export function BusinessProfilePanel({
     input.click();
   };
 
-  const handleExport = () => {
-    const data = exportAllData();
+  const handleExport = async () => {
+    const data = await exportAllData();
     const blob = new Blob([data], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
