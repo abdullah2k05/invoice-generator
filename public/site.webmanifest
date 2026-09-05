@@ -1,6 +1,6 @@
 {
-    "name": "Free Invoice Generator",
-    "short_name": "Invoice Gen",
+    "name": "Invoice Maker",
+    "short_name": "Invoice Maker",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -13,7 +13,7 @@
             "type": "image/png"
         }
     ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
+    "theme_color": "#059669",
+    "background_color": "#FAFAF9",
     "display": "standalone"
 }
