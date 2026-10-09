@@ -2,6 +2,7 @@
 
 import { Input } from "@/app/component/ui/input";
 import { getInitialValue } from "@/lib/getInitialValue";
+import { isAcceptableNumericInput } from "@/lib/money";
 import { Controller } from "react-hook-form";
 
 type CustomNumberProps = {
@@ -9,6 +10,8 @@ type CustomNumberProps = {
   placeholder: string;
   variableName: string;
   inputMode?: 'text' | 'email' | 'tel' | 'url' | 'numeric' | 'decimal' | 'search';
+  /** Reject anything that is not a well-formed non-negative decimal (VAL-001). */
+  numeric?: boolean;
 };
 
 export const CustomNumberInput = ({
@@ -16,6 +19,7 @@ export const CustomNumberInput = ({
   placeholder,
   variableName,
   inputMode,
+  numeric,
 }: CustomNumberProps) => (
   <Controller
     render={({ field: { onChange, value } }) => (
@@ -28,6 +32,10 @@ export const CustomNumberInput = ({
         inputMode={inputMode || "numeric"}
         onChange={(e) => {
           const updatedValue = e.target.value;
+          if (numeric && !isAcceptableNumericInput(updatedValue, "decimal")) {
+            // Invalid keystroke/paste: keep the previous valid value.
+            return;
+          }
           localStorage.setItem(variableName, updatedValue);
           onChange(updatedValue);
         }}

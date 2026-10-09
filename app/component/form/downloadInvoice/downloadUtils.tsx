@@ -1,4 +1,5 @@
 import { Capacitor } from "@capacitor/core";
+import { computeInvoiceTotals, minorToNumber } from "@/lib/money";
 
 interface GeneratePdfParams {
   companyDetails: CompanyDetails;
@@ -118,23 +119,24 @@ async function saveToDevice(blob: Blob): Promise<boolean> {
   }
 }
 
-async function saveHistory(params: GeneratePdfParams) {
+/** Exported for tests (VAL-002 storage-write assertion). */
+export async function saveHistory(params: GeneratePdfParams) {
   try {
     const { saveInvoice, incrementInvoiceCounter } = await import(
       "@/lib/localData"
     );
     const items = params.invoiceDetails.items || [];
-    const subtotal = items.reduce(
-      (t: number, i: Item) => t + (i.qty || 1) * (i.amount || 0),
-      0
-    );
-    const discount = params.invoiceDetails.discount
-      ? +params.invoiceDetails.discount
-      : 0;
-    const taxRate = params.invoiceDetails.taxRate
-      ? +params.invoiceDetails.taxRate
-      : 0;
-    const afterDiscount = subtotal - discount;
+    const totals = computeInvoiceTotals({
+      items,
+      discount: params.invoiceDetails.discount,
+      taxRate: params.invoiceDetails.taxRate,
+      currency: params.invoiceDetails.currency,
+    });
+    // Never persist an invalid invoice (NaN / negative / malformed inputs).
+    if (!totals.valid) {
+      console.warn("Invoice not saved to history:", totals.reason);
+      return;
+    }
 
     const data: Record<string, string> = {};
     Object.entries({
@@ -146,14 +148,12 @@ async function saveHistory(params: GeneratePdfParams) {
       if (typeof v === "string") data[k] = v;
     });
 
-    const totalCents = Math.round((afterDiscount + (afterDiscount * taxRate) / 100) * 100);
-
     await saveInvoice({
       id: Date.now().toString(),
       invoiceNumber: params.invoiceTerms.invoiceNumber || "INV-000",
       date: params.invoiceTerms.issueDate || new Date().toISOString(),
       client: params.companyDetails.companyName || "Unknown",
-      total: totalCents / 100,
+      total: minorToNumber(totals.totalMinor, totals.digits),
       currency: params.invoiceDetails.currency || "USD",
       data,
       items,

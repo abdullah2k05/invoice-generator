@@ -29,7 +29,12 @@ const getItems = (items?: string | null): Item[] => {
       },
     ];
   try {
-    return JSON.parse(items);
+    const parsed = JSON.parse(items);
+    if (!Array.isArray(parsed)) return [{ itemDescription: "" }];
+    // Legacy forms stored an empty qty as 0; blank meant "one unit".
+    return parsed.map((item: Item) =>
+      item && item.qty === 0 ? { ...item, qty: undefined } : item
+    );
   } catch {
     return [
       {

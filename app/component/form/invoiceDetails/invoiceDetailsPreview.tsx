@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React from "react";
 import { currencyList } from "@/lib/currency";
+import { computeInvoiceTotals, formatMinorUnits, toMinorUnits } from "@/lib/money";
 import { ChevronDown } from "lucide-react";
 import type { PdfTemplate } from "@/lib/pdfTemplates";
 
@@ -11,10 +12,7 @@ export const InvoiceDetailsPreview: React.FC<
   const currencyDetails = currencyList.find(
     (currency) => currency.value.toLowerCase() === currencyType.toLowerCase()
   )?.details;
-  const subtotal = calculateTotalAmount(items);
-  const discountAmount = subtotal - (discount ? +discount : 0);
-  const taxAmount = discountAmount * ((taxRate ? +taxRate : 0) / 100);
-  const totalAmount = discountAmount + taxAmount;
+  const totals = computeInvoiceTotals({ items, discount, taxRate, currency });
 
   const tc = template?.colors;
   const isEditorial = template?.id === "editorial";
@@ -125,13 +123,18 @@ export const InvoiceDetailsPreview: React.FC<
               className="flex truncate text-xs md:text-xs font-medium text-gray-700"
               style={monospaceStyle}
             >
-              {qty || "-"}
+              {qty ?? "-"}
             </p>
             <p
               className="flex truncate text-xs md:text-xs font-medium text-gray-700"
               style={monospaceStyle}
             >
-              {amount ? addCommasToNumber(amount) : ""}
+              {amount == null
+                ? ""
+                : formatMinorUnits(
+                    toMinorUnits(amount, totals.digits) ?? 0n,
+                    totals.digits
+                  )}
             </p>
             <p
               className={`flex items-end w-full text-xs md:text-xs font-medium text-gray-700 text-right justify-end ${
@@ -146,7 +149,9 @@ export const InvoiceDetailsPreview: React.FC<
               }}
             >
               {currencyDetails?.currencySymbol}
-              {amount ? addCommasToNumber((qty ? qty : 1) * amount) : ""}
+              {amount == null
+                ? ""
+                : formatMinorUnits(totals.lines[index] ?? 0n, totals.digits)}
             </p>
           </div>
         </div>
@@ -181,7 +186,7 @@ export const InvoiceDetailsPreview: React.FC<
                 style={monospaceStyle}
               >
                 {currencyDetails?.currencySymbol}
-                {addCommasToNumber(subtotal)}
+                {formatMinorUnits(totals.subtotalMinor, totals.digits)}
               </p>
             </div>
             {discount && (
@@ -192,7 +197,7 @@ export const InvoiceDetailsPreview: React.FC<
                   style={monospaceStyle}
                 >
                   {currencyDetails?.currencySymbol}
-                  {addCommasToNumber(+discount)}
+                  {formatMinorUnits(totals.discountMinor, totals.digits)}
                 </p>
               </div>
             )}
@@ -204,7 +209,7 @@ export const InvoiceDetailsPreview: React.FC<
                   style={monospaceStyle}
                 >
                   {currencyDetails?.currencySymbol}
-                  {addCommasToNumber(+taxAmount.toFixed(2))}
+                  {formatMinorUnits(totals.taxMinor, totals.digits)}
                 </p>
               </div>
             )}
@@ -215,7 +220,7 @@ export const InvoiceDetailsPreview: React.FC<
                 style={monospaceStyle}
               >
                 {currencyDetails?.currencySymbol}
-                {addCommasToNumber(totalAmount)}
+                {formatMinorUnits(totals.totalMinor, totals.digits)}
               </p>
             </div>
           </div>
@@ -234,7 +239,7 @@ export const InvoiceDetailsPreview: React.FC<
                 style={{ fontFamily: "ui-monospace, SFMono-Regular, monospace" }}
               >
                 {currencyDetails?.currencySymbol}
-                {addCommasToNumber(subtotal)}
+                {formatMinorUnits(totals.subtotalMinor, totals.digits)}
               </p>
             </div>
             {discount && (
@@ -247,7 +252,7 @@ export const InvoiceDetailsPreview: React.FC<
                   style={{ fontFamily: "ui-monospace, SFMono-Regular, monospace" }}
                 >
                   {currencyDetails?.currencySymbol}
-                  {addCommasToNumber(+discount)}
+                  {formatMinorUnits(totals.discountMinor, totals.digits)}
                 </p>
               </div>
             )}
@@ -261,7 +266,7 @@ export const InvoiceDetailsPreview: React.FC<
                   style={{ fontFamily: "ui-monospace, SFMono-Regular, monospace" }}
                 >
                   {currencyDetails?.currencySymbol}
-                  {addCommasToNumber(+taxAmount.toFixed(2))}
+                  {formatMinorUnits(totals.taxMinor, totals.digits)}
                 </p>
               </div>
             )}
@@ -277,7 +282,7 @@ export const InvoiceDetailsPreview: React.FC<
                 }}
               >
                 {currencyDetails?.currencySymbol}
-                {addCommasToNumber(totalAmount)}
+                {formatMinorUnits(totals.totalMinor, totals.digits)}
               </p>
             </div>
           </div>
@@ -293,7 +298,7 @@ export const InvoiceDetailsPreview: React.FC<
                 style={{ fontFamily: "ui-monospace, SFMono-Regular, monospace" }}
               >
                 {currencyDetails?.currencySymbol}
-                {addCommasToNumber(subtotal)}
+                {formatMinorUnits(totals.subtotalMinor, totals.digits)}
               </p>
             </div>
             {discount && (
@@ -306,7 +311,7 @@ export const InvoiceDetailsPreview: React.FC<
                   style={{ fontFamily: "ui-monospace, SFMono-Regular, monospace" }}
                 >
                   {currencyDetails?.currencySymbol}
-                  {addCommasToNumber(+discount)}
+                  {formatMinorUnits(totals.discountMinor, totals.digits)}
                 </p>
               </div>
             )}
@@ -320,7 +325,7 @@ export const InvoiceDetailsPreview: React.FC<
                   style={{ fontFamily: "ui-monospace, SFMono-Regular, monospace" }}
                 >
                   {currencyDetails?.currencySymbol}
-                  {addCommasToNumber(+taxAmount.toFixed(2))}
+                  {formatMinorUnits(totals.taxMinor, totals.digits)}
                 </p>
               </div>
             )}
@@ -342,7 +347,7 @@ export const InvoiceDetailsPreview: React.FC<
                 }}
               >
                 {currencyDetails?.currencySymbol}
-                {addCommasToNumber(totalAmount)}
+                {formatMinorUnits(totals.totalMinor, totals.digits)}
               </p>
             </div>
           </div>
@@ -364,7 +369,7 @@ export const InvoiceDetailsPreview: React.FC<
                 style={monospaceStyle}
               >
                 {currencyDetails?.currencySymbol}
-                {addCommasToNumber(subtotal)}
+                {formatMinorUnits(totals.subtotalMinor, totals.digits)}
               </p>
             </div>
             {discount && (
@@ -384,7 +389,7 @@ export const InvoiceDetailsPreview: React.FC<
                   style={monospaceStyle}
                 >
                   {currencyDetails?.currencySymbol}
-                  {discount ? addCommasToNumber(+discount) : ""}
+                  {discount ? formatMinorUnits(totals.discountMinor, totals.digits) : ""}
                 </p>
               </div>
             )}
@@ -405,7 +410,7 @@ export const InvoiceDetailsPreview: React.FC<
                   style={monospaceStyle}
                 >
                   {currencyDetails?.currencySymbol}
-                  {addCommasToNumber(+taxAmount.toFixed(2))}
+                  {formatMinorUnits(totals.taxMinor, totals.digits)}
                 </p>
               </div>
             )}
@@ -426,7 +431,7 @@ export const InvoiceDetailsPreview: React.FC<
                 style={monospaceStyle}
               >
                 {currencyDetails?.currencySymbol}
-                {addCommasToNumber(totalAmount)}
+                {formatMinorUnits(totals.totalMinor, totals.digits)}
               </p>
             </div>
           </div>
@@ -434,18 +439,4 @@ export const InvoiceDetailsPreview: React.FC<
       </div>
     </div>
   );
-};
-
-const calculateTotalAmount = (items: Item[]): number =>
-  items.reduce((total, item) => {
-    const quantity = item.qty ? +item.qty : 1;
-    const amount = item.amount ? +item.amount : 0;
-    return total + quantity * amount;
-  }, 0);
-
-const addCommasToNumber = (number: number): string => {
-  let numberString = number.toString();
-  const parts = numberString.split(".");
-  parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  return parts.join(".");
 };

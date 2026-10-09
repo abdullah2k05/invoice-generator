@@ -10,6 +10,7 @@ import CustomNumberInput from "@/app/component/ui/customNumberInput";
 import { useGetValue } from "@/app/hooks/useGetValue";
 import { Controller } from "react-hook-form";
 import { getItemValue } from "@/lib/getInitialValue";
+import { isAcceptableNumericInput } from "@/lib/money";
 
 export const InvoiceDetailsForm = ({ compact }: { compact?: boolean }) => {
   const value = useGetValue("currency", "USD");
@@ -69,15 +70,19 @@ export const InvoiceDetailsForm = ({ compact }: { compact?: boolean }) => {
                       <div className="w-14">
                         <Input
                           placeholder="Qty"
-                          value={`${qty || ""}`}
+                          value={qty ?? ""}
                           type="text"
                           pattern="[0-9]*"
                           inputMode="numeric"
                           onChange={(e) => {
                             const inputValue = e.target.value;
-                            if (/^\d*\.?\d*$/.test(inputValue) || inputValue === "") {
+                            if (isAcceptableNumericInput(inputValue)) {
                               const updatedArray = [...value];
-                              updatedArray[index] = { itemDescription, amount, qty: +inputValue };
+                              updatedArray[index] = {
+                                itemDescription,
+                                amount,
+                                qty: inputValue === "" ? undefined : +inputValue,
+                              };
                               localStorage.setItem("items", JSON.stringify(updatedArray));
                               onChange(updatedArray);
                             }
@@ -87,15 +92,19 @@ export const InvoiceDetailsForm = ({ compact }: { compact?: boolean }) => {
                       <div className="w-14">
                         <Input
                           placeholder="Price"
-                          value={`${amount || ""}`}
+                          value={amount ?? ""}
                           type="text"
                           pattern="[0-9]*"
                           inputMode="decimal"
                           onChange={(e) => {
                             const inputValue = e.target.value;
-                            if (/^\d*\.?\d*$/.test(inputValue) || inputValue === "") {
+                            if (isAcceptableNumericInput(inputValue)) {
                               const updatedArray = [...value];
-                              updatedArray[index] = { itemDescription, amount: +inputValue, qty };
+                              updatedArray[index] = {
+                                itemDescription,
+                                amount: inputValue === "" ? undefined : +inputValue,
+                                qty,
+                              };
                               localStorage.setItem("items", JSON.stringify(updatedArray));
                               onChange(updatedArray);
                             }
@@ -154,15 +163,19 @@ export const InvoiceDetailsForm = ({ compact }: { compact?: boolean }) => {
                           </label>
                           <input
                             placeholder="0"
-                            value={`${qty || ""}`}
+                            value={qty ?? ""}
                             type="text"
                             pattern="[0-9]*"
                             inputMode="numeric"
                             onChange={(e) => {
                               const v = e.target.value;
-                              if (/^\d*\.?\d*$/.test(v) || v === "") {
+                              if (isAcceptableNumericInput(v)) {
                                 const arr = [...value];
-                                arr[index] = { itemDescription, amount, qty: +v };
+                                arr[index] = {
+                                  itemDescription,
+                                  amount,
+                                  qty: v === "" ? undefined : +v,
+                                };
                                 localStorage.setItem("items", JSON.stringify(arr));
                                 onChange(arr);
                               }
@@ -176,15 +189,19 @@ export const InvoiceDetailsForm = ({ compact }: { compact?: boolean }) => {
                           </label>
                           <input
                             placeholder="0"
-                            value={`${amount || ""}`}
+                            value={amount ?? ""}
                             type="text"
                             pattern="[0-9]*"
                             inputMode="decimal"
                             onChange={(e) => {
                               const v = e.target.value;
-                              if (/^\d*\.?\d*$/.test(v) || v === "") {
+                              if (isAcceptableNumericInput(v)) {
                                 const arr = [...value];
-                                arr[index] = { itemDescription, amount: +v, qty };
+                                arr[index] = {
+                                  itemDescription,
+                                  amount: v === "" ? undefined : +v,
+                                  qty,
+                                };
                                 localStorage.setItem("items", JSON.stringify(arr));
                                 onChange(arr);
                               }
@@ -241,11 +258,13 @@ export const InvoiceDetailsForm = ({ compact }: { compact?: boolean }) => {
                 label="Discount"
                 placeholder={`${currencyDetails?.currencySymbol}0`}
                 variableName="discount"
+                numeric
               />
               <CustomNumberInput
                 label="Taxes"
                 placeholder="0%"
                 variableName="tax"
+                numeric
               />
             </div>
           </div>

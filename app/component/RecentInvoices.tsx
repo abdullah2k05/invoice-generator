@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { FileText, Trash2, Copy, Clock } from "lucide-react";
 import { getInvoiceHistory, deleteInvoice, type StoredInvoice } from "@/lib/localData";
+import { formatMoney } from "@/lib/money";
 import { useRouter } from "next/navigation";
 
 export function RecentInvoices() {
@@ -42,13 +43,6 @@ export function RecentInvoices() {
     }
   };
 
-  const formatCurrency = (currency: string) => {
-    const symbols: Record<string, string> = {
-      USD: "$", PKR: "₨", EUR: "€", GBP: "£", CAD: "C$", AUD: "A$",
-    };
-    return symbols[currency] || "$";
-  };
-
   return (
     <div className="max-w-5xl mx-auto px-5 py-12 md:py-16">
       <div className="flex items-center gap-2 mb-5">
@@ -79,8 +73,7 @@ export function RecentInvoices() {
                 <span>{formatDate(inv.date)}</span>
                 <span className="text-text-muted">·</span>
                 <span className="font-medium text-text-primary">
-                  {formatCurrency(inv.currency)}
-                  {typeof inv.total === "number" ? inv.total.toFixed(2) : inv.total}
+                  {formatMoney(inv.total, inv.currency)}
                 </span>
               </div>
             </div>
