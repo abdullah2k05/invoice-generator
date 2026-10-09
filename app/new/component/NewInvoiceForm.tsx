@@ -18,29 +18,8 @@ const ShareInvoiceButton = dynamic(
   { ssr: false }
 );
 import { TemplateSelector } from "@/app/component/form/templateSelector";
+import { resetInvoiceForm } from "@/lib/resetInvoiceForm";
 import { cn } from "@/lib/utils";
-
-const STORAGE_KEYS = [
-  "yourEmail", "yourName", "yourAddress", "yourCity", "yourState",
-  "yourCountry", "yourLogo", "yourTaxId", "yourZip",
-  "email", "companyName", "companyAddress", "companyCity", "companyState",
-  "companyCountry", "companyLogo", "companyTaxId", "companyZip",
-  "note", "discount", "tax",
-  "bankName", "accountNumber", "accountName", "routingCode", "swiftCode", "ifscCode",
-  "invoiceNo", "issueDate", "dueDate", "currency", "step", "items", "showPayableIn", "invoiceTemplate",
-];
-
-const clearAllData = () => {
-  STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
-  localStorage.removeItem("_lastActive");
-  localStorage.setItem("step", "1");
-  window.location.reload();
-};
-
-const clearFormOnly = () => {
-  STORAGE_KEYS.forEach((key) => localStorage.removeItem(key));
-  localStorage.setItem("step", "1");
-};
 
 const AccordionSection = ({
   title,
@@ -289,8 +268,11 @@ export const NewInvoiceForm = () => {
   }, []);
 
   const handleReset = useCallback(() => {
-    clearFormOnly();
-  }, []);
+    resetInvoiceForm(methods, () => {
+      setOpenSection("identity");
+      setMobileMode("edit");
+    });
+  }, [methods]);
 
   if (!isClient) return <div />;
 
